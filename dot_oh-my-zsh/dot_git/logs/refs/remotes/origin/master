@@ -1,0 +1,2 @@
+0000000000000000000000000000000000000000 33c0de7add12b050b94fd6f2f988e9b5547d172c nikolai <nikolai@nikolai-laptop.(none)> 1692812650 +0200	fetch --depth=1 origin: storing head
+33c0de7add12b050b94fd6f2f988e9b5547d172c c92af18c36c84cef0c785e1ae9cabc49a61a5c3a NickRI <nicktt2008@yandex.ru> 1692883607 +0200	pull --quiet --rebase origin master: fast-forward
