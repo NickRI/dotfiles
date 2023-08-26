@@ -1,0 +1,12 @@
+github.com/cointop-sh/cointop
+github.com/dmarkham/enumer
+github.com/burik666/gobin
+github.com/golangci/golangci-lint/cmd/golangci-lint
+github.com/lcd1232/importsort
+github.com/jesseduffield/lazydocker
+github.com/gojuno/minimock/v3/cmd/minimock
+github.com/wert-io/op-fsm-gen
+github.com/wert-io/reservator
+github.com/charmbracelet/soft-serve/cmd/soft
+github.com/sqlc-dev/sqlc/cmd/sqlc
+github.com/go-task/task/v3/cmd/task
