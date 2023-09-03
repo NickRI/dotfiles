@@ -4,7 +4,7 @@ require('telescope').setup({
             hidden = true
         },
         project = {
-            hidden_files = true
+            hidden_files = false
         }
     }
 })
