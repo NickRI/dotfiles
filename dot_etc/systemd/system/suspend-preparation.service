@@ -1,0 +1,11 @@
+[Unit]
+Description=Enable swapfile before hibernate during suspend
+Before=systemd-suspend.service
+
+[Service]
+User=root
+Type=oneshot
+ExecStart=/usr/sbin/swapon /swap/swapfile
+
+[Install]
+WantedBy=systemd-suspend.service
