@@ -15,6 +15,19 @@
           "hibernate-status@dromi"
           "user-theme@gnome-shell-extensions.gcampax.github.com"
         ];
+
+        favorite-apps = [
+          "chromium-browser.desktop"
+          "org.telegram.desktop.desktop"
+          "discord.desktop"
+          "slack.desktop"
+          "goland.desktop"
+          "datagrip.desktop"
+          "postman.desktop"
+          "org.gnome.Calendar.desktop"
+          "Mailspring.desktop"
+          "org.gnome.Nautilus.desktop"
+        ];
       };
 
       "org/gnome/desktop/peripherals/mouse" = {
