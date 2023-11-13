@@ -1,7 +1,8 @@
 {inputs, config, pkgs, lib, ...}:
 
 {
-    imports = mkMerge [
-      mkIf (pkgs.stdenv.hostPlatform.isLinux) { ./autostart.nix }
+    imports = [
+      ./autostart.nix
+      ./gnome.nix
     ];
 }
