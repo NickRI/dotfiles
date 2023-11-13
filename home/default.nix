@@ -71,6 +71,8 @@
     unstable.meteo
     unstable.anydesk
     unstable.flatpak
+    unstable.vlc
+    unstable.transmission
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -97,6 +99,7 @@
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
+    ".p10k.zsh".source = ./.p10k.zsh;
   };
 
 
@@ -170,7 +173,7 @@
     zsh = {
         enable = true;
         initExtra = ''
-            source ~/.dotfiles/.p10k.zsh
+            source ~/.p10k.zsh
         '';
 
         oh-my-zsh = {
