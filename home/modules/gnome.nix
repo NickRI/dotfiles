@@ -16,6 +16,63 @@
           "user-theme@gnome-shell-extensions.gcampax.github.com"
         ];
       };
+
+      "org/gnome/desktop/peripherals/mouse" = {
+        natural-scroll = true;
+      };
+
+      "org/gnome/desktop/peripherals/touchpad" = {
+        natural-scroll = true;
+        two-finger-scrolling-enabled = true;
+      };
+
+      "org/gnome/mutter" = {
+        overlay-key = "Super_R";
+        experimental-features = ["scale-monitor-framebuffer"];
+      };
+
+      "org/gnome/desktop/input-sources" = {
+        per-window = true;
+      };
+
+      "org/gnome/settings-daemon/plugins/color" = {
+        night-light-enabled = true;
+        night-light-schedule-automatic = true;
+        night-light-temperature = lib.hm.gvariant.mkUint32 3260;
+      };
+
+      "org/gnome/settings-daemon/plugins/media-keys" = {
+        custom-keybindings = [
+          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
+          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
+          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
+          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/"
+        ];
+      };
+
+      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
+        name = "terminal";
+        command = "gnome-terminal";
+        binding = "<Shift><Control>x";
+      };
+
+      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
+        name = "monitor";
+        command = "gnome-system-monitor";
+        binding = "<Shift><Control>m";
+      };
+
+      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2" = {
+        name = "1password";
+        command = "1password";
+        binding = "<Shift><Control>p";
+      };
+
+      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3" = {
+        name = "1password search";
+        command = "1password --quick-access";
+        binding = "<Shift><Control>slash";
+      };
     };
 
     gtk = {
