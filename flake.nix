@@ -22,12 +22,28 @@
         }; };
     in {
         nixosConfigurations = {
-          fedora = lib.nixosSystem {
+          nick-localhost = lib.nixosSystem {
             inherit system;
-            modules = [ ./configuration.nix ];
+            modules = [
+              nix-flatpak.homeManagerModules.nix-flatpak
+              ./configuration.nix
+              home-manager.nixosModules.home-manager
+              {
+                home-manager.useGlobalPkgs = true;
+                home-manager.useUserPackages = true;
+                home-manager.users.nikolai = import ./home;
+
+                # Optionally, use home-manager.extraSpecialArgs to pass
+                # arguments to home.nix
+                home-manager.extraSpecialArgs = {unstable = unstable; flatpack = nix-flatpak; };
+              }
+            ];
           };
         };
         homeConfigurations = {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+
           nikolai = home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
 
