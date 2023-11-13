@@ -51,10 +51,6 @@
     pkgs.xournalpp
     pkgs.postman
 
-    pkgs.gnome.gnome-tweaks
-    unstable.gnome.gnome-software
-    pkgs.gnome-extension-manager
-
     unstable.jetbrains.goland
     unstable.jetbrains.datagrip
 
@@ -133,21 +129,6 @@
       enable = true;
       enableBashIntegration = true;
       enableZshIntegration = true;
-    };
-
-    gnome-terminal = {
-        enable = true;
-        themeVariant = "dark";
-        profile = {
-            "38b76d40-f796-434f-89e5-2f57f6b28a70" = {
-                default = true;
-                font = "Meslo LGS NF 12";
-                cursorShape = "block";
-                visibleName = "personal";
-                customCommand = "zsh";
-                transparencyPercent = 30;
-            };
-        };
     };
 
     git = {
