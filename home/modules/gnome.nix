@@ -1,4 +1,4 @@
-{inputs, config, pkgs, unstable, lib, ...}:
+{inputs, config, pkgs, lib, ...}:
 
 {
   config = {
@@ -96,15 +96,15 @@
         package = pkgs.papirus-icon-theme;
       };
 
-      theme = {
-        name = "palenight";
-        package = pkgs.palenight-theme;
-      };
-
-      cursorTheme = {
-        name = "Numix-Cursor";
-        package = pkgs.numix-cursor-theme;
-      };
+#      theme = {
+#        name = "palenight";
+#        package = pkgs.palenight-theme;
+#      };
+#
+#      cursorTheme = {
+#        name = "Numix-Cursor";
+#        package = pkgs.numix-cursor-theme;
+#      };
 
       gtk3.extraConfig = {
         Settings = ''
@@ -121,7 +121,7 @@
 
     home.packages = with pkgs; [
       gnome.gnome-tweaks
-      unstable.gnome.gnome-software
+      gnome.gnome-software
       gnome-extension-manager
 
 

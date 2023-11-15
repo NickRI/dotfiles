@@ -4,5 +4,6 @@
     imports = [
       ./autostart.nix
       ./gnome.nix
+      ./flatpak.nix
     ];
 }

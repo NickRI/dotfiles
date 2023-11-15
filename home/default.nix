@@ -1,4 +1,4 @@
-{ config, pkgs, unstable, flatpack, ... }:
+{ config, pkgs, stable, ... }:
 
 {
   imports = [ ./modules ];
@@ -14,26 +14,6 @@
      switch = "home-manager switch --flake ~/.dotfiles";
   };
 
-  services = {
-    flatpak = {
-      enable = true;
-
-      update = {
-        onActivation = true;
-        auto = {
-          enable = true;
-          onCalendar = "weekly"; # Default value
-        };
-      };
-
-      packages = [
-        "com.boxy_svg.BoxySVG"
-        "com.ktechpit.colorwall"
-        "com.dropbox.Client"
-      ];
-    };
-  };
-
   # This value determines the Home Manager release that your configuration is
   # compatible with. This helps avoid breakage when a new Home Manager release
   # introduces backwards incompatible changes.
@@ -45,34 +25,34 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = [
-    pkgs.htop
-    pkgs.wget
-    pkgs.xournalpp
-    pkgs.postman
+  home.packages = with pkgs; [
+    htop
+    wget
 
-    unstable.jetbrains.goland
-    unstable.jetbrains.datagrip
+    jetbrains.goland
+    jetbrains.datagrip
+    stable.postman
 
-    unstable.slack
-    unstable.telegram-desktop
-    unstable.mailspring
-    unstable.whatsapp-for-linux
-    unstable.discord
-#    unstable.viber
-    unstable.skypeforlinux
+    slack
+    telegram-desktop
+    mailspring
+    whatsapp-for-linux
+    discord
+#    viber
+    skypeforlinux
 
-    unstable.denaro
-    unstable.ledger-live-desktop
+    denaro
+    ledger-live-desktop
 
-    pkgs._1password
-    pkgs._1password-gui
+    _1password
+    _1password-gui
 
-    unstable.meteo
-    unstable.anydesk
-    unstable.flatpak
-    unstable.vlc
-    unstable.transmission
+    meteo
+    anydesk
+    flatpak
+    vlc
+    xournalpp
+    transmission
 
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
@@ -88,12 +68,12 @@
     # '')
   ];
 
-
-  autostart = [
-    unstable._1password-gui
-    unstable.meteo unstable.slack
-    unstable.telegram-desktop
-    unstable.mailspring
+  autostart = with pkgs; [
+    _1password-gui
+    meteo
+    slack
+    telegram-desktop
+    mailspring
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
