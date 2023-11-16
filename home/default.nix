@@ -1,4 +1,4 @@
-{ config, pkgs, stable, ... }:
+{ config, pkgs, unstable, ... }:
 
 {
   imports = [ ./modules ];
@@ -29,9 +29,9 @@
     htop
     wget
 
-    jetbrains.goland
-    jetbrains.datagrip
-    stable.postman
+    unstable.jetbrains.goland
+    unstable.jetbrains.datagrip
+    postman
 
     slack
     telegram-desktop
