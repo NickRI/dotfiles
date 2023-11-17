@@ -32,16 +32,18 @@
         };
     in {
       nixosConfigurations = {
-        nick-localhost = lib.nixosSystem {
+        fedora = lib.nixosSystem {
           inherit system;
+          inherit pkgs;
+
           modules = [
             nix-flatpak.nixosModules.nix-flatpak
             home-manager.nixosModules.home-manager
-            ./configuration.nix
+            ./nixos/configuration.nix
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.nikolai = import ./home;
+              home-manager.users.nikolai = import ./home/nixos.nix;
 
               # Optionally, use home-manager.extraSpecialArgs to pass
               # arguments to home.nix
