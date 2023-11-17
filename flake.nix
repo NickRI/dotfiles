@@ -28,6 +28,9 @@
           system = system;
           config = {
             allowUnfree = true;
+            permittedInsecurePackages = [
+              "mailspring-1.11.0"
+            ];
           };
         };
     in {
@@ -43,7 +46,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.nikolai = import ./home/nixos.nix;
+              home-manager.users.nikolai = import ./home/base.nix;
 
               # Optionally, use home-manager.extraSpecialArgs to pass
               # arguments to home.nix

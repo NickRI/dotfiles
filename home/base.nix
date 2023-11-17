@@ -11,7 +11,8 @@
      ".." = "cd ..";
      "..." = "cd ../..";
      ll = "ls -lah";
-     switch = "home-manager switch --flake ~/.dotfiles";
+     switch-nix = "nixos-rebuild switch --flake ~/.dotfiles";
+     switch-mgr = "home-manager switch --flake ~/.dotfiles";
   };
 
   # This value determines the Home Manager release that your configuration is
@@ -25,12 +26,12 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = with pkgs; [
+  home.packages = with unstable; [
     htop
     wget
 
-    unstable.jetbrains.goland
-    unstable.jetbrains.datagrip
+    jetbrains.goland
+    jetbrains.datagrip
 
     slack
     telegram-desktop
@@ -69,7 +70,7 @@
     # '')
   ];
 
-  autostart = with pkgs; [
+  autostart = with unstable; [
     _1password-gui
     meteo
     slack
@@ -105,15 +106,10 @@
     "/var/lib/flatpak/exports/share"
     "$HOME/.local/share/flatpak/exports/share"
   ];
+  xdg.mimeApps.defaultApplications = [];
 
   programs = {
     bash.enable = true;
-
-    direnv = {
-      enable = true;
-      enableBashIntegration = true;
-      enableZshIntegration = true;
-    };
 
     git = {
         enable = true;

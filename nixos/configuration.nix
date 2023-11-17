@@ -59,6 +59,7 @@
    users.users.nikolai = {
      isNormalUser = true;
      extraGroups = [ "wheel" "docker"]; # Enable ‘sudo’ for the user.
+     shell = pkgs.zsh;
   #   packages = with pkgs; [
   #     firefox
   #     tree
@@ -75,11 +76,13 @@
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
+  programs.zsh.enable = true;
   programs._1password.enable = true;
   programs._1password-gui = {
    enable = true;
    polkitPolicyOwners = [ "nikolai" ];
   };
+
 
   # List services that you want to enable:
 
