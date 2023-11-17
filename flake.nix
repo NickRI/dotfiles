@@ -11,7 +11,7 @@
     nix-flatpak.url = "github:gmodena/nix-flatpak/main";
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, nix-flatpak, ... }:
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ... }:
     let
         lib = nixpkgs.lib;
         system = "x86_64-linux";
@@ -40,7 +40,7 @@
           inherit pkgs;
 
           modules = [
-            nix-flatpak.nixosModules.nix-flatpak
+            inputs.nix-flatpak.nixosModules.nix-flatpak
             home-manager.nixosModules.home-manager
             ./nixos/configuration.nix
             {
@@ -65,7 +65,7 @@
           # Specify your home configuration modules here, for example,
           # the path to your home.nix.
           modules = [
-            nix-flatpak.homeManagerModules.nix-flatpak
+            inputs.nix-flatpak.homeManagerModules.nix-flatpak
             ./home
           ];
 
