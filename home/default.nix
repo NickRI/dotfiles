@@ -31,7 +31,6 @@
 
     unstable.jetbrains.goland
     unstable.jetbrains.datagrip
-    postman
 
     slack
     telegram-desktop

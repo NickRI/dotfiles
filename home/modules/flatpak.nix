@@ -18,6 +18,7 @@
           "com.boxy_svg.BoxySVG"
           "com.ktechpit.colorwall"
           "com.dropbox.Client"
+          "com.getpostman.Postman"
         ];
       };
     };

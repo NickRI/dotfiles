@@ -23,7 +23,7 @@
           "slack.desktop"
           "goland.desktop"
           "datagrip.desktop"
-          "postman.desktop"
+          "com.getpostman.Postman.desktop"
           "org.gnome.Calendar.desktop"
           "Mailspring.desktop"
           "org.gnome.Nautilus.desktop"
