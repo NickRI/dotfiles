@@ -58,6 +58,15 @@
         night-light-temperature = mkUint32 3260;
       };
 
+      "org/gnome/settings-daemon/plugins/power" = {
+        idle-brightness = mkInt32 30;
+        sleep-inactive-battery-timeout = mkInt32 900;
+        sleep-inactive-ac-timeout = mkInt32 1200;
+        power-button-action = "suspend";
+        sleep-inactive-ac-type = "suspend";
+        sleep-inactive-battery-type = "suspend";
+      };
+
       "org/gnome/settings-daemon/plugins/media-keys" = {
         custom-keybindings = [
           "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
