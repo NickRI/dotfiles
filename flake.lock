@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "gnome": {
+      "locked": {
+        "lastModified": 1700310577,
+        "narHash": "sha256-FJVWtbZuGCID4XnzQlESATabnxaCqQ8nxXSqEuc68K8=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "24fffa141c80c9c8642e6dce606536714d7c1826",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "gnome",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -37,6 +53,22 @@
         "type": "github"
       }
     },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1699997707,
+        "narHash": "sha256-ugb+1TGoOqqiy3axyEZpfF6T4DQUGjfWZ3Htry1EfvI=",
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "rev": "5689f3ebf899f644a1aabe8774d4f37eb2f6c2f9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "master",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1699994397,
@@ -71,8 +103,10 @@
     },
     "root": {
       "inputs": {
+        "gnome": "gnome",
         "home-manager": "home-manager",
         "nix-flatpak": "nix-flatpak",
+        "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable"
       }

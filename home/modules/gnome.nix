@@ -2,7 +2,7 @@
 
 {
   config = {
-    dconf.settings = {
+    dconf.settings = with lib.hm.gvariant; {
       "org/gnome/shell" = {
         disable-user-extensions = false;
 
@@ -46,12 +46,16 @@
 
       "org/gnome/desktop/input-sources" = {
         per-window = true;
+        sources = [
+          (mkTuple ["xkb" "us"])
+          (mkTuple ["xkb" "ru"])
+        ];
       };
 
       "org/gnome/settings-daemon/plugins/color" = {
         night-light-enabled = true;
         night-light-schedule-automatic = true;
-        night-light-temperature = lib.hm.gvariant.mkUint32 3260;
+        night-light-temperature = mkUint32 3260;
       };
 
       "org/gnome/settings-daemon/plugins/media-keys" = {
@@ -86,6 +90,11 @@
         command = "1password --quick-access";
         binding = "<Shift><Control>slash";
       };
+
+      "org/gnome/gnome-system-monitor"  = {
+        graph-update-interval = mkInt32 500;
+        update-interval = mkInt32 1000;
+      };
     };
 
     gtk = {
@@ -101,10 +110,10 @@
 #        package = pkgs.palenight-theme;
 #      };
 #
-#      cursorTheme = {
-#        name = "Numix-Cursor";
-#        package = pkgs.numix-cursor-theme;
-#      };
+      cursorTheme = {
+        name = "Numix-Cursor";
+        package = pkgs.numix-cursor-theme;
+      };
 
       gtk3.extraConfig = {
         Settings = ''
@@ -122,6 +131,7 @@
     home.packages = with pkgs; [
       gnome.gnome-tweaks
       gnome.gnome-software
+      gnome.dconf-editor
       gnome-extension-manager
 
 

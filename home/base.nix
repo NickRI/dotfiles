@@ -11,7 +11,7 @@
      ".." = "cd ..";
      "..." = "cd ../..";
      ll = "ls -lah";
-     switch-nix = "nixos-rebuild switch --flake ~/.dotfiles";
+     switch-nix = "nixos-rebuild --use-remote-sudo switch --flake ~/.dotfiles";
      switch-mgr = "home-manager switch --flake ~/.dotfiles";
   };
 

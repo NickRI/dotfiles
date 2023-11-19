@@ -8,7 +8,9 @@
       url = "github:nix-community/home-manager/release-23.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nix-flatpak.url = "github:gmodena/nix-flatpak/main";
+    gnome.url = "github:NixOS/nixpkgs/gnome";
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ... }:
@@ -40,9 +42,17 @@
           inherit pkgs;
 
           modules = [
-            inputs.nix-flatpak.nixosModules.nix-flatpak
+            {
+              nixpkgs.overlays = [
+                (self: super: {
+                  gnome = inputs.gnome.legacyPackages.x86_64-linux.gnome;
+                })
+              ];
+            }
             home-manager.nixosModules.home-manager
+            inputs.nix-flatpak.nixosModules.nix-flatpak
             ./nixos/configuration.nix
+            inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
