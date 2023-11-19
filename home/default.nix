@@ -10,6 +10,7 @@
     home.packages = with unstable; [
       _1password
       _1password-gui
+      ledger-udev-rules
     ];
   };
 }
