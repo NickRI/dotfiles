@@ -37,7 +37,7 @@
         };
     in {
       nixosConfigurations = {
-        fedora = lib.nixosSystem {
+        nixos = lib.nixosSystem {
           inherit system;
           inherit pkgs;
 
