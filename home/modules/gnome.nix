@@ -67,6 +67,10 @@
         sleep-inactive-battery-type = "suspend";
       };
 
+      "org/gnome/desktop/session" = {
+        idle-delay = mkUint32 300;
+      };
+
       "org/gnome/settings-daemon/plugins/media-keys" = {
         custom-keybindings = [
           "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
