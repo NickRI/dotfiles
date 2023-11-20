@@ -99,23 +99,6 @@
     lidSwitchExternalPower = "ignore";
   };
 
-#  systemd.sleep.extraConfig = ''
-#    HibernateDelaySec=5s
-#  '';
-
-#  systemd.services."systemd-suspend" = {
-#    description = ''System Suspend'';
-#    documentation = [ "man:systemd-suspend.service(8)" ];
-#    requires = [ "sleep.target" ];
-#    after = [ "sleep.target" ];
-#    unitConfig = { DefaultDependencies = "no"; };
-#
-#    serviceConfig = {
-#      Type = "oneshot";
-#      ExecStart = "${pkgs.systemd}/lib/systemd/systemd-sleep suspend-then-hibernate";
-#    };
-#  };
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
    users.users.nikolai = {
      isNormalUser = true;
