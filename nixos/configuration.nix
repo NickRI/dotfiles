@@ -8,11 +8,11 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./suspend-and-hibernate.nix
       ../flatpak
     ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = false;
   boot.loader.grub.enable = true;
   boot.loader.grub.devices = [ "nodev" ];
   boot.loader.grub.efiInstallAsRemovable = true;
@@ -67,6 +67,12 @@
   sound.enable = true;
   hardware.pulseaudio.enable = false;
   hardware.ledger.enable = true;
+  hardware.bluetooth.settings = {
+    General = {
+      ControllerMode = "bredr";
+    };
+  };
+
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -87,11 +93,33 @@
   services.fprintd.enable = true;
   services.fwupd.enable = true;
   services.fstrim.enable = true;
+  services.logind = {
+    lidSwitch = "suspend";
+    lidSwitchDocked = "suspend";
+    lidSwitchExternalPower = "ignore";
+  };
+
+#  systemd.sleep.extraConfig = ''
+#    HibernateDelaySec=5s
+#  '';
+
+#  systemd.services."systemd-suspend" = {
+#    description = ''System Suspend'';
+#    documentation = [ "man:systemd-suspend.service(8)" ];
+#    requires = [ "sleep.target" ];
+#    after = [ "sleep.target" ];
+#    unitConfig = { DefaultDependencies = "no"; };
+#
+#    serviceConfig = {
+#      Type = "oneshot";
+#      ExecStart = "${pkgs.systemd}/lib/systemd/systemd-sleep suspend-then-hibernate";
+#    };
+#  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
    users.users.nikolai = {
      isNormalUser = true;
-     extraGroups = [ "networkmanager" "wheel" "docker" ]; # Enable ‘sudo’ for the user.
+     extraGroups = [ "networkmanager" "wheel" "docker" ]; # Enable ‘sudo’ docker and other for the user.
      shell = pkgs.zsh;
   #   packages = with pkgs; [
   #     firefox
@@ -105,6 +133,14 @@
   #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #   wget
   # ];
+
+  virtualisation.docker = {
+    enable = true;
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

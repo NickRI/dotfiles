@@ -10,7 +10,6 @@
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nix-flatpak.url = "github:gmodena/nix-flatpak/main";
-    gnome.url = "github:NixOS/nixpkgs/gnome";
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ... }:
@@ -42,13 +41,6 @@
           inherit pkgs;
 
           modules = [
-            {
-              nixpkgs.overlays = [
-                (self: super: {
-                  gnome = inputs.gnome.legacyPackages.x86_64-linux.gnome;
-                })
-              ];
-            }
             home-manager.nixosModules.home-manager
             inputs.nix-flatpak.nixosModules.nix-flatpak
             ./nixos/configuration.nix

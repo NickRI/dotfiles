@@ -33,6 +33,9 @@
     jetbrains.goland
     jetbrains.datagrip
 
+    docker
+    lazydocker
+
     slack
     telegram-desktop
     mailspring

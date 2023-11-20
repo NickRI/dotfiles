@@ -1,21 +1,5 @@
 {
   "nodes": {
-    "gnome": {
-      "locked": {
-        "lastModified": 1700310577,
-        "narHash": "sha256-FJVWtbZuGCID4XnzQlESATabnxaCqQ8nxXSqEuc68K8=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "24fffa141c80c9c8642e6dce606536714d7c1826",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "gnome",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -103,7 +87,6 @@
     },
     "root": {
       "inputs": {
-        "gnome": "gnome",
         "home-manager": "home-manager",
         "nix-flatpak": "nix-flatpak",
         "nixos-hardware": "nixos-hardware",
