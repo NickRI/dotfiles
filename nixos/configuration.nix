@@ -13,11 +13,8 @@
     ];
 
   # Bootloader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.devices = [ "nodev" ];
-  boot.loader.grub.efiInstallAsRemovable = true;
-  boot.loader.grub.efiSupport = true;
-  boot.loader.grub.useOSProber = true;
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -36,6 +33,8 @@
   i18n.defaultLocale = "ru_RU.UTF-8";
 
   i18n.extraLocaleSettings = {
+    LANGUAGE = "ru_RU.UTF-8";
+    LC_ALL = "ru_RU.UTF-8";
     LC_ADDRESS = "ru_RU.UTF-8";
     LC_IDENTIFICATION = "ru_RU.UTF-8";
     LC_MEASUREMENT = "ru_RU.UTF-8";
@@ -56,7 +55,7 @@
 
   # Configure keymap in X11
   services.xserver = {
-    layout = "us,ru";
+    layout = "us";
     xkbVariant = "";
   };
 
@@ -70,6 +69,9 @@
   hardware.bluetooth.settings = {
     General = {
       ControllerMode = "bredr";
+    };
+    Policy = {
+      AutoEnable = false;
     };
   };
 
@@ -117,13 +119,7 @@
   #   wget
   # ];
 
-  virtualisation.docker = {
-    enable = true;
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
-    };
-  };
+  virtualisation.docker.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -11,6 +11,7 @@
       _1password
       _1password-gui
       ledger-udev-rules
+      docker
     ];
   };
 }

@@ -43,8 +43,8 @@
           modules = [
             home-manager.nixosModules.home-manager
             inputs.nix-flatpak.nixosModules.nix-flatpak
-            ./nixos/configuration.nix
             inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
+            ./nixos/configuration.nix
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;

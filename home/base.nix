@@ -33,7 +33,6 @@
     jetbrains.goland
     jetbrains.datagrip
 
-    docker
     lazydocker
 
     slack
@@ -59,6 +58,7 @@
     meslo-lgs-nf
     nerdfonts
 
+    libreoffice-fresh
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -85,6 +85,10 @@
   # plain files is through 'home.file'.
   home.file = {
     ".p10k.zsh".source = ./.p10k.zsh;
+    ".config/1Password/ssh/agent.toml".text = ''
+    [[ssh-keys]]
+    vault = "work"
+    '';
   };
 
 
