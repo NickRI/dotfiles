@@ -34,6 +34,7 @@
     jetbrains.datagrip
 
     lazydocker
+    docker-compose
 
     slack
     telegram-desktop
@@ -117,6 +118,13 @@
 
   programs = {
     bash.enable = true;
+
+    ssh = {
+      enable = true;
+      extraConfig = ''
+      IdentityAgent = ~/.1password/agent.sock
+      '';
+    };
 
     git = {
         enable = true;
