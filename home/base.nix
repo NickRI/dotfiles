@@ -173,13 +173,28 @@
             theme = "robbyrussell";
             plugins = [ "git" "sudo" "golang" "docker" "themes" "1password" ];
         };
-        zplug = {
-            enable = true;
-            plugins = [
-                { name = "zsh-users/zsh-autosuggestions"; } # Simple plugin installation
-                { name = "romkatv/powerlevel10k"; tags = [ as:theme depth:1 ]; } # Installations with additional options. For the list of options, please refer to Zplug README.
-            ];
-        };
+
+        plugins = [
+          {
+            name = "zsh-autosuggestions";
+            src = unstable.fetchFromGitHub {
+              owner = "zsh-users";
+              repo = "zsh-autosuggestions";
+              rev = "v0.7.0";
+              sha256 = "KLUYpUu4DHRumQZ3w59m9aTW6TBKMCXl2UcKi4uMd7w=";
+            };
+          }
+          {
+            name = "powerlevel10k";
+            src = unstable.fetchFromGitHub {
+              owner = "romkatv";
+              repo = "powerlevel10k";
+              rev = "v1.19.0";
+              sha256 = "+hzjSbbrXr0w1rGHm6m2oZ6pfmD6UUDBfPd7uMg5l5c=";
+            };
+            file = "powerlevel10k.zsh-theme";
+          }
+        ];
     };
 
     chromium = {
