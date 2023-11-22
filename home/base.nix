@@ -39,7 +39,6 @@
     docker-compose
 
     slack
-    telegram-desktop
     mailspring
     whatsapp-for-linux
     discord
@@ -80,7 +79,6 @@
     _1password-gui
     meteo
     slack
-    telegram-desktop
     mailspring
   ];
 
