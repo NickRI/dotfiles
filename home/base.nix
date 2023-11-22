@@ -13,6 +13,8 @@
      ll = "ls -lah";
      switch-nix = "nixos-rebuild --use-remote-sudo switch --flake ~/.dotfiles";
      switch-mgr = "home-manager switch --flake ~/.dotfiles";
+     profile-list = "sudo nix --extra-experimental-features nix-command profile history --profile /nix/var/nix/profiles/system";
+     profile-wipe = "sudo nix --extra-experimental-features nix-command profile wipe-history --profile /nix/var/nix/profiles/system";
   };
 
   # This value determines the Home Manager release that your configuration is
@@ -89,6 +91,9 @@
     ".config/1Password/ssh/agent.toml".text = ''
     [[ssh-keys]]
     vault = "work"
+    '';
+    ".config/nix/nix.conf".text = ''
+    experimental-features = nix-command flakes
     '';
   };
 
