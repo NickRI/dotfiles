@@ -1,4 +1,4 @@
-{inputs, config, pkgs, lib, ...}:
+{inputs, config, pkgs, unstable, lib, ...}:
 
 {
   config = {
@@ -14,6 +14,7 @@
           "Vitals@CoreCoding.com"
           "hibernate-status@dromi"
           "user-theme@gnome-shell-extensions.gcampax.github.com"
+          "vpn-toggler@rheddes.nl"
         ];
 
         favorite-apps = [
@@ -135,7 +136,7 @@
       };
     };
 
-    home.packages = with pkgs; [
+    home.packages = with unstable; [
       gnome.gnome-tweaks
       gnome.gnome-software
       gnome.dconf-editor
@@ -145,9 +146,10 @@
       gnomeExtensions.appindicator
       gnomeExtensions.blur-my-shell
       gnomeExtensions.caffeine
-      gnomeExtensions.vitals
+      pkgs.gnomeExtensions.vitals
       gnomeExtensions.hibernate-status-button
       gnomeExtensions.user-themes
+      gnomeExtensions.vpn-toggler
     ];
 
     programs = {
