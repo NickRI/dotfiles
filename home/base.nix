@@ -104,6 +104,7 @@
   #
   # if you don't want to manage your shell through Home Manager.
   home.sessionVariables = {
+    NIX_LD = "${pkgs.glibc}/lib64/ld-linux-x86-64.so.2";
     # EDITOR = "emacs";
   };
 
