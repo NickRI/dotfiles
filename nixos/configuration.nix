@@ -116,6 +116,7 @@
      wget
      htop
      file
+     gcc
    ];
 
   virtualisation.docker.enable = true;
