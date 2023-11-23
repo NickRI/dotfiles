@@ -1,4 +1,4 @@
-{ config, pkgs, unstable, ... }:
+{ config, lib, pkgs, unstable, ... }:
 
 {
   imports = [ ./modules ];
@@ -82,7 +82,7 @@
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
   home.file = {
-    ".p10k.zsh".source = ./.p10k.zsh;
+    ".p10k.zsh".source = ./files/.p10k.zsh;
     ".config/1Password/ssh/agent.toml".text = ''
     [[ssh-keys]]
     vault = "work"
@@ -92,6 +92,11 @@
     '';
   };
 
+  home.activation.certsForPostman = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ${pkgs.openssl}/bin/openssl req -subj '/C=US/CN=Postman Proxy' -new -newkey rsa:2048 -sha256 -days 365 -nodes -x509 \
+    -keyout $HOME/.var/app/com.getpostman.Postman/config/Postman/proxy/postman-proxy-ca.key \
+    -out $HOME/.var/app/com.getpostman.Postman/config/Postman/proxy/postman-proxy-ca.crt
+  '';
 
   # You can also manage environment variables but you will have to manually
   # source

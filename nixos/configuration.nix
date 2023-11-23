@@ -117,6 +117,8 @@
      htop
      file
      gcc
+     tree
+     openssl
    ];
 
   virtualisation.docker.enable = true;
