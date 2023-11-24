@@ -87,6 +87,7 @@
   # plain files is through 'home.file'.
   home.file = {
     ".p10k.zsh".source = ./files/.p10k.zsh;
+    ".local/share/flatpak/exports/share/applications/org.telegram.desktop.desktop".source = ./files/org.telegram.desktop.desktop;
     ".config/1Password/ssh/agent.toml".text = ''
     [[ssh-keys]]
     vault = "work"
