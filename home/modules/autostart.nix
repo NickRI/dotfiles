@@ -12,7 +12,10 @@ in
     home.file = builtins.listToAttrs (map (pkg:
     {
       name = ".config/autostart/" + pkg.pname + ".desktop";
-      value = {
+      value =
+      if pkg ? desktopFile then {
+        source = pkg.desktopFile;
+      } else {
         source = evalName (pkg + "/share/applications/");
       };
     })
