@@ -120,12 +120,11 @@
 
   targets.genericLinux.enable = true;
   xdg.enable = true;
-  xdg.mime.enable = true;
   xdg.systemDirs.data = [
     "/var/lib/flatpak/exports/share"
     "$HOME/.local/share/flatpak/exports/share"
   ];
-  xdg.mimeApps.defaultApplications = [];
+  xdg.configFile."mimeapps.list".force = true;
 
   programs = {
     bash.enable = true;

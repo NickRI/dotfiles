@@ -5,5 +5,6 @@
       ./autostart.nix
       ./gnome.nix
       ./golang.nix
+      ./mime.nix
     ];
 }
