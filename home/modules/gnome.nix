@@ -73,9 +73,9 @@
         idle-delay = mkUint32 300; # The number of seconds of inactivity before the session is considered idle.
       };
 
-      "org.gnome.desktop.screensaver" = {
+      "org/gnome/desktop/screensaver" = {
         lock-enabled = true; # Set this to TRUE to lock the screen when the screensaver goes active.
-        lock-delay = mkUint32 600; # The number of seconds after screensaver activation before locking the screen.
+        lock-delay = mkUint32 1800; # The number of seconds after screensaver activation before locking the screen.
       };
 
       "org/gnome/settings-daemon/plugins/media-keys" = {
