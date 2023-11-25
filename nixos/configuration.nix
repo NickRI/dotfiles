@@ -56,6 +56,9 @@
     xkbVariant = "";
   };
 
+  services.xserver.excludePackages = [ pkgs.xterm ];
+#  services.xserver.desktopManager.xterm.enable = false;
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
 

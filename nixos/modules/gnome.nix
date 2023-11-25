@@ -24,5 +24,16 @@
         session    optional                    ${pkgs.gnome.gnome-keyring}/lib/security/pam_gnome_keyring.so auto_start
       '';
     };
+
+    services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+
+    environment.gnome.excludePackages = (with pkgs; [
+      gnome-tour
+      kgx
+    ]) ++ (with pkgs.gnome; [
+      epiphany
+      geary
+      totem
+    ]);
   };
 }
