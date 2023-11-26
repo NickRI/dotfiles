@@ -115,7 +115,7 @@
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4" = {
         name = "calculator";
         command = "gnome-calculator";
-        binding = "<Shift><Control>c";
+        binding = "<Shift><Control>z";
       };
 
       "org/gnome/gnome-system-monitor"  = {
