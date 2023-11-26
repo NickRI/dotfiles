@@ -84,6 +84,7 @@
           "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
           "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
           "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/"
+          "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/"
         ];
       };
 
@@ -109,6 +110,12 @@
         name = "1password search";
         command = "1password --quick-access";
         binding = "<Shift><Control>slash";
+      };
+
+      "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4" = {
+        name = "calculator";
+        command = "gnome-calculator";
+        binding = "<Shift><Control>c";
       };
 
       "org/gnome/gnome-system-monitor"  = {
