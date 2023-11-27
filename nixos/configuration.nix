@@ -74,6 +74,7 @@
       AutoEnable = false;
     };
   };
+  hardware.opengl.driSupport32Bit = true;
 
   security.rtkit.enable = true;
   services.pipewire = {
@@ -136,6 +137,10 @@
    polkitPolicyOwners = [ "nikolai" ];
   };
   programs.nix-ld.enable = true;
+
+  programs.steam = {
+     enable = true;
+  };
 
   # List services that you want to enable:
 
