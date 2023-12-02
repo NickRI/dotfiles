@@ -15,6 +15,7 @@
           "hibernate-status@dromi"
           "user-theme@gnome-shell-extensions.gcampax.github.com"
           "vpn-toggler@rheddes.nl"
+          "stocks@infinicode.de"
         ];
 
         favorite-apps = [
@@ -127,6 +128,16 @@
         show-hybrid-sleep = false;
         show-suspend-then-hibernate = false;
       };
+
+      "org/gnome/shell/extensions/stocks" = {
+        ticker-interval = 10;
+        ticker-stock-amount = 6;
+        position-in-panel = "left";
+        ticker-display-variation = "tremendous";
+        show-ticker-off-market-prices = true;
+        use-provider-instrument-names = true;
+        portfolios = builtins.readFile ../files/portfolios;
+      };
     };
 
     gtk = {
@@ -162,6 +173,11 @@
       user-themes
       vpn-toggler
     ]);
+
+    home.file.".local/share/gnome-shell/extensions/stocks@infinicode.de" = {
+      source = ../files/stocks-extension;
+      recursive = true;
+    };
 
     programs = {
       gnome-terminal = {
