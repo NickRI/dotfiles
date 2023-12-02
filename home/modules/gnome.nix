@@ -118,9 +118,14 @@
         binding = "<Shift><Control>z";
       };
 
-      "org/gnome/gnome-system-monitor"  = {
+      "org/gnome/gnome-system-monitor" = {
         graph-update-interval = mkInt32 500;
         update-interval = mkInt32 1000;
+      };
+
+      "org/gnome/shell/extensions/hibernate-status-button" = {
+        show-hybrid-sleep = false;
+        show-suspend-then-hibernate = false;
       };
     };
 
@@ -148,16 +153,15 @@
       gnome.gnome-software
       gnome.dconf-editor
       gnome-extension-manager
-
-
-      gnomeExtensions.appindicator
-      gnomeExtensions.blur-my-shell
-      gnomeExtensions.caffeine
-      pkgs.gnomeExtensions.vitals
-      gnomeExtensions.hibernate-status-button
-      gnomeExtensions.user-themes
-      gnomeExtensions.vpn-toggler
-    ];
+    ] ++ (with unstable.gnomeExtensions; [
+      appindicator
+      blur-my-shell
+      caffeine
+      vitals
+      hibernate-status-button
+      user-themes
+      vpn-toggler
+    ]);
 
     programs = {
       gnome-terminal = {
