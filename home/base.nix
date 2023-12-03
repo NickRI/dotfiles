@@ -51,7 +51,8 @@
     flatpak
     vlc
     xournalpp
-    transmission
+    transmission-gtk
+    mission-center
 
     dejavu_fonts
     powerline-fonts
