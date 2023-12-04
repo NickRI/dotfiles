@@ -131,7 +131,7 @@
 
       "org/gnome/shell/extensions/stocks" = {
         ticker-interval = 10;
-        ticker-stock-amount = 6;
+        ticker-stock-amount = 4;
         position-in-panel = "left";
         ticker-display-variation = "tremendous";
         show-ticker-off-market-prices = true;
