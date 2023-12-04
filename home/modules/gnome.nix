@@ -129,6 +129,11 @@
         show-suspend-then-hibernate = false;
       };
 
+      "org/gnome/shell/extensions/caffeine" = {
+        nightlight-control = "always";
+        screen-blank = "always";
+      };
+
       "org/gnome/shell/extensions/stocks" = {
         ticker-interval = 10;
         ticker-stock-amount = 4;
