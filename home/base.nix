@@ -11,8 +11,8 @@
      ".." = "cd ..";
      "..." = "cd ../..";
      ll = "ls -lah";
-     switch-nix = "nixos-rebuild --use-remote-sudo switch --flake ~/.dotfiles";
-     switch-mgr = "home-manager switch --flake ~/.dotfiles";
+     nix-switch = "nixos-rebuild --use-remote-sudo switch --flake ~/.dotfiles";
+     manager-switch = "home-manager switch --flake ~/.dotfiles";
      profile-list = "sudo nix --extra-experimental-features nix-command profile history --profile /nix/var/nix/profiles/system";
      profile-wipe = "sudo nix --extra-experimental-features nix-command profile wipe-history --profile /nix/var/nix/profiles/system";
   };
