@@ -12,9 +12,11 @@
      "..." = "cd ../..";
      ll = "ls -lah";
      nix-switch = "nixos-rebuild --use-remote-sudo switch --flake ~/.dotfiles";
+     nix-update = "nix flake update ~/.dotfiles";
+     nix-cleanup = "nix store optimise && nix-collect-garbage -d";
      manager-switch = "home-manager switch --flake ~/.dotfiles";
-     profile-list = "sudo nix --extra-experimental-features nix-command profile history --profile /nix/var/nix/profiles/system";
-     profile-wipe = "sudo nix --extra-experimental-features nix-command profile wipe-history --profile /nix/var/nix/profiles/system";
+     nix-profile-list = "sudo nix --extra-experimental-features nix-command profile history --profile /nix/var/nix/profiles/system";
+     nix-profile-wipe = "sudo nix --extra-experimental-features nix-command profile wipe-history --profile /nix/var/nix/profiles/system";
   };
 
   # This value determines the Home Manager release that your configuration is

@@ -130,7 +130,8 @@
       };
 
       "org/gnome/shell/extensions/caffeine" = {
-        nightlight-control = "always";
+        enable-fullscreen = true;
+        nightlight-control = "for-apps";
         screen-blank = "always";
       };
 
