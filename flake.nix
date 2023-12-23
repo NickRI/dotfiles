@@ -26,9 +26,6 @@
           system = system;
           config = {
             allowUnfree = true;
-            permittedInsecurePackages = [
-              "mailspring-1.12.0"
-            ];
           };
         };
     in {

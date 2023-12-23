@@ -71,7 +71,7 @@
       };
 
       "org/gnome/desktop/session" = {
-        idle-delay = mkUint32 300; # The number of seconds of inactivity before the session is considered idle.
+        idle-delay = mkUint32 600; # The number of seconds of inactivity before the session is considered idle.
       };
 
       "org/gnome/desktop/screensaver" = {
