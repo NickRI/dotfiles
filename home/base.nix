@@ -45,6 +45,8 @@
     skypeforlinux
     telegram-desktop
 
+    kubectl
+
     denaro
     ledger-live-desktop
 
@@ -219,6 +221,8 @@
         { id = "gphhapmejobijbbhgpjhcjognlahblep"; } # GnomeExtenstion
       ];
     };
+
+    jq.enable = true;
 
     # Let Home Manager install and manage itself.
     home-manager.enable = true;
