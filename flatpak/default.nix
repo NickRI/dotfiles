@@ -19,7 +19,7 @@
           "com.ktechpit.colorwall"
           "com.dropbox.Client"
           "com.getpostman.Postman"
-          "org.gnome.SoundRecorder"
+          "com.gitlab.davem.ClamTk"
         ];
       };
     };

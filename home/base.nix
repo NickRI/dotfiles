@@ -64,6 +64,10 @@
     nerdfonts
 
     libreoffice-fresh
+
+    tradingview
+
+    nvd
     # # It is sometimes useful to fine-tune packages, for example, by applying
     # # overrides. You can do that directly here, just don't forget the
     # # parentheses. Maybe you want to install Nerd Fonts with a limited number of
@@ -116,7 +120,6 @@
   #
   # if you don't want to manage your shell through Home Manager.
   home.sessionVariables = {
-    NIX_LD = "${pkgs.glibc}/lib64/ld-linux-x86-64.so.2";
     # EDITOR = "emacs";
   };
 

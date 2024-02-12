@@ -170,6 +170,7 @@
       gnome.gnome-software
       gnome.dconf-editor
       gnome-extension-manager
+      gnome.gnome-sound-recorder
     ] ++ (with unstable.gnomeExtensions; [
       appindicator
       blur-my-shell
