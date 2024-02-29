@@ -137,6 +137,7 @@
    polkitPolicyOwners = [ "nikolai" ];
   };
   programs.nix-ld.enable = true;
+  programs.kdeconnect.enable = true;
 
   programs.steam = {
      enable = true;

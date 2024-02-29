@@ -16,6 +16,7 @@
           "user-theme@gnome-shell-extensions.gcampax.github.com"
           "vpn-toggler@rheddes.nl"
           "stocks@infinicode.de"
+          "gsconnect@andyholmes.github.io"
         ];
 
         favorite-apps = [

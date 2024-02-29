@@ -35,5 +35,7 @@
       geary
       totem
     ]);
+
+    programs.kdeconnect.package = pkgs.gnomeExtensions.gsconnect;
   };
 }
