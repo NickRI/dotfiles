@@ -8,8 +8,7 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./suspend-and-hibernate.nix
-      ./modules/gnome.nix
+      ./modules
       ../flatpak
     ];
 
@@ -28,7 +27,7 @@
   networking.networkmanager.enable = true;
 
   # Set your time zone.
-  time.timeZone = "Europe/Madrid";
+  time.timeZone = null;
 
   # Select internationalisation properties.
   i18n.defaultLocale = "ru_RU.UTF-8";
@@ -101,6 +100,16 @@
     lidSwitchDocked = "suspend";
     lidSwitchExternalPower = "ignore";
   };
+
+  # Don't let USB devices wake the computer from sleep.
+  # nix-shell -p usbutils --run lsusb
+  hardware.usb.wakeupDisabled = [
+    {
+      # Genius usb keyboard
+      vendor = "c0f4";
+      product = "05c0";
+    }
+  ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
    users.users.nikolai = {
