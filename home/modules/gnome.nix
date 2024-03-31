@@ -101,7 +101,7 @@ in
 
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1" = {
         name = "monitor";
-        command = "gnome-system-monitor";
+        command = "missioncenter";
         binding = "<Shift><Control>m";
       };
 
