@@ -1,5 +1,8 @@
 {inputs, config, pkgs, unstable, lib, ...}:
 
+let
+  util = import ../../utils/base64.nix {lib = lib;};
+in
 {
   config = {
     dconf.settings = with lib.hm.gvariant; {
@@ -143,7 +146,7 @@
         ticker-display-variation = "tremendous";
         show-ticker-off-market-prices = true;
         use-provider-instrument-names = true;
-        portfolios = builtins.readFile ../files/portfolios;
+        portfolios = util.toBase64 (builtins.readFile ../files/portfolios.json);
       };
     };
 
