@@ -65,12 +65,17 @@
   sound.enable = true;
   hardware.pulseaudio.enable = false;
   hardware.ledger.enable = true;
-  hardware.bluetooth.settings = {
-    General = {
-      ControllerMode = "bredr";
-    };
-    Policy = {
-      AutoEnable = false;
+  hardware.bluetooth = {
+    enable = true;
+    settings = {
+      General = {
+        ClassicBondedOnly = false;
+        ControllerMode = "dual";
+        Experimental = true;
+      };
+      Policy = {
+        AutoEnable = true;
+      };
     };
   };
   hardware.opengl.driSupport32Bit = true;
