@@ -6,6 +6,8 @@
       flatpak = {
         enable = true;
 
+        uninstallUnmanaged = true;
+
         update = {
           onActivation = true;
           auto = {
@@ -19,7 +21,6 @@
           "com.ktechpit.colorwall"
           "com.dropbox.Client"
           "com.getpostman.Postman"
-          "com.gitlab.davem.ClamTk"
         ];
       };
     };
