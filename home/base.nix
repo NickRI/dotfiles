@@ -12,7 +12,7 @@
      "..." = "cd ../..";
      ll = "ls -lah";
      nix-switch = "nixos-rebuild --use-remote-sudo switch --flake ~/.dotfiles";
-     nix-update = "nix flake update ~/.dotfiles";
+     nix-update = "nix flake update --commit-lock-file ~/.dotfiles";
      nix-cleanup = "nix store optimise && nix-collect-garbage -d";
      manager-switch = "home-manager switch --flake ~/.dotfiles";
      nix-profile-list = "sudo nix --extra-experimental-features nix-command profile history --profile /nix/var/nix/profiles/system";
@@ -123,6 +123,7 @@
   # if you don't want to manage your shell through Home Manager.
   home.sessionVariables = {
     # EDITOR = "emacs";
+    NIXOS_OZONE_WL = "1";
   };
 
   targets.genericLinux.enable = true;
