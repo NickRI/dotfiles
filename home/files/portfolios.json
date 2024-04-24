@@ -11,6 +11,34 @@
         "showInTicker":true
       },
       {
+        "id":"81f042a399692db18c6a6c53656b33f1",
+        "name":"TON",
+        "symbol":"TON11419-USD",
+        "provider":"yahoo",
+        "showInTicker":true
+      },
+      {
+        "id":"81f042a399692db18c6a6c53656b33f1",
+        "name":"UNI",
+        "symbol":"UNI7083-USD",
+        "provider":"yahoo",
+        "showInTicker":true
+      },
+      {
+        "id":"81f042a399692db18c6a6c53656b33f1",
+        "name":"COMP",
+        "symbol":"TIA22861-USD",
+        "provider":"yahoo",
+        "showInTicker":true
+      },
+      {
+        "id":"81f042a399692db18c6a6c53656b33f1",
+        "name":"COMP",
+        "symbol":"COMP1-USD",
+        "provider":"yahoo",
+        "showInTicker":true
+      },
+      {
         "id":"81f042a399692db18c6a6c53656b33fc",
         "name":"DOT",
         "symbol":"DOT-USD",
@@ -32,13 +60,6 @@
         "showInTicker":true
       },
       {
-        "id":"76cb1660ddaed7a7855adae7656b3413",
-        "name":"AVAX",
-        "symbol":"AVAX-USD",
-        "provider":"yahoo",
-        "showInTicker":true
-      },
-      {
         "id":"f628d2dd933ff1d2e2a788bf656b3499",
         "name":"FLOW",
         "symbol":"FLOW-USD",
@@ -49,34 +70,6 @@
         "id":"718fbfc52a5dc48570960c69656b435b",
         "name":"DyDx",
         "symbol":"ETHDYDX-USD",
-        "provider":"yahoo",
-        "showInTicker":true
-      },
-      {
-        "id":"aad2e4ede1278b77040d4a13656b4371",
-        "name":"1inch",
-        "symbol":"1INCH-USD",
-        "provider":"yahoo",
-        "showInTicker":true
-      },
-      {
-        "id":"593a5c47bcab21b2d6b40aca656b43a0",
-        "name":"Sushi",
-        "symbol":"SUSHI-USD",
-        "provider":"yahoo",
-        "showInTicker":false
-      },
-      {
-        "id":"9fd9609027cf843c492804ea656b43aa",
-        "name":"Eos",
-        "symbol":"EOS-USD",
-        "provider":"yahoo",
-        "showInTicker":false
-      },
-      {
-        "id":"a05dd72816029d23e16c9c71656b33a1",
-        "name":"SOL",
-        "symbol":"SOL-USD",
         "provider":"yahoo",
         "showInTicker":true
       }
