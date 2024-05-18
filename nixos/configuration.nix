@@ -137,6 +137,8 @@
      gcc
      tree
      openssl
+     gnumake
+     unixtools.xxd
    ];
 
   virtualisation.docker.enable = true;
