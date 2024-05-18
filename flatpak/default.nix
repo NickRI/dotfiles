@@ -21,6 +21,8 @@
           "com.ktechpit.colorwall"
           "com.dropbox.Client"
           "com.getpostman.Postman"
+          "org.telegram.desktop"
+          "com.discordapp.Discord"
         ];
       };
     };

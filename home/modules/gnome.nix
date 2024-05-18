@@ -25,7 +25,7 @@ in
         favorite-apps = [
           "chromium-browser.desktop"
           "org.telegram.desktop.desktop"
-          "discord.desktop"
+          "com.discordapp.Discord.desktop"
           "slack.desktop"
           "goland.desktop"
           "datagrip.desktop"
