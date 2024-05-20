@@ -10,6 +10,10 @@
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     nix-flatpak.url = "github:gmodena/nix-flatpak/main";
+    darkmatter-grub-theme = {
+      url = gitlab:VandalByte/darkmatter-grub-theme;
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ... }:
@@ -38,6 +42,7 @@
             home-manager.nixosModules.home-manager
             inputs.nix-flatpak.nixosModules.nix-flatpak
             inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
+            inputs.darkmatter-grub-theme.nixosModule
             ./nixos/configuration.nix
             {
               home-manager.useGlobalPkgs = true;
