@@ -12,6 +12,7 @@
      "..." = "cd ../..";
      ll = "ls -lah";
      nix-switch = "nixos-rebuild --use-remote-sudo switch --flake ~/.dotfiles";
+     nix-boot = "nixos-rebuild --use-remote-sudo boot --flake ~/.dotfiles";
      nix-update = "nix flake update --commit-lock-file ~/.dotfiles";
      nix-cleanup = "nix store optimise && nix-collect-garbage -d";
      manager-switch = "home-manager switch --flake ~/.dotfiles";
