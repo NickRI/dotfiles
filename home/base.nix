@@ -100,6 +100,7 @@
   # plain files is through 'home.file'.
   home.file = {
     ".p10k.zsh".source = ./files/.p10k.zsh;
+    ".local/share/applications/ledger-live-desktop.desktop".source = ./files/ledger-live-desktop.desktop;
     ".config/1Password/ssh/agent.toml".text = ''
     [[ssh-keys]]
     vault = "work"
