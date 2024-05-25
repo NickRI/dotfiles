@@ -30,7 +30,7 @@
       };
     };
     systemd-boot.enable = false;
-    efi.canTouchEfiVariables = true;
+    efi.canTouchEfiVariables = false;
   };
 
   networking.hostName = "nixos"; # Define your hostname.
