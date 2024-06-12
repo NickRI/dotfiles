@@ -65,6 +65,8 @@
     nerdfonts
 
     libreoffice-fresh
+    gimp
+    inkscape
 
     tradingview
 
