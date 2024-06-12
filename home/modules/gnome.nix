@@ -154,8 +154,8 @@ in
       enable = true;
 
       iconTheme = {
-        name = "Fluent-dark";
-        package = pkgs.fluent-icon-theme;
+        name = "Qogir-dark";
+        package = pkgs.qogir-icon-theme;
       };
 
 #      theme = {
@@ -164,8 +164,8 @@ in
 #      };
 #
       cursorTheme = {
-        name = "Numix-Cursor";
-        package = pkgs.numix-cursor-theme;
+        name = "Qogir-dark";
+        package = pkgs.qogir-icon-theme;
       };
     };
 
