@@ -44,7 +44,7 @@
 #    discord
 #    viber
     skypeforlinux
-#    telegram-desktop
+    telegram-desktop
 
     kubectl
 
@@ -92,10 +92,7 @@
     meteo
     slack
     mailspring
-    {
-      pname = "org.telegram.desktop";
-      desktopFile = ./files/org.telegram.desktop.desktop;
-    }
+    telegram-desktop
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

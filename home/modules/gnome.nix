@@ -20,12 +20,13 @@ in
           "vpn-toggler@rheddes.nl"
           "stocks@infinicode.de"
           "gsconnect@andyholmes.github.io"
+          "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
         ];
 
         favorite-apps = [
           "chromium-browser.desktop"
           "org.telegram.desktop.desktop"
-          "com.discordapp.Discord.desktop"
+          "dev.vencord.Vesktop.desktop"
           "slack.desktop"
           "goland.desktop"
           "datagrip.desktop"
@@ -147,6 +148,13 @@ in
         show-ticker-off-market-prices = true;
         use-provider-instrument-names = true;
         portfolios = util.toBase64 (builtins.readFile ../files/portfolios.json);
+      };
+
+      "org/gnome/shell/extensions/auto-move-windows" = {
+        application-list = [
+          "tradingview.desktop:2"
+          "ledger-live-desktop.desktop:2"
+        ];
       };
     };
 
