@@ -63,17 +63,18 @@
     LC_TIME = "ru_RU.UTF-8";
   };
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
   # Configure keymap in X11
   services.xserver = {
-    layout = "us";
-    xkbVariant = "";
-  };
+    # Disable the X11 windowing system.
+    enable = true;
 
-  services.xserver.excludePackages = [ pkgs.xterm ];
-#  services.xserver.desktopManager.xterm.enable = false;
+    xkb = {
+      layout = "us";
+      variant = "";
+    };
+
+    excludePackages = [ pkgs.xterm ];
+  };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
