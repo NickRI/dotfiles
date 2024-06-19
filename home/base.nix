@@ -193,7 +193,7 @@
         oh-my-zsh = {
             enable = true;
             theme = "robbyrussell";
-            plugins = [ "git" "sudo" "golang" "docker" "themes" "1password" ];
+            plugins = [ "git" "sudo" "docker" "themes" "1password" ];
         };
 
         plugins = [

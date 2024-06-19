@@ -6,8 +6,8 @@
       unstable.go
     ];
 
-    home.sessionVariables = { # Need to reboot
-      PATH = "$HOME/go/bin:$PATH";
-    };
+    home.sessionPath = ["$HOME/go/bin"];
+
+    programs.zsh.oh-my-zsh.plugins = ["golang"];
   };
 }
