@@ -11,13 +11,6 @@
      ".." = "cd ..";
      "..." = "cd ../..";
      ll = "ls -lah";
-     nix-switch = "nixos-rebuild --use-remote-sudo switch --flake ~/.dotfiles";
-     nix-boot = "nixos-rebuild --use-remote-sudo boot --flake ~/.dotfiles";
-     nix-update = "nix flake update --commit-lock-file ~/.dotfiles";
-     nix-cleanup = "nix store optimise && nix-collect-garbage -d";
-     manager-switch = "home-manager switch --flake ~/.dotfiles";
-     nix-profile-list = "sudo nix --extra-experimental-features nix-command profile history --profile /nix/var/nix/profiles/system";
-     nix-profile-wipe = "sudo nix --extra-experimental-features nix-command profile wipe-history --profile /nix/var/nix/profiles/system";
   };
 
   # This value determines the Home Manager release that your configuration is
@@ -27,7 +20,7 @@
   # You should not change this value, even if you update Home Manager. If you do
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
-  home.stateVersion = "23.11"; # Please read the comment before changing.
+  home.stateVersion = "24.05"; # Please read the comment before changing.
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
@@ -56,7 +49,7 @@
     flatpak
     vlc
     xournalpp
-    transmission-gtk
+    transmission_4
     mission-center
 
     dejavu_fonts
@@ -67,6 +60,7 @@
     libreoffice-fresh
     gimp
     inkscape
+    pinta
 
     tradingview
 
@@ -99,13 +93,9 @@
   # plain files is through 'home.file'.
   home.file = {
     ".p10k.zsh".source = ./files/.p10k.zsh;
-    ".local/share/applications/ledger-live-desktop.desktop".source = ./files/ledger-live-desktop.desktop;
     ".config/1Password/ssh/agent.toml".text = ''
     [[ssh-keys]]
     vault = "work"
-    '';
-    ".config/nix/nix.conf".text = ''
-    experimental-features = nix-command flakes
     '';
   };
 
@@ -221,6 +211,7 @@
 
     chromium = {
       enable = true;
+      package = unstable.chromium;
       extensions = [
         { id = "nkbihfbeogaeaoehlefnkodbefgpgknn"; } # Metamask
         { id = "gighmmpiobklfepjocnamgkkbiglidom"; } # AdBlock
