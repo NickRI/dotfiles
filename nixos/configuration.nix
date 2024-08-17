@@ -96,7 +96,12 @@
       };
     };
   };
-  hardware.opengl.driSupport32Bit = true;
+
+  hardware.opengl = {
+    enable = true;
+    extraPackages = [ pkgs.mesa.drivers ];
+    driSupport32Bit = true;
+  };
 
   security.rtkit.enable = true;
   services.pipewire = {
