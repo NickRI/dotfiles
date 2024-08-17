@@ -1,8 +1,10 @@
 { config, unstable, pkgs, ... }:
 let
     inherit (unstable) fetchFromGitHub;
+    #TODO: Wait until vendorHash will be able to change
     minimock = unstable.go-minimock.overrideAttrs(oldAttrs: rec {
         version = "3.3.14";
+        vendorHash = "";
 
         src = fetchFromGitHub {
           owner = oldAttrs.src.owner;
@@ -14,6 +16,7 @@ let
 
     go-task = unstable.go-task.overrideAttrs(oldAttrs: rec {
         version = "3.38.0";
+        vendorHash = "";
 
         src = fetchFromGitHub {
           owner = oldAttrs.pname;
@@ -25,6 +28,7 @@ let
 
     enumer = unstable.enumer.overrideAttrs(oldAttrs: rec {
         version = "1.5.10";
+        vendorHash = "";
 
         src = fetchFromGitHub {
           owner = oldAttrs.src.owner;
@@ -36,6 +40,7 @@ let
 
     golangci-lint = unstable.golangci-lint.overrideAttrs(oldAttrs: rec {
         version = "1.59.1";
+        vendorHash = "";
 
         src = fetchFromGitHub {
           owner = oldAttrs.src.owner;
@@ -48,6 +53,7 @@ let
 
     scc = unstable.scc.overrideAttrs(oldAttrs: rec {
         version = "3.3.5";
+        vendorHash = "";
 
         src = fetchFromGitHub {
           owner = oldAttrs.src.owner;
@@ -96,10 +102,11 @@ in
       unstable.protoc-gen-go-grpc
       unstable.glow
       unstable.soft-serve
+      unstable.golangci-lint
+      unstable.lazydocker
       minimock
       go-task
       enumer
-      golangci-lint
       scc
       goose
     ];

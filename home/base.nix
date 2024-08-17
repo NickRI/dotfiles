@@ -28,7 +28,6 @@
     jetbrains.goland
     jetbrains.datagrip
 
-    lazydocker
     docker-compose
 
     slack
