@@ -175,6 +175,10 @@
      openssl
      gnumake
      unixtools.xxd
+
+     wineWowPackages.stable
+     winetricks
+     wineWowPackages.waylandFull
    ];
 
   virtualisation.docker.enable = true;
