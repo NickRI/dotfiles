@@ -156,6 +156,15 @@ in
           "ledger-live-desktop.desktop:2"
         ];
       };
+
+      "org/gnome/desktop/privacy" = {
+        remember-recent-files = true;
+        recent-files-max-age = mkInt32 30;
+
+        old-files-age = mkUint32 30;
+        remove-old-temp-files = true;
+        remove-old-trash-files = true;
+      };
     };
 
     gtk = {
@@ -178,9 +187,9 @@ in
     };
 
     home.packages = with unstable; [
-      gnome.gnome-tweaks
+      gnome-tweaks
+      dconf-editor
       gnome.gnome-software
-      gnome.dconf-editor
       gnome-extension-manager
       gnome.gnome-sound-recorder
     ] ++ (with unstable.gnomeExtensions; [
