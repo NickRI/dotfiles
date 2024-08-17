@@ -4,7 +4,7 @@
     imports = [
       ./autostart.nix
       ./gnome.nix
-      ./golang.nix
+      ./golang
       ./rust.nix
       ./mime.nix
     ];
