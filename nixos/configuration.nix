@@ -145,6 +145,7 @@
       automatic = true;
       dates = "weekly";
       options = "--delete-older-than 14d";
+      randomizedDelaySec = "30m";
     };
     optimise = {
       automatic = true;
