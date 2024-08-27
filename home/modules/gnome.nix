@@ -155,6 +155,15 @@ in
         ];
       };
 
+      "org/gnome/shell/extensions/vitals" = {
+        alphabetize  = true;
+        fixed-widths = true;
+        update-time = mkInt32 5;
+        battery-slot = mkInt32 1;
+        position-in-panel = mkInt32 0;
+        hot-sensors = ["_processor_usage_" "_memory_usage_" "__temperature_avg__" "__network-rx_max__"];
+      };
+
       "org/gnome/desktop/privacy" = {
         remember-recent-files = true;
         recent-files-max-age = mkInt32 30;
