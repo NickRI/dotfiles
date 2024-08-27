@@ -89,7 +89,7 @@ in
     programs.go = {
       enable = true;
       package = unstable.go;
-      goBin = "$HOME/go/bin";
+      goBin = "go/bin";
       goPrivate = [
         "github.com/wert-io"
       ];
