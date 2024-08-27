@@ -17,8 +17,6 @@ in
           "Vitals@CoreCoding.com"
           "hibernate-status@dromi"
           "user-theme@gnome-shell-extensions.gcampax.github.com"
-          "vpn-toggler@rheddes.nl"
-          "stocks@infinicode.de"
           "gsconnect@andyholmes.github.io"
           "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
         ];
@@ -199,13 +197,7 @@ in
       vitals
       hibernate-status-button
       user-themes
-      vpn-toggler
     ]);
-
-    home.file.".local/share/gnome-shell/extensions/stocks@infinicode.de" = {
-      source = ../files/stocks-extension;
-      recursive = true;
-    };
 
     programs = {
       gnome-terminal = {
