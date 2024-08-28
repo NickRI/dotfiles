@@ -2,17 +2,18 @@
 let
     inherit (unstable) fetchFromGitHub;
     #TODO: Wait until vendorHash will be able to change
-    minimock = unstable.go-minimock.overrideAttrs(oldAttrs: rec {
-        version = "3.3.14";
-        vendorHash = "";
-
-        src = fetchFromGitHub {
-          owner = oldAttrs.src.owner;
-          repo = oldAttrs.src.repo;
-          rev = "v${version}";
-          sha256 = "sha256-J4clMn65l7L+qSHbJBMDDRoEfgGHKllRu8nvTGlbgaw=";
-        };
-    });
+    #TODO: https://nixpkgs-tracker.ocfox.me/?pr=225051
+#    minimock = unstable.go-minimock.overrideAttrs(oldAttrs: rec {
+#        version = "3.1.3";
+##        vendorHash = "";
+#
+#        src = fetchFromGitHub {
+#          owner = oldAttrs.src.owner;
+#          repo = oldAttrs.src.repo;
+#          rev = "v${version}";
+#          sha256 = "sha256-6n5FOHTfsLYqnhlDO3etMnrypeOElmwdvoFQb3aSBts=";
+#        };
+#    });
 
     go-task = unstable.go-task.overrideAttrs(oldAttrs: rec {
         version = "3.38.0";
@@ -104,7 +105,8 @@ in
       unstable.soft-serve
       unstable.golangci-lint
       unstable.lazydocker
-      minimock
+      unstable.delve
+#      minimock
       go-task
       enumer
       scc

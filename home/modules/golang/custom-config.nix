@@ -17,6 +17,17 @@
         vendorHash = "sha256-Pz1m9uoUWp5XBiasdwz/DN24friHHYL1J7tjroE6goI=";
       }
       rec {
+        name = "minimock";
+        version = "3.1.3";
+        subPackages = [ "cmd/${name}" ];
+        owner = "gojuno";
+        repo = "${name}";
+        rev = "v${version}";
+        hash = "sha256-6n5FOHTfsLYqnhlDO3etMnrypeOElmwdvoFQb3aSBts=";
+        vendorHash = "sha256-fiSU2NB9rWIPQLdnui5CB5VcadTVUg2JaO3ma7DAYqo=";
+        ldflags = ["-s" "-w" "-X main.version=${version}"];
+      }
+      rec {
         name = "gogo-protobuf";
         version = "1.3.2";
         subPackages = [ "protoc-gen-gogo" "protoc-gen-gogoslick" "gogoproto" ];

@@ -138,16 +138,6 @@ in
         screen-blank = "always";
       };
 
-      "org/gnome/shell/extensions/stocks" = {
-        ticker-interval = 10;
-        ticker-stock-amount = 4;
-        position-in-panel = "left";
-        ticker-display-variation = "tremendous";
-        show-ticker-off-market-prices = true;
-        use-provider-instrument-names = true;
-        portfolios = util.toBase64 (builtins.readFile ../files/portfolios.json);
-      };
-
       "org/gnome/shell/extensions/auto-move-windows" = {
         application-list = [
           "tradingview.desktop:2"
@@ -196,9 +186,9 @@ in
     home.packages = with unstable; [
       gnome-tweaks
       dconf-editor
-      gnome.gnome-software
+      gnome-software
       gnome-extension-manager
-      gnome.gnome-sound-recorder
+      gnome-sound-recorder
     ] ++ (with unstable.gnomeExtensions; [
       appindicator
       blur-my-shell
