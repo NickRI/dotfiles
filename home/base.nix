@@ -20,7 +20,7 @@
   # You should not change this value, even if you update Home Manager. If you do
   # want to update the value, then make sure to first check the Home Manager
   # release notes.
-  home.stateVersion = "24.05"; # Please read the comment before changing.
+  home.stateVersion = "23.05"; # Please read the comment before changing.
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
@@ -176,7 +176,30 @@
     zsh = {
         enable = true;
         initExtra = ''
+            # Sources
             source ~/.p10k.zsh
+            autoload -U compinit && compinit
+
+            # Keybindings
+            bindkey '^f' autosuggest-accept
+
+            # History
+            HISTDUP=erase
+            setopt appendhistory
+            setopt sharehistory
+            setopt hist_ignore_space
+            setopt hist_ignore_all_dups
+            setopt hist_save_no_dups
+            setopt hist_find_no_dups
+            setopt hist_ignore_dups
+
+            # Completion styling
+            zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+            zstyle ':completion:*' menu no
+
+            zstyle ':fzf-tab:complete:(cd|ls|ll):*' fzf-preview 'ls --color $realpath'
+            zstyle ':fzf-tab:complete:(cat|bat):*' fzf-preview 'bat --style=numbers --color=always -r :100 $realpath'
+            zstyle ':fzf-tab:complete:cat:*' fzf-flags --preview-window=100%
         '';
 
         oh-my-zsh = {
@@ -196,6 +219,15 @@
             };
           }
           {
+            name = "zsh-completions";
+            src = unstable.fetchFromGitHub {
+              owner = "zsh-users";
+              repo = "zsh-completions";
+              rev = "0.35.0";
+              sha256 = "GFHlZjIHUWwyeVoCpszgn4AmLPSSE8UVNfRmisnhkpg=";
+            };
+          }
+          {
             name = "powerlevel10k";
             src = unstable.fetchFromGitHub {
               owner = "romkatv";
@@ -204,6 +236,24 @@
               sha256 = "+hzjSbbrXr0w1rGHm6m2oZ6pfmD6UUDBfPd7uMg5l5c=";
             };
             file = "powerlevel10k.zsh-theme";
+          }
+          {
+            name = "zsh-syntax-highlighting";
+            src = unstable.fetchFromGitHub {
+              owner = "zsh-users";
+              repo = "zsh-syntax-highlighting";
+              rev = "0.8.0";
+              sha256 = "sha256-iJdWopZwHpSyYl5/FQXEW7gl/SrKaYDEtTH9cGP7iPo=";
+            };
+          }
+          {
+            name = "fzf-tab";
+            src = unstable.fetchFromGitHub {
+              owner = "Aloxaf";
+              repo = "fzf-tab";
+              rev = "v1.1.2";
+              sha256 = "sha256-Qv8zAiMtrr67CbLRrFjGaPzFZcOiMVEFLg1Z+N6VMhg=";
+            };
           }
         ];
     };
@@ -220,6 +270,21 @@
         { id = "egjidjbpglichdcondbcbdnbeeppgdph"; } # TrustWallet
         { id = "gphhapmejobijbbhgpjhcjognlahblep"; } # GnomeExtenstion
       ];
+    };
+
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
+    bat = {
+      enable = true;
+    };
+
+    zoxide = {
+      enable = true;
+      enableZshIntegration = true;
+      options = [ "--cmd=cd" ];
     };
 
     jq.enable = true;
