@@ -138,14 +138,14 @@
     };
 
     git = {
-        enable = true;
-        userEmail = "nicktt2008@yandex.ru";
-        userName = "NickRI";
-        extraConfig = {
-            url."git@github.com:" = {
-                insteadOf = "https://github.com/";
-            };
+      enable = true;
+      userEmail = "nicktt2008@yandex.ru";
+      userName = "NickRI";
+      extraConfig = {
+        url."git@github.com:" = {
+          insteadOf = "https://github.com/";
         };
+      };
     };
 
     gh = {
@@ -199,7 +199,6 @@
 
             zstyle ':fzf-tab:complete:(cd|ls|ll):*' fzf-preview 'ls --color $realpath'
             zstyle ':fzf-tab:complete:(cat|bat):*' fzf-preview 'bat --style=numbers --color=always -r :100 $realpath'
-            zstyle ':fzf-tab:complete:cat:*' fzf-flags --preview-window=100%
         '';
 
         oh-my-zsh = {

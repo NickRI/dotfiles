@@ -139,19 +139,7 @@
     }
   ];
 
-  nix = {
-    settings.experimental-features = [ "nix-command" "flakes" ];
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-      randomizedDelaySec = "30m";
-    };
-    optimise = {
-      automatic = true;
-      dates = [ "weekly" ];
-    };
-  };
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
    users.users.nikolai = {
