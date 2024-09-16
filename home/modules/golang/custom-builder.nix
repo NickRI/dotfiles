@@ -1,8 +1,8 @@
-{ config, pkgs, unstable, lib, ... }:
+{ config, pkgs, lib, ... }:
 let
   inherit (builtins) length;
   inherit (lib) mkIf mkOption mkEnableOption;
-  inherit (unstable) buildGoModule fetchFromGitHub;
+  inherit (pkgs) buildGoModule fetchFromGitHub;
 
   build = program: buildGoModule {
     pname = program.name;

@@ -1,8 +1,5 @@
-{inputs, config, pkgs, unstable, lib, ...}:
+{inputs, config, pkgs, lib, ...}:
 
-let
-  util = import ../../utils/base64.nix {lib = lib;};
-in
 {
   config = {
     dconf.settings = with lib.hm.gvariant; {
@@ -183,13 +180,25 @@ in
       };
     };
 
-    home.packages = with unstable; [
+    xdg.mimeApps = lib.mkIf (config.xdg.mimeApps.enable) {
+      defaultApplications = {
+        "image/jpeg" = "org.gnome.Loupe.desktop";
+        "image/gif" = "org.gnome.Loupe.desktop";
+        "image/png" = "org.gnome.Loupe.desktop";
+        "image/tiff" = "org.gnome.Loupe.desktop";
+        "image/webp" = "org.gnome.Loupe.desktop";
+        "application/pdf" = [ "org.gnome.Evince.desktop" ];
+        "text/plain" = "org.gnome.TextEditor.desktop";
+      };
+    };
+
+    home.packages = with pkgs; [
       gnome-tweaks
       dconf-editor
       gnome-software
       gnome-extension-manager
       gnome-sound-recorder
-    ] ++ (with unstable.gnomeExtensions; [
+    ] ++ (with pkgs.gnomeExtensions; [
       appindicator
       blur-my-shell
       caffeine

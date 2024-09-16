@@ -9,7 +9,7 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    nix-flatpak.url = "github:gmodena/nix-flatpak/main";
+    flatpaks.url = "github:gmodena/nix-flatpak/main";
     darkmatter-grub-theme = {
       url = gitlab:VandalByte/darkmatter-grub-theme;
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -18,61 +18,38 @@
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ... }:
     let
-        lib = nixpkgs.lib;
         system = "x86_64-linux";
-        pkgs =  import nixpkgs {
-          system = system;
-          config = {
-            allowUnfree = true;
-          };
+        pkgs = import nixpkgs {
+          inherit system;
+          config.allowUnfree = true;
         };
         unstable = import nixpkgs-unstable {
-          system = system;
-          config = {
-            allowUnfree = true;
-          };
+          inherit system;
+          config.allowUnfree = true;
         };
+        overlay-unstable = final: prev: { inherit unstable; };
     in {
       nixosConfigurations = {
-        nixos = lib.nixosSystem {
+        framework-laptop = nixpkgs.lib.nixosSystem {
           inherit system;
           inherit pkgs;
 
           modules = [
-            home-manager.nixosModules.home-manager
-            inputs.nix-flatpak.nixosModules.nix-flatpak
-            inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
+            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
             inputs.darkmatter-grub-theme.nixosModule
+            inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
             ./nixos/configuration.nix
+            home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.nikolai = import ./home/base.nix;
+              home-manager.users.nikolai = import ./home;
 
               # Optionally, use home-manager.extraSpecialArgs to pass
               # arguments to home.nix
-              home-manager.extraSpecialArgs = { unstable = unstable; };
+              home-manager.extraSpecialArgs = { pkgs = unstable; flatpaks = inputs.flatpaks; };
             }
           ];
-        };
-      };
-      homeConfigurations = {
-        home-manager.useGlobalPkgs = true;
-        home-manager.useUserPackages = true;
-
-        nikolai = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-
-          # Specify your home configuration modules here, for example,
-          # the path to your home.nix.
-          modules = [
-            inputs.nix-flatpak.homeManagerModules.nix-flatpak
-            ./home
-          ];
-
-          # Optionally use extraSpecialArgs
-          # to pass through arguments to home.nix
-          extraSpecialArgs = { unstable = unstable; };
         };
       };
     };

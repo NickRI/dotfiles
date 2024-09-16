@@ -1,9 +1,11 @@
-{inputs, config, pkgs, lib, ...}:
+{...}:
 
 {
     imports = [
-      ./autostart.nix
+      ../../utils/autostart.nix
       ./gnome.nix
+      ./1password.nix
+      ./shell.nix
       ./golang
       ./rust.nix
       ./mime.nix

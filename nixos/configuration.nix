@@ -9,7 +9,6 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./modules
-      ../flatpak
     ];
 
   # Bootloader.
@@ -33,7 +32,7 @@
     efi.canTouchEfiVariables = false;
   };
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "framework-laptop"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -104,6 +103,7 @@
   };
 
   security.rtkit.enable = true;
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -120,6 +120,7 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  services.flatpak.enable = true;
   services.fprintd.enable = true;
   services.fwupd.enable = true;
   services.fstrim.enable = true;
@@ -139,7 +140,7 @@
     }
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [ "nix-command" "flakes" "repl-flake"];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
    users.users.nikolai = {
@@ -164,6 +165,12 @@
      openssl
      gnumake
      unixtools.xxd
+     xclip
+
+     nvd
+     nix-tree
+     nix-du
+     nix-index
 
      wineWowPackages.stable
      winetricks
@@ -176,16 +183,30 @@
   # started in user sessions.
   # programs.mtr.enable = true;
   programs.zsh.enable = true;
-  programs._1password.enable = true;
+  programs._1password = {
+    enable = true;
+    package = pkgs.unstable._1password;
+  };
   programs._1password-gui = {
-   enable = true;
-   polkitPolicyOwners = [ "nikolai" ];
+    enable = true;
+    polkitPolicyOwners = [ "nikolai" ];
+    package = pkgs.unstable._1password-gui;
   };
   programs.nix-ld.enable = true;
   programs.kdeconnect.enable = true;
 
   programs.steam = {
      enable = true;
+  };
+
+  system.activationScripts.diff = {
+    supportsDryActivation = true;
+    text = ''
+      ${pkgs.nix}/bin/nix store diff-closures /run/current-system "$systemConfig" --impure
+    '';
+#    text = ''
+#      ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
+#    '';
   };
 
   # List services that you want to enable:
