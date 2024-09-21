@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ inputs, config, lib, pkgs, ... }:
 
 {
   imports =
@@ -20,13 +20,7 @@
       device = "nodev";
       efiSupport = true;
       efiInstallAsRemovable = true;
-
-      darkmatter-theme = {
-        enable = true;
-        style = "nixos";
-        icon = "color";
-        resolution = "1080p";
-      };
+      theme = inputs.nixos-grub-themes.packages.${pkgs.system}.hyperfluent;
     };
     systemd-boot.enable = false;
     efi.canTouchEfiVariables = false;

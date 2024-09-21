@@ -10,10 +10,7 @@
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     flatpaks.url = "github:gmodena/nix-flatpak/main";
-    darkmatter-grub-theme = {
-      url = gitlab:VandalByte/darkmatter-grub-theme;
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+    nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
   };
 
   outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ... }:
@@ -34,9 +31,10 @@
           inherit system;
           inherit pkgs;
 
+          specialArgs = { inherit inputs; };
+
           modules = [
             ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
-            inputs.darkmatter-grub-theme.nixosModule
             inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
             ./nixos/configuration.nix
             home-manager.nixosModules.home-manager
