@@ -214,7 +214,7 @@
         profile = {
           "38b76d40-f796-434f-89e5-2f57f6b28a70" = {
             default = true;
-            font = "Meslo LGS NF 12";
+            font = "Meslo LGS NF 13.5";
             cursorShape = "block";
             visibleName = "personal";
             customCommand = "zsh";

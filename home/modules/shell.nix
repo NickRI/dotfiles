@@ -7,7 +7,10 @@ in
     home.shellAliases = {
        ".." = "cd ..";
        "..." = "cd ../..";
-       ll = "ls -lah";
+       ls = "eza";
+       ll = "eza -la";
+       tree = "eza --tree";
+       cat = "bat --color=always";
     };
 
     home.file = {
@@ -15,6 +18,32 @@ in
     };
 
     programs = {
+      eza = {
+        enable = true;
+        icons = true;
+        extraOptions = ["--color=always"];
+      };
+
+#      alacritty = {
+#        enable = true;
+#        settings = {
+#          window = {
+#            opacity = 0.7;
+#            blur = true;
+#            resize_increments = true;
+#            dynamic_padding = true;
+#          };
+#          bell = {
+#            animation = "EaseOutCubic";
+#            color = "#11a01d";
+#            duration = 500;
+#          };
+#          font.normal = { family = "Meslo LGS NF"; style = "Regular"; };
+#          font.size = 13.5;
+#          cursor.style = { shape = "Block"; blinking = "On"; };
+#          selection.save_to_clipboard = true;
+#        };
+#      };
 
       zoxide = {
         enable = true;
@@ -24,7 +53,16 @@ in
 
       fzf = {
         enable = true;
-        enableZshIntegration = true;
+        defaultOptions = [
+          "--border"
+          "--layout=reverse-list"
+        ];
+        fileWidgetOptions = [
+          "--preview 'if [ -d {} ]; then eza -al --icons --color=always --no-permissions --no-time --no-user --group-directories-first {}; else bat -n --color=always --line-range :500 {}; fi'"
+        ];
+        changeDirWidgetOptions = [
+          "--preview 'eza -al --icons --color=always --no-permissions --no-time --no-user --group-directories-first {}'"
+        ];
       };
 
       bat = {
@@ -80,12 +118,14 @@ in
            setopt hist_find_no_dups
            setopt hist_ignore_dups
 
+           # Other options
+           setopt globdots
+
            # Completion styling
            zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
            zstyle ':completion:*' menu no
 
-           zstyle ':fzf-tab:complete:(cd|ls|ll):*' fzf-preview 'ls --color $realpath'
-           zstyle ':fzf-tab:complete:(cat|bat):*' fzf-preview 'bat --style=numbers --color=always -r :100 $realpath'
+           zstyle ':fzf-tab:complete:*' fzf-preview 'if [ -d $realpath ]; then eza -al --icons --color=always --no-permissions --no-time --no-user --group-directories-first $realpath; else bat -n --color=always --line-range :500 $realpath; fi'
        '';
 
        oh-my-zsh = {
