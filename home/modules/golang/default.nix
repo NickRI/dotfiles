@@ -2,7 +2,7 @@
 let
     inherit (pkgs) fetchFromGitHub;
 
-    sqlc = pkgs.sqlc.overrideAttrs(oldAttrs: rec {
+    sqlc = pkgs.unstable.sqlc.overrideAttrs(oldAttrs: rec {
         version = "1.27.0";
         vendorHash = "sha256-ndOw3uShF5TngpxYNumoK3H3R9v4crfi5V3ZCoSqW90=";
 
@@ -14,7 +14,7 @@ let
         };
     });
 
-    minimock = pkgs.go-minimock.overrideAttrs(oldAttrs: rec {
+    minimock = pkgs.unstable.go-minimock.overrideAttrs(oldAttrs: rec {
         version = "3.1.3";
         vendorHash = "sha256-fiSU2NB9rWIPQLdnui5CB5VcadTVUg2JaO3ma7DAYqo=";
 
@@ -30,7 +30,7 @@ let
         ];
     });
 
-    enumer = pkgs.enumer.overrideAttrs(oldAttrs: rec {
+    enumer = pkgs.unstable.enumer.overrideAttrs(oldAttrs: rec {
         version = "1.5.10";
         vendorHash = "sha256-CJCay24FlzDmLjfZ1VBxih0f+bgBNu+Xn57QgWT13TA=";
 
@@ -42,7 +42,7 @@ let
         };
     });
 
-    golangci-lint = pkgs.golangci-lint.overrideAttrs(oldAttrs: rec {
+    golangci-lint = pkgs.unstable.golangci-lint.overrideAttrs(oldAttrs: rec {
         version = "1.60.3";
         vendorHash = "sha256-ixeswsfx36D0Tg103swbBD8UXXLNYbxSMYDE+JOm+uw=";
 
@@ -51,6 +51,18 @@ let
           repo = oldAttrs.src.repo;
           rev = "refs/tags/v${version}";
           hash = "sha256-0ScdJ5td2N8WF1dwHQ3dBSjyr1kqgrzCfBzbRg9cRrw=";
+        };
+    });
+
+    go-task = pkgs.unstable.go-task.overrideAttrs(oldAttrs: rec {
+        version = "3.38.0";
+        vendorHash = "sha256-2M/FrXip0Tz0wguCd81qbBDW3XIJlAWwVzD+hIFm6sw=";
+
+        src = fetchFromGitHub {
+          owner = oldAttrs.src.owner;
+          repo = oldAttrs.src.repo;
+          rev = "refs/tags/v${version}";
+          hash = "sha256-mz/07DONaO3kCxOXEnvWglY0b9JXxCXjTrVIEbsbl98=";
         };
     });
 in
@@ -69,17 +81,17 @@ in
       ];
     };
 
-    home.packages = [
-      pkgs.cfssl
-      pkgs.protoc-gen-go
-      pkgs.protoc-gen-go-grpc
-      pkgs.scc
-      pkgs.glow
-      pkgs.soft-serve
-      pkgs.lazydocker
-      pkgs.delve
-      pkgs.goose
-      pkgs.go-task
+    home.packages = with pkgs.unstable; [
+      cfssl
+      protoc-gen-go
+      protoc-gen-go-grpc
+      scc
+      glow
+      soft-serve
+      lazydocker
+      delve
+      goose
+      go-task
       golangci-lint
       minimock
       enumer

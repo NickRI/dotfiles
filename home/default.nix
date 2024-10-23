@@ -22,7 +22,7 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = with pkgs; [
+  home.packages = with pkgs.unstable; [
     jetbrains.goland
     jetbrains.datagrip
 
@@ -45,6 +45,14 @@
     anydesk
 
     vlc
+    transmission_4
+    mission-center
+
+    dejavu_fonts
+    powerline-fonts
+    meslo-lgs-nf
+    nerdfonts
+
     xournalpp
     transmission_4
     mission-center

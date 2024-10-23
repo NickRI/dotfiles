@@ -92,7 +92,7 @@ in
           browser = "chromium";
         };
         extensions = [
-            pkgs.gh-dash
+            pkgs.unstable.gh-dash
         ];
       };
 

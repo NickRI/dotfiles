@@ -25,6 +25,6 @@
       oh-my-zsh.plugins = [ "1password" ];
     };
 
-    autoStart = [ pkgs._1password-gui ];
+    autoStart = [ pkgs.unstable._1password-gui ];
   };
 }

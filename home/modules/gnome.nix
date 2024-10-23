@@ -192,13 +192,13 @@
       };
     };
 
-    home.packages = with pkgs; [
+    home.packages = with pkgs.unstable; [
       gnome-tweaks
       dconf-editor
       gnome-software
       gnome-extension-manager
       gnome-sound-recorder
-    ] ++ (with pkgs.gnomeExtensions; [
+    ] ++ (with pkgs.unstable.gnomeExtensions; [
       appindicator
       blur-my-shell
       caffeine

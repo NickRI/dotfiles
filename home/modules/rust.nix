@@ -3,7 +3,7 @@
 {
   config = {
     home.packages = [
-      pkgs.rustup
+      pkgs.unstable.rustup
     ];
 
     home.sessionPath = ["$HOME/.cargo/bin"];
