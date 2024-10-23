@@ -54,14 +54,7 @@
     nerdfonts
 
     xournalpp
-    transmission_4
-    mission-center
-
-    dejavu_fonts
-    powerline-fonts
-    meslo-lgs-nf
-    nerdfonts
-
+    pkgs.foliate
     libreoffice-fresh
     gimp
     inkscape
