@@ -189,18 +189,13 @@
   programs.nix-ld.enable = true;
   programs.kdeconnect.enable = true;
 
-  programs.steam = {
-     enable = true;
-  };
+  programs.steam.enable = true;
 
   system.activationScripts.diff = {
     supportsDryActivation = true;
     text = ''
       ${pkgs.nix}/bin/nix store diff-closures /run/current-system "$systemConfig" --impure
     '';
-#    text = ''
-#      ${pkgs.nvd}/bin/nvd --nix-bin-dir=${pkgs.nix}/bin diff /run/current-system "$systemConfig"
-#    '';
   };
 
   # List services that you want to enable:
