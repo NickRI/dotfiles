@@ -31,6 +31,8 @@
     slack
     mailspring
     whatsapp-for-linux
+    zoom-us
+
 #    discord
 #    viber
     skypeforlinux
@@ -51,17 +53,19 @@
     dejavu_fonts
     powerline-fonts
     meslo-lgs-nf
-    nerdfonts
+    nerd-fonts.meslo-lg
+    nerd-fonts.dejavu-sans-mono
 
     xournalpp
-    pkgs.foliate
-    libreoffice-fresh
+    foliate
+    libreoffice-qt
     gimp
     inkscape
     graphviz
     pinta
 
     tradingview
+    todoist-electron
 
     ffmpeg
     # # It is sometimes useful to fine-tune packages, for example, by applying

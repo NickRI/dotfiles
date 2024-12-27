@@ -74,8 +74,7 @@ in
   config = {
     programs.go = {
       enable = true;
-      package = pkgs.go;
-      goBin = "go/bin";
+      package = pkgs.unstable.go;
       goPrivate = [
         "github.com/wert-io"
       ];
