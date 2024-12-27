@@ -73,7 +73,6 @@
   services.printing.enable = true;
 
   # Enable sound with pipewire.
-  sound.enable = true;
   hardware.pulseaudio.enable = false;
   hardware.ledger.enable = true;
   hardware.bluetooth = {
@@ -90,10 +89,10 @@
     };
   };
 
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
     extraPackages = [ pkgs.mesa.drivers ];
-    driSupport32Bit = true;
+    enable32Bit = true;
   };
 
   security.rtkit.enable = true;
@@ -134,7 +133,7 @@
     }
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" "repl-flake"];
+  nix.settings.experimental-features = [ "nix-command" "flakes"];
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
    users.users.nikolai = {
@@ -179,7 +178,7 @@
   programs.zsh.enable = true;
   programs._1password = {
     enable = true;
-    package = pkgs.unstable._1password;
+    package = pkgs.unstable._1password-cli;
   };
   programs._1password-gui = {
     enable = true;
