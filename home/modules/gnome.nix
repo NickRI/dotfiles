@@ -159,10 +159,24 @@
         remove-old-temp-files = true;
         remove-old-trash-files = true;
       };
+
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+        font-antialiasing = "rgba";
+        font-hinting = "slight";
+        monospace-font-name = config.gtk.font.name + " 12"; # + toString(config.gtk.font.size); # It's convinient to use
+        document-font-name = config.gtk.font.name + " " + toString(config.gtk.font.size); # It's convinient to use
+      };
     };
 
     gtk = {
       enable = true;
+
+      font = {
+        name = "Inter Variable";
+        size = 10;
+        package = pkgs.unstable.inter-nerdfont;
+      };
 
       iconTheme = {
         name = "Qogir-dark";
