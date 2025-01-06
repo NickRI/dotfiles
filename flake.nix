@@ -11,44 +11,17 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     flatpaks.url = "github:gmodena/nix-flatpak/main";
     nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
+    disko.url = "github:nix-community/disko";
   };
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ... }:
-    let
-        system = "x86_64-linux";
-        pkgs = import nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-        };
-        unstable = import nixpkgs-unstable {
-          inherit system;
-          config.allowUnfree = true;
-        };
-        overlay-unstable = final: prev: { inherit unstable; };
-    in {
-      nixosConfigurations = {
-        framework-laptop = nixpkgs.lib.nixosSystem {
-          inherit system;
-          inherit pkgs;
-
-          specialArgs = { inherit inputs; };
-
-          modules = [
-            ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
-            inputs.nixos-hardware.nixosModules.framework-13th-gen-intel
-            ./nixos/configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.nikolai = import ./home;
-
-              # Optionally, use home-manager.extraSpecialArgs to pass
-              # arguments to home.nix
-              home-manager.extraSpecialArgs = { flatpaks = inputs.flatpaks; };
-            }
-          ];
-        };
-      };
+  outputs = inputs@{ nixpkgs, nixpkgs-unstable, home-manager, ... }:
+  let
+   baseContext = { inherit inputs nixpkgs nixpkgs-unstable home-manager; };
+  in
+  {
+    nixosConfigurations = {
+      work-laptop = import ./work-laptop baseContext;
+      nas-server = import ./nas-server baseContext;
     };
+  };
 }
