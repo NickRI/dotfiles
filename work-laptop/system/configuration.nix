@@ -2,13 +2,16 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ inputs, config, lib, pkgs, ... }:
+{ grub-themes, config, lib, pkgs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./modules
+      ./networking.nix
+      ./disk-config.nix
+      ./gnome.nix
+      ./modules/yubikey.nix
+      ../../shared/system
     ];
 
   # Bootloader.
@@ -20,54 +23,14 @@
       device = "nodev";
       efiSupport = true;
       efiInstallAsRemovable = true;
-      theme = inputs.nixos-grub-themes.packages.${pkgs.system}.hyperfluent;
+      theme = grub-themes.packages.${pkgs.system}.hyperfluent;
     };
-    systemd-boot.enable = false;
-    efi.canTouchEfiVariables = false;
   };
 
-  networking.hostName = "framework-laptop"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
   # Set your time zone.
   time.timeZone = null;
-
-  # Select internationalisation properties.
-  i18n.defaultLocale = "ru_RU.UTF-8";
-
-  i18n.extraLocaleSettings = {
-    LANGUAGE = "ru_RU.UTF-8";
-    LC_ALL = "ru_RU.UTF-8";
-    LC_ADDRESS = "ru_RU.UTF-8";
-    LC_IDENTIFICATION = "ru_RU.UTF-8";
-    LC_MEASUREMENT = "ru_RU.UTF-8";
-    LC_MONETARY = "ru_RU.UTF-8";
-    LC_NAME = "ru_RU.UTF-8";
-    LC_NUMERIC = "ru_RU.UTF-8";
-    LC_PAPER = "ru_RU.UTF-8";
-    LC_TELEPHONE = "ru_RU.UTF-8";
-    LC_TIME = "ru_RU.UTF-8";
-  };
-
-  # Configure keymap in X11
-  services.xserver = {
-    # Disable the X11 windowing system.
-    enable = true;
-
-    xkb = {
-      layout = "us";
-      variant = "";
-    };
-
-    excludePackages = [ pkgs.xterm ];
-  };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -133,7 +96,10 @@
     }
   ];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes"];
+  nix.settings = {
+    extra-platforms = config.boot.binfmt.emulatedSystems;
+    experimental-features = [ "nix-command" "flakes"];
+  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
    users.users.nikolai = {
@@ -170,8 +136,6 @@
      wineWowPackages.waylandFull
    ];
 
-  virtualisation.docker.enable = true;
-
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -197,16 +161,15 @@
     '';
   };
 
+  virtualisation = {
+    docker.enable = true;
+    virtualbox.host.enable = true;
+  };
+
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you

@@ -1,6 +1,6 @@
 { ... }: {
   imports = [
-    ./gnome.nix
+    ./i18n.nix
     ./usb-wakeup-disable.nix
     ./suspend-and-hibernate.nix
   ];

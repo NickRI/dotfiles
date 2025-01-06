@@ -206,7 +206,7 @@
       };
     };
 
-    home.packages = with pkgs.unstable; [
+    home.packages = with pkgs; [
       gnome-tweaks
       dconf-editor
       gnome-software

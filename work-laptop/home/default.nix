@@ -33,6 +33,7 @@
     whatsapp-for-linux
     zoom-us
 
+    gsmartcontrol
 #    discord
 #    viber
     skypeforlinux
@@ -45,6 +46,7 @@
 
     meteo
     anydesk
+    qemu
 
     vlc
     transmission_4
@@ -66,6 +68,9 @@
 
     tradingview
     todoist-electron
+
+    rpi-imager
+    impression
 
     ffmpeg
     # # It is sometimes useful to fine-tune packages, for example, by applying
@@ -99,6 +104,7 @@
         "com.dropbox.Client"
         "com.getpostman.Postman"
         "dev.vencord.Vesktop"
+        "com.surfshark.Surfshark"
       ];
     };
   };
@@ -150,6 +156,7 @@
       enable = true;
       userEmail = "nicktt2008@yandex.ru";
       userName = "NickRI";
+      signing.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAj9J0TmP14mZ7UUEETiaR+h/5kh6h19jwQgkYDPQcZ7";
       extraConfig = {
         url."git@github.com:" = {
           insteadOf = "https://github.com/";
@@ -167,6 +174,7 @@
         { id = "aiifbnbfobpmeekipheeijimdpnlpgpp"; } # StationWallet
         { id = "egjidjbpglichdcondbcbdnbeeppgdph"; } # TrustWallet
         { id = "gphhapmejobijbbhgpjhcjognlahblep"; } # GnomeExtenstion
+        { id = "ailoabdmgclmfmhdagmlohpjlbpffblp"; } # Surfshark VPN
       ];
     };
 

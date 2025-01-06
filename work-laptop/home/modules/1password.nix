@@ -5,7 +5,12 @@
     home.file = {
       ".config/1Password/ssh/agent.toml".text = ''
       [[ssh-keys]]
+      item =  "Github"
       vault = "work"
+
+      [[ssh-keys]]
+      item =  "Soho-key"
+      vault = "soho"
       '';
     };
 
