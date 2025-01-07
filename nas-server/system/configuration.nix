@@ -57,6 +57,7 @@
   nix.settings = {
     extra-platforms = config.boot.binfmt.emulatedSystems;
     experimental-features = [ "nix-command" "flakes"];
+    trusted-users = [ "nas" ];
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
