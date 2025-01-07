@@ -23,7 +23,6 @@
   # environment.
   home.packages = with pkgs.unstable; [
     docker-compose
-    qemu
 
     nerd-fonts.meslo-lg
     nerd-fonts.dejavu-sans-mono
