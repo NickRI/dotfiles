@@ -21,7 +21,7 @@
       home-manager.nixosModules.home-manager
       inputs.disko.nixosModules.disko
       ./system/configuration.nix
-      ../chassis/zimablade-7700.nix
+      ../platforms/zimablade-7700.nix
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;

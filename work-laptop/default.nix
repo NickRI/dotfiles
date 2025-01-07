@@ -24,7 +24,7 @@
       home-manager.nixosModules.home-manager
       inputs.disko.nixosModules.disko
       ./system/configuration.nix
-      ../chassis/framework-13-intel-13-gen.nix
+      ../platforms/framework-13-intel-13-gen.nix
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
