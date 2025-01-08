@@ -6,7 +6,7 @@
     disk = {
       mmcblk0 = {
         type = "disk";
-        device = "/dev/mmcblk0";
+        device = "/dev/disk/by-id/mmc-C9A551_0xb70840d0";
         content = {
           type = "gpt";
           partitions = {
@@ -47,7 +47,7 @@
               size = "100%";
               content = {
                 type = "mdraid";
-                name = "raid1";
+                name = "storage";
               };
             };
           };
@@ -63,7 +63,7 @@
               size = "100%";
               content = {
                 type = "mdraid";
-                name = "raid1";
+                name = "storage";
               };
             };
           };
@@ -72,7 +72,7 @@
     };
     ### Software RAID config
     mdadm = {
-      raid1 = {
+      storage = {
         type = "mdadm";
         level = 1;
         content = {
