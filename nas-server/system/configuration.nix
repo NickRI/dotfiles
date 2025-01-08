@@ -74,20 +74,20 @@
   # $ nix search wget
    environment.systemPackages = with pkgs; [
   #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-     wget
-     htop
-     file
-     gcc
-     tree
-     openssl
-     gnumake
-     unixtools.xxd
-     xclip
+    wget
+    htop
+    file
+    gcc
+    tree
+    openssl
+    gnumake
+    unixtools.xxd
+    xclip
 
-     nvd
-     nix-tree
-     nix-du
-     nix-index
+    nvd
+    nix-tree
+    nix-du
+    nix-index
    ];
 
   # Some programs need SUID wrappers, can be configured further or are

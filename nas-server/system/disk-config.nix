@@ -1,12 +1,12 @@
-{ config, disko, lib, ... }:
+{ disko, ... }:
 
 {
 
   disko.devices = {
     disk = {
       mmcblk0 = {
-        device = "/dev/mmcblk0";
         type = "disk";
+        device = "/dev/mmcblk0";
         content = {
           type = "gpt";
           partitions = {
@@ -39,15 +39,15 @@
       #### RAID 1 Disks
       one = {
         type = "disk";
-        device = "/dev/sda";
+        device = "/dev/disk/by-id/ata-ST3000DM007-1WY10G_ZTT2E950";
         content = {
           type = "gpt";
           partitions = {
-            primary = {
+            mdadm = {
               size = "100%";
               content = {
-                type = "lvm_pv";
-                vg = "pool";
+                type = "mdraid";
+                name = "raid1";
               };
             };
           };
@@ -55,30 +55,30 @@
       };
       two = {
         type = "disk";
-        device = "/dev/sdb";
+        device = "/dev/disk/by-id/ata-ST3000DM007-1WY10G_WFN7PQLE";
         content = {
           type = "gpt";
           partitions = {
-            primary = {
+            mdadm = {
               size = "100%";
               content = {
-                type = "lvm_pv";
-                vg = "pool";
+                type = "mdraid";
+                name = "raid1";
               };
             };
           };
         };
       };
     };
-
-    ##### LVM FOR RAID
-    lvm_vg = {
-      pool = {
-        type = "lvm_vg";
-        lvs = {
-          storage = {
+    ### Software RAID config
+    mdadm = {
+      raid1 = {
+        type = "mdadm";
+        level = 1;
+        content = {
+          type = "gpt";
+          partitions.primary = {
             size = "100%";
-            lvm_type = "raid1";
             content = {
               type = "filesystem";
               format = "ext4";
@@ -91,6 +91,5 @@
         };
       };
     };
-
   };
 }
