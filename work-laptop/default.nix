@@ -17,14 +17,16 @@
     specialArgs = {
       nixos-hardware = inputs.nixos-hardware;
       grub-themes = inputs.nixos-grub-themes;
+      sops-secrets = inputs.sops-secrets;
     };
 
     modules = [
       ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
       home-manager.nixosModules.home-manager
       inputs.disko.nixosModules.disko
-      ./system/configuration.nix
+      inputs.sops-nix.nixosModules.sops
       ../platforms/framework-13-intel-13-gen.nix
+      ./system/configuration.nix
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;

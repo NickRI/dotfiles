@@ -68,6 +68,7 @@
 
     tradingview
     todoist-electron
+    nextcloud-client
 
     rpi-imager
     impression

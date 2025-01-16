@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ grub-themes, config, lib, pkgs, ... }:
+{ grub-themes, sops-secrets, config, pkgs, ... }:
 
 {
   imports =
@@ -60,6 +60,16 @@
 
   security.rtkit.enable = true;
 
+  sops = {
+    defaultSopsFile = "${toString sops-secrets}/secrets.yaml";
+    defaultSopsFormat = "yaml";
+    age.keyFile = "/home/${config.users.users.nikolai.name}/.config/sops/age/keys.txt";
+
+    secrets = {
+      "laptop/user-password".neededForUsers = true;
+    };
+  };
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -105,6 +115,7 @@
    users.users.nikolai = {
      isNormalUser = true;
      extraGroups = [ "networkmanager" "wheel" "docker" ]; # Enable ‘sudo’ docker and other for the user.
+     hashedPasswordFile = config.sops.secrets."laptop/user-password".path;
      shell = pkgs.zsh;
   #   packages = with pkgs; [
   #     firefox
@@ -116,6 +127,7 @@
   # $ nix search wget
    environment.systemPackages = with pkgs; [
   #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+     inetutils
      wget
      htop
      file
@@ -125,6 +137,7 @@
      gnumake
      unixtools.xxd
      xclip
+     sops
 
      nvd
      nix-tree
