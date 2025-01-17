@@ -1,0 +1,9 @@
+{
+  "inner-interface": "127.0.0.1",
+  "external-interface": "197.168.1.117",
+  "dashboards-dir": "grafana-dashboards",
+  "grafana-domain": "grafana.nas.firefly.red",
+  "prometheus-domain": "prometheus.nas.firefly.red",
+  "nextcloud-domain": "nextcloud.nas.firefly.red",
+  "transmission-domain": "transmission.nas.firefly.red"
+}
