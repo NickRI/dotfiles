@@ -14,14 +14,18 @@
     inherit system;
     inherit pkgs;
 
-    specialArgs = { grub-themes = inputs.nixos-grub-themes; };
+    specialArgs = {
+      grub-themes = inputs.nixos-grub-themes;
+      sops-secrets = inputs.sops-secrets;
+    };
 
     modules = [
       ({ config, pkgs, ... }: { nixpkgs.overlays = [ overlay-unstable ]; })
       home-manager.nixosModules.home-manager
       inputs.disko.nixosModules.disko
-      ./system/configuration.nix
+      inputs.sops-nix.nixosModules.sops
       ../platforms/zimablade-7700.nix
+      ./system/configuration.nix
       {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;

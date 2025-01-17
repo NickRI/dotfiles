@@ -2,13 +2,14 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ grub-themes, config, lib, pkgs, ... }:
+{ grub-themes, sops-secrets, config, lib, pkgs, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./networking.nix
       ./disk-config.nix
+      ./modules
       ../../shared/system/i18n.nix
     ];
 
@@ -49,6 +50,15 @@
     #media-session.enable = true;
   };
 
+  sops = {
+    defaultSopsFile = "${toString sops-secrets}/secrets.yaml";
+    defaultSopsFormat = "yaml";
+
+    secrets = {
+      "nas/user-password".neededForUsers = true;
+    };
+  };
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
@@ -64,7 +74,7 @@
    users.users.nas = {
      isNormalUser = true;
      extraGroups = [ "networkmanager" "wheel" "docker" ]; # Enable ‘sudo’ docker and other for the user.
-     initialPassword = "password"; # Need to change at first boot
+     hashedPasswordFile = config.sops.secrets."nas/user-password".path;
      shell = pkgs.zsh;
 
      openssh.authorizedKeys.keyFiles = [ ../../shared/files/authorized_keys ];
@@ -74,6 +84,9 @@
   # $ nix search wget
    environment.systemPackages = with pkgs; [
   #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    inetutils
+    exiftool
+    ffmpeg
     wget
     htop
     file

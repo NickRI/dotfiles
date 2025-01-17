@@ -18,6 +18,9 @@
     # Or disable the firewall altogether.
     # networking.firewall.enable = false;
 
+    networking.firewall.allowedTCPPorts = [ 80 443 ];
+
+#    networking.nameservers = [ "127.0.0.1" ];
 
     # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
     # (the default) this is the recommended approach. When using systemd-networkd it's
