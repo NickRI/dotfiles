@@ -1,0 +1,168 @@
+{config, pkgs, lib, ...}:
+
+let
+  cfg = builtins.fromJSON (builtins.readFile ./config.json);
+
+  nextcloud-dir = "nextcloud";
+in
+{
+  config = {
+    users.users.promtail.extraGroups = [ "nextcloud" ];
+
+    environment.etc = lib.mkIf (config.services.grafana.enable && config.services.nextcloud.enable) {
+      "${cfg.dashboards-dir}/nextcloud_logs_rev1.json" = {
+        source = ../../files/${cfg.dashboards-dir}/nextcloud_logs_rev1.json;
+        group = "grafana";
+        user = "grafana";
+        mode = "0444";
+      };
+    };
+
+    security.acme.certs = {
+      ${cfg.nextcloud-domain} = lib.mkIf (
+        config.services.nextcloud.enable &&
+        config.services.nginx.virtualHosts."${cfg.nextcloud-domain}".enableACME
+      ) {};
+    };
+
+    sops = {
+      secrets."nas/nextcloud/admin-password".owner = "nextcloud";
+      secrets."nas/nextcloud/exporter-password".owner = "nextcloud-exporter";
+
+      secrets = {
+        "smtp/server" = {};
+        "smtp/login" = {};
+        "smtp/password" = {};
+        "smtp/port" = {};
+      };
+
+      templates."smtp.json" = {
+        mode = "0444";
+        content = ''{
+          "mail_from_address": "no-reply",
+          "mail_domain": "firefly.red",
+          "mail_smtpmode": "smtp",
+          "mail_smtptimeout": 3,
+          "mail_smtpsecure": "",
+          "mail_smtpauth": true,
+          "mail_smtphost": "${config.sops.placeholder."smtp/server"}",
+          "mail_smtpname": "${config.sops.placeholder."smtp/login"}",
+          "mail_smtppassword": "${config.sops.placeholder."smtp/password"}",
+          "mail_smtpport": ${config.sops.placeholder."smtp/port"}
+        }'';
+      };
+    };
+
+
+    services = {
+      nextcloud = {
+        enable = true;
+        package = pkgs.nextcloud30;
+
+        datadir = "/storage/${nextcloud-dir}";
+
+        hostName = cfg.nextcloud-domain;
+        https = true;
+
+        database.createLocally = true;
+        configureRedis = true;
+
+        settings = {
+          loglevel = 1;
+          log_type = "file";
+          trashbin_retention_obligation = "disabled";
+        };
+
+        secretFile = config.sops.templates."smtp.json".path;
+
+        extraAppsEnable = true;
+        autoUpdateApps.enable = true;
+        extraApps = with config.services.nextcloud.package.packages.apps; {
+          inherit
+            onlyoffice
+            maps
+            memories
+            contacts
+            calendar
+            phonetrack
+            unsplash;
+            duplicatefinder = pkgs.fetchNextcloudApp {
+              url = "https://github.com/eldertek/duplicatefinder/releases/download/v1.6.1/duplicatefinder-v1.6.1.tar.gz";
+              hash = "sha256-BgCrKru24tSzU8RUTPhp2OogpXYP/N+8IeIxulUif6s=";
+              license = "agpl3Only";
+            };
+            twofactor_totp = pkgs.fetchNextcloudApp {
+              url = "https://github.com/nextcloud/twofactor_totp/archive/refs/tags/v30.0.4.tar.gz";
+              hash = "sha256-WydCFsIUlHSSTkrwRZ6z33dl952nDauv16Va2wdisMs=";
+              license = "agpl3Only";
+            };
+        };
+
+        config = {
+          adminuser = "nikolai";
+          adminpassFile = config.sops.secrets."nas/nextcloud/admin-password".path;
+
+          dbtype = "sqlite";
+        };
+      };
+
+      nginx = lib.mkIf (config.services.nextcloud.enable) {
+        enable = true;
+        recommendedProxySettings = true;
+        recommendedOptimisation = true;
+        recommendedGzipSettings = true;
+
+        virtualHosts."${cfg.nextcloud-domain}" = {
+          forceSSL = true;
+          enableACME = true;
+          listen = [
+            { addr = cfg.external-interface; port = 80; }
+            { addr = cfg.external-interface; port = 443; ssl = true; }
+          ];
+        };
+      };
+
+
+      promtail = lib.mkIf (config.services.nextcloud.enable) {
+        configuration.scrape_configs = [{
+          job_name = "system";
+          static_configs = [{
+            targets = [ "localhost" ];
+            labels = {
+              instance = cfg.nextcloud-domain;
+              env = "${config.networking.hostName}";
+              job = "nextcloud";
+              __path__ = "/storage/${nextcloud-dir}/data/{nextcloud,audit}.log";
+            };
+          }];
+        }];
+      };
+
+      prometheus = lib.mkIf (config.services.nextcloud.enable) {
+        exporters = {
+          nextcloud = {
+            enable = true;
+            listenAddress = cfg.inner-interface;
+            tokenFile = config.sops.secrets."nas/nextcloud/exporter-password".path;
+            url = "http://${config.services.nextcloud.hostName}";
+            timeout = "60s";
+            extraFlags = [
+              "--tls-skip-verify true"
+            ];
+          };
+        };
+        scrapeConfigs = [{
+          job_name = "nextcloud";
+          # to avoid time out errors in the beginning, seems to be running much faster now, maybe not needed anymore, ie default value enough
+          scrape_timeout = "60s";
+          static_configs = [{
+            targets = [
+              "${cfg.inner-interface}:${toString config.services.prometheus.exporters.nextcloud.port}"
+            ];
+          }];
+        }];
+      };
+
+    };
+  };
+}
