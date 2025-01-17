@@ -189,10 +189,10 @@
     "sops-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1737034917,
-        "narHash": "sha256-78ykM4p03A1g2K7i9G0jEqn1VKYFzbhNS9YxXmjn/Po=",
+        "lastModified": 1737085188,
+        "narHash": "sha256-UNKsr+/bRnuaz/c3D/C0bCwGbAmjr4SdWKNTwXeuu1Y=",
         "ref": "main",
-        "rev": "18dee021eb6418b56721b873eb527298b1cffbc5",
+        "rev": "8cfd85e15863fa56173090b9afdc92ead8a71908",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/NickRI/nix-secrets.git"
