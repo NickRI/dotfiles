@@ -22,8 +22,6 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs.unstable; [
-    docker-compose
-
     nerd-fonts.meslo-lg
     nerd-fonts.dejavu-sans-mono
 
