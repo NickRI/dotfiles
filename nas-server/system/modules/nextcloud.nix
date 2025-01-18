@@ -37,7 +37,8 @@ in
       };
 
       templates."smtp.json" = {
-        mode = "0444";
+        mode = "0644";
+        owner = "nginx";
         content = ''{
           "mail_from_address": "no-reply",
           "mail_domain": "firefly.red",
@@ -87,8 +88,8 @@ in
             phonetrack
             unsplash;
             duplicatefinder = pkgs.fetchNextcloudApp {
-              url = "https://github.com/eldertek/duplicatefinder/releases/download/v1.6.1/duplicatefinder-v1.6.1.tar.gz";
-              hash = "sha256-BgCrKru24tSzU8RUTPhp2OogpXYP/N+8IeIxulUif6s=";
+              url = "https://github.com/eldertek/duplicatefinder/releases/download/v1.6.0/duplicatefinder-v1.6.0.tar.gz";
+              hash = "sha256-J+P+9Ajz998ua1RRwuj1h4WOOl0WODu3uVJNGosbObI=";
               license = "agpl3Only";
             };
             twofactor_totp = pkgs.fetchNextcloudApp {
