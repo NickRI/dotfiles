@@ -71,7 +71,34 @@ in
         settings = {
           loglevel = 1;
           log_type = "file";
+
           trashbin_retention_obligation = "disabled";
+          default_phone_region = "ES";
+          maintenance_window_start = 5;
+
+          enable_previews = true;
+          enabledPreviewProviders = [
+            "OC\\Preview\\TXT"
+            "OC\\Preview\\MarkDown"
+            "OC\\Preview\\OpenDocument"
+            "OC\\Preview\\PDF"
+            "OC\\Preview\\MSOffice2003"
+            "OC\\Preview\\MSOfficeDoc"
+            "OC\\Preview\\Image"
+            "OC\\Preview\\Photoshop"
+            "OC\\Preview\\TIFF"
+            "OC\\Preview\\SVG"
+            "OC\\Preview\\Font"
+            "OC\\Preview\\MP3"
+            "OC\\Preview\\Movie"
+            "OC\\Preview\\MKV"
+            "OC\\Preview\\MP4"
+            "OC\\Preview\\AVI"
+          ];
+        };
+
+        phpOptions = {
+          "opcache.interned_strings_buffer" = 16;
         };
 
         secretFile = config.sops.templates."smtp.json".path;
@@ -86,6 +113,7 @@ in
             contacts
             calendar
             phonetrack
+            previewgenerator
             unsplash;
             duplicatefinder = pkgs.fetchNextcloudApp {
               url = "https://github.com/eldertek/duplicatefinder/releases/download/v1.6.0/duplicatefinder-v1.6.0.tar.gz";
