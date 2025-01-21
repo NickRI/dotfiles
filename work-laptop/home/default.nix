@@ -61,6 +61,7 @@
     xournalpp
     foliate
     libreoffice-qt
+    obsidian
     gimp
     inkscape
     graphviz
