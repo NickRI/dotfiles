@@ -9,7 +9,7 @@ in
   config = {
     security.acme.certs = {
       ${cfg.transmission-domain} = lib.mkIf (
-        config.services.flood.enable &&
+        config.services.transmission.enable &&
         config.services.nginx.virtualHosts."${cfg.transmission-domain}".enableACME
       ) {};
     };

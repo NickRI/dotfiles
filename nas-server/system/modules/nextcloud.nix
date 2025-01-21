@@ -173,7 +173,7 @@ in
             enable = true;
             listenAddress = cfg.inner-interface;
             tokenFile = config.sops.secrets."nas/nextcloud/exporter-password".path;
-            url = "http://${config.services.nextcloud.hostName}";
+            url = "https://${config.services.nextcloud.hostName}";
             timeout = "60s";
             extraFlags = [
               "--tls-skip-verify true"
