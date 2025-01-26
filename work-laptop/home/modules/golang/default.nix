@@ -53,18 +53,6 @@ let
           hash = "sha256-0ScdJ5td2N8WF1dwHQ3dBSjyr1kqgrzCfBzbRg9cRrw=";
         };
     });
-
-    go-task = pkgs.unstable.go-task.overrideAttrs(oldAttrs: rec {
-        version = "3.38.0";
-        vendorHash = "sha256-2M/FrXip0Tz0wguCd81qbBDW3XIJlAWwVzD+hIFm6sw=";
-
-        src = fetchFromGitHub {
-          owner = oldAttrs.src.owner;
-          repo = oldAttrs.src.repo;
-          rev = "refs/tags/v${version}";
-          hash = "sha256-mz/07DONaO3kCxOXEnvWglY0b9JXxCXjTrVIEbsbl98=";
-        };
-    });
 in
 {
   imports = [
