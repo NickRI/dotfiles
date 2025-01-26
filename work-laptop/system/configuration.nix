@@ -63,11 +63,11 @@
   sops = {
     defaultSopsFile = "${toString sops-secrets}/secrets.yaml";
     defaultSopsFormat = "yaml";
-      age = {
-        sshKeyPaths = [ "/home/${config.users.users.nikolai.name}/.ssh/nix-secrets-id_ed25519" ];
-        keyFile = "/var/lib/sops-nix/key.txt";
-        generateKey = true;
-      };
+    age = {
+      sshKeyPaths = [ "/home/${config.users.users.nikolai.name}/.ssh/nix-secrets-id_ed25519" ];
+      keyFile = "/root/.config/sops/age/keys.txt";
+      generateKey = true;
+    };
 
     secrets = {
       "laptop/user-password".neededForUsers = true;

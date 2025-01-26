@@ -30,10 +30,8 @@ in
       secrets."nas/nextcloud/exporter-password".owner = "nextcloud-exporter";
 
       secrets = {
-        "smtp/server" = {};
         "smtp/login" = {};
         "smtp/password" = {};
-        "smtp/port" = {};
       };
 
       templates."smtp.json" = {
@@ -46,10 +44,10 @@ in
           "mail_smtptimeout": 3,
           "mail_smtpsecure": "",
           "mail_smtpauth": true,
-          "mail_smtphost": "${config.sops.placeholder."smtp/server"}",
+          "mail_smtphost": "smtp.mailersend.net",
           "mail_smtpname": "${config.sops.placeholder."smtp/login"}",
           "mail_smtppassword": "${config.sops.placeholder."smtp/password"}",
-          "mail_smtpport": ${config.sops.placeholder."smtp/port"}
+          "mail_smtpport": 587
         }'';
       };
     };
