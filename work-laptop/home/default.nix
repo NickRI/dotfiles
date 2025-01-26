@@ -144,12 +144,27 @@
     NIXOS_OZONE_WL = "1";
   };
 
-  xdg.enable = true;
-  xdg.systemDirs.data = [
-    "/var/lib/flatpak/exports/share"
-    "$HOME/.local/share/flatpak/exports/share"
-  ];
-  xdg.configFile."mimeapps.list".force = true;
+  xdg = {
+    enable = true;
+    systemDirs.data = [
+      "/var/lib/flatpak/exports/share"
+      "$HOME/.local/share/flatpak/exports/share"
+    ];
+
+    configFile."mimeapps.list".force = true;
+
+    portal = {
+      enable = true;
+      config = {
+        preferred = {
+          default = lib.mkDefault ["gtk"];
+        };
+      };
+      extraPortals = with pkgs.unstable; [
+        xdg-desktop-portal-gtk
+      ];
+    };
+  };
 
   programs = {
     ssh.enable = true;

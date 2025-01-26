@@ -194,17 +194,31 @@
       };
     };
 
-    xdg.mimeApps = lib.mkIf (config.xdg.mimeApps.enable) {
-      defaultApplications = {
-        "image/jpeg" = "org.gnome.Loupe.desktop";
-        "image/gif" = "org.gnome.Loupe.desktop";
-        "image/png" = "org.gnome.Loupe.desktop";
-        "image/tiff" = "org.gnome.Loupe.desktop";
-        "image/webp" = "org.gnome.Loupe.desktop";
-        "application/pdf" = [ "org.gnome.Evince.desktop" ];
-        "text/plain" = "org.gnome.TextEditor.desktop";
+    xdg = {
+      mimeApps = lib.mkIf (config.xdg.mimeApps.enable) {
+        defaultApplications = {
+          "image/jpeg" = "org.gnome.Loupe.desktop";
+          "image/gif" = "org.gnome.Loupe.desktop";
+          "image/png" = "org.gnome.Loupe.desktop";
+          "image/tiff" = "org.gnome.Loupe.desktop";
+          "image/webp" = "org.gnome.Loupe.desktop";
+          "application/pdf" = [ "org.gnome.Evince.desktop" ];
+          "text/plain" = "org.gnome.TextEditor.desktop";
+        };
+      };
+
+      portal = lib.mkIf (config.xdg.portal.enable) {
+        config = {
+          preferred = {
+            default = ["gnome"];
+          };
+        };
+        extraPortals = with pkgs.unstable; [
+          xdg-desktop-portal-gnome
+        ];
       };
     };
+
 
     home.packages = with pkgs; [
       gnome-tweaks

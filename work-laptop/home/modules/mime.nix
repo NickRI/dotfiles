@@ -13,6 +13,10 @@
         "x-scheme-handler/https" = "chromium-browser.desktop";
         "x-scheme-handler/about" = "chromium-browser.desktop";
         "x-scheme-handler/unknown" = "chromium-browser.desktop";
+        "application/zip" = "org.gnome.FileRoller.desktop";
+        "application/gzip" = "org.gnome.FileRoller.desktop";
+        "application/x-rar" = "org.gnome.FileRoller.desktop";
+        "application/x-xz" = "org.gnome.FileRoller.desktop";
       };
     };
   };
