@@ -22,7 +22,7 @@ in
       ${cfg.nextcloud-domain} = lib.mkIf (
         config.services.nextcloud.enable &&
         config.services.nginx.virtualHosts."${cfg.nextcloud-domain}".enableACME
-      ) {};
+      ) config.security.acme.defaults;
     };
 
     sops = {

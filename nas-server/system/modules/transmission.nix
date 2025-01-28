@@ -11,7 +11,7 @@ in
       ${cfg.transmission-domain} = lib.mkIf (
         config.services.transmission.enable &&
         config.services.nginx.virtualHosts."${cfg.transmission-domain}".enableACME
-      ) {};
+      ) config.security.acme.defaults;
     };
 
     sops = {

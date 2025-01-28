@@ -39,7 +39,7 @@ in
       ${cfg.grafana-domain} = lib.mkIf (
         config.services.grafana.enable &&
         config.services.nginx.virtualHosts."${cfg.grafana-domain}".enableACME
-      ) {};
+      ) config.security.acme.defaults;
     };
 
     services = {
