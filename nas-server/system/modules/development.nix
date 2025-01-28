@@ -4,6 +4,8 @@ let
 
   gitea-listen-port = 6911;
   gitea-full-path = "${cfg.inner-interface}:${toString gitea-listen-port}";
+  athens-listen-port = 6934;
+  athens-full-path = "${cfg.inner-interface}:${toString athens-listen-port}";
 in
 {
   config = {
@@ -21,24 +23,12 @@ in
       ${cfg.gitea-domain} = lib.mkIf (
         config.services.gitea.enable &&
         config.services.nginx.virtualHosts."${cfg.gitea-domain}".enableACME
-      ) {};
+      ) config.security.acme.defaults;
+      ${cfg.athens-domain} = lib.mkIf (
+        config.services.athens.enable &&
+        config.services.nginx.virtualHosts."${cfg.athens-domain}".enableACME
+      ) config.security.acme.defaults;
     };
-
-#    sops = {
-#      secrets = {
-#        "nas/gitea/username" = {};
-#        "nas/gitea/password" = {};
-#      };
-#
-#      templates."transmission.json" = {
-#        mode = "0644";
-#        content = ''{
-#          "rpc-authentication-required": true,
-#          "rpc-username": "${config.sops.placeholder."nas/transmission/username"}",
-#          "rpc-password": "${config.sops.placeholder."nas/transmission/password"}"
-#        }'';
-#      };
-#    };
 
     services = {
       gitea = {
@@ -67,7 +57,14 @@ in
         };
       };
 
-      nginx = lib.mkIf (config.services.gitea.enable) {
+      athens = {
+        enable = true;
+        storage.disk.rootPath = "/storage/athens";
+        port = athens-listen-port;
+        logLevel = "info";
+      };
+
+      nginx = {
         enable = true;
         recommendedProxySettings = true;
         recommendedOptimisation = true;
@@ -75,19 +72,39 @@ in
         # recommendedTlsSettings = true;
 
         upstreams = {
-          "gitea" = {
+          "gitea" = lib.mkIf (config.services.gitea.enable) {
             servers = {
               "${gitea-full-path}" = {};
             };
           };
+          "athens" = lib.mkIf (config.services.athens.enable) {
+            servers = {
+              "${athens-full-path}" = {};
+            };
+          };
         };
 
-        virtualHosts."${cfg.gitea-domain}" = {
+        virtualHosts."${cfg.gitea-domain}" = lib.mkIf (config.services.gitea.enable) {
           forceSSL = true;
           enableACME = true;
 
           locations."/" = {
             proxyPass = "http://gitea";
+            proxyWebsockets = true;
+          };
+
+          listen = [
+            { addr = cfg.external-interface; port = 80; }
+            { addr = cfg.external-interface; port = 443; ssl = true; }
+          ];
+        };
+
+        virtualHosts."${cfg.athens-domain}" = lib.mkIf (config.services.athens.enable) {
+          forceSSL = true;
+          enableACME = true;
+
+          locations."/" = {
+            proxyPass = "http://athens";
             proxyWebsockets = true;
           };
 
