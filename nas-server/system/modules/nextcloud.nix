@@ -25,7 +25,7 @@ in
       ) config.security.acme.defaults;
     };
 
-    sops = {
+    sops = lib.mkIf (config.services.nextcloud.enable) {
       secrets."nas/nextcloud/admin-password".owner = "nextcloud";
       secrets."nas/nextcloud/exporter-password".owner = "nextcloud-exporter";
 
@@ -36,19 +36,26 @@ in
 
       templates."smtp.json" = {
         mode = "0644";
-        owner = "nginx";
+        owner = "nextcloud";
         content = ''{
-          "mail_from_address": "no-reply",
-          "mail_domain": "firefly.red",
-          "mail_smtpmode": "smtp",
-          "mail_smtptimeout": 3,
-          "mail_smtpsecure": "",
-          "mail_smtpauth": true,
-          "mail_smtphost": "smtp.mailersend.net",
           "mail_smtpname": "${config.sops.placeholder."smtp/login"}",
-          "mail_smtppassword": "${config.sops.placeholder."smtp/password"}",
-          "mail_smtpport": 587
+          "mail_smtppassword": "${config.sops.placeholder."smtp/password"}"
         }'';
+      };
+    };
+
+    systemd = {
+      services.nextcloud-generate-preview = {
+        serviceConfig = {
+          ExecStart = "${pkgs.writeScript "nextcloud-generate-preview.sh" ''
+            #!/bin/sh
+            /run/current-system/sw/bin/nextcloud-occ preview:pre-generate -vvv
+          ''}";
+          User = "nextcloud";
+          Group = "nextcloud";
+        };
+        description = "nextcloud generate preview";
+        startAt = "hourly";
       };
     };
 
@@ -73,6 +80,16 @@ in
           trashbin_retention_obligation = "disabled";
           default_phone_region = "ES";
           maintenance_window_start = 5;
+
+          mail_sendmailmode = "smtp";
+          mail_from_address = "no-reply";
+          mail_domain = "firefly.red";
+          mail_smtpmode = "smtp";
+          mail_smtptimeout = 5;
+          mail_smtpsecure = "";
+          mail_smtpauth = 1;
+          mail_smtphost = "smtp.mailersend.net";
+          mail_smtpport = "587";
 
           enable_previews = true;
           enabledPreviewProviders = [
