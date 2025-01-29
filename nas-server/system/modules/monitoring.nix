@@ -15,8 +15,8 @@ in
   config = {
 
     environment.etc = lib.mkIf (config.services.grafana.enable) {
-      "${cfg.dashboards-dir}/node-exporter-full-rev1.json" = {
-        source = ../../files/${cfg.dashboards-dir}/node-exporter-full-rev1.json;
+      "${cfg.dashboards-dir}/node-exporter-full-rev5.json" = {
+        source = ../../files/${cfg.dashboards-dir}/node-exporter-full-rev5.json;
         group = "grafana";
         user = "grafana";
         mode = "0444";
