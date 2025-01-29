@@ -130,6 +130,11 @@ in
           };
         };
 
+        globalConfig = {
+          scrape_interval = "15s";
+          scrape_timeout = "5s";
+        };
+
         # ingest the published nodes
         scrapeConfigs = [
           {
