@@ -59,6 +59,9 @@ in
       };
     };
 
+    environment.systemPackages = with pkgs; [
+      ghostscript # needed for generate preview for pdfs
+    ];
 
     services = {
       nextcloud = {

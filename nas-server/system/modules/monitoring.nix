@@ -43,7 +43,7 @@ in
     };
 
     environment.systemPackages = with pkgs; [
-      lm_sensors
+      lm_sensors # needed for temperature
     ];
 
     services = {
