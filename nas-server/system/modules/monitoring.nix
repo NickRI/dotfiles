@@ -1,4 +1,4 @@
-{config, lib, ...}:
+{config, lib, pkgs, ...}:
 
 let
   cfg = builtins.fromJSON (builtins.readFile ./config.json);
@@ -41,6 +41,10 @@ in
         config.services.nginx.virtualHosts."${cfg.grafana-domain}".enableACME
       ) config.security.acme.defaults;
     };
+
+    environment.systemPackages = with pkgs; [
+      lm_sensors
+    ];
 
     services = {
       grafana = {
