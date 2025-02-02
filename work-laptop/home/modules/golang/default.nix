@@ -85,6 +85,12 @@ in
       sqlc
     ];
 
+    programs.chromium = lib.mkIf (config.programs.chromium.enable) {
+      extensions = [
+        { id = "adhapdickilojlhiicaffdhbgaedfodo"; } # Go playground
+      ];
+    };
+
     home.sessionPath = ["$HOME/go/bin"];
 
     programs.zsh = lib.mkIf (config.programs.zsh.enable) {

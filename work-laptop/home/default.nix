@@ -106,7 +106,6 @@
         "com.dropbox.Client"
         "com.getpostman.Postman"
         "dev.vencord.Vesktop"
-        "com.surfshark.Surfshark"
       ];
     };
   };
@@ -191,7 +190,6 @@
         { id = "aiifbnbfobpmeekipheeijimdpnlpgpp"; } # StationWallet
         { id = "egjidjbpglichdcondbcbdnbeeppgdph"; } # TrustWallet
         { id = "gphhapmejobijbbhgpjhcjognlahblep"; } # GnomeExtenstion
-        { id = "ailoabdmgclmfmhdagmlohpjlbpffblp"; } # Surfshark VPN
       ];
     };
 
