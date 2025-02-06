@@ -9,5 +9,6 @@
       ./1password.nix
       ./golang
       ./rust.nix
+      ./vpn.nix
     ];
 }
