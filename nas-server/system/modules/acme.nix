@@ -13,7 +13,7 @@
         email = "admin@firefly.red";
         dnsProvider = "cloudflare";
         webroot = null;
-        credentialsFile = config.sops.secrets.cloudflare-env.path;
+        environmentFile = config.sops.secrets.cloudflare-env.path;
       };
     };
 
