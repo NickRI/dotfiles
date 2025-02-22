@@ -10,6 +10,7 @@
       ./networking.nix
       ./disk-config.nix
       ./gnome.nix
+      ./modules/ai.nix
       ./modules/yubikey.nix
       ../../shared/system
     ];
