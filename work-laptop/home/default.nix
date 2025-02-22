@@ -1,4 +1,4 @@
-{ config, lib, pkgs, flatpaks, ... }:
+{ config, lib, pkgs, flatpaks, vsextensions, ... }:
 
 {
   imports = [
@@ -191,6 +191,46 @@
         { id = "egjidjbpglichdcondbcbdnbeeppgdph"; } # TrustWallet
         { id = "gphhapmejobijbbhgpjhcjognlahblep"; } # GnomeExtenstion
       ];
+    };
+
+    vscode = {
+      enable = true;
+      enableUpdateCheck = false;
+      package = pkgs.vscodium;
+      
+      extensions = with vsextensions.vscode-marketplace; [
+        eamodio.gitlens
+        jeff-hykin.better-nix-syntax
+        redhat.vscode-yaml
+        quicktype.quicktype
+        zxh404.vscode-proto3
+        nhoizey.gremlins
+        gruntfuggly.todo-tree
+        actboy168.tasks
+      ];
+
+      userSettings = {
+        "update.mode" = "none";
+        "git.autofetch" = true;
+        "files.autoSave" = "afterDelay";
+        "editor.fontFamily" = "Roboto Mono for Powerline";
+        "editor.fontSize" = 15;
+        "terminal.integrated.fontFamily" = "MesloLGS NF";
+        "terminal.integrated.fontSize" = 14;
+        "terminal.integrated.fontLigatures" = true;
+      };
+
+      keybindings = [
+        { "key" = "shift shift"; "command" = "workbench.action.showCommands"; }
+        { "key" = "ctrl+d"; "command" = "editor.action.duplicateSelection"; }
+        { "key" = "ctrl ctrl"; "command" = "workbench.action.tasks.runTask"; }
+        { "key" = "alt alt"; "command" = "workbench.action.terminal.toggleTerminal"; }
+      ];
+
+      userTasks = {
+        version = "2.0.0";
+        tasks = [];
+      };
     };
 
     # Let Home Manager install and manage itself.

@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, vsextensions, ... }:
 let
     inherit (pkgs) fetchFromGitHub;
 
@@ -83,6 +83,7 @@ in
       minimock
       enumer
       sqlc
+      gollama
     ];
 
     programs.chromium = lib.mkIf (config.programs.chromium.enable) {
@@ -90,6 +91,72 @@ in
         { id = "adhapdickilojlhiicaffdhbgaedfodo"; } # Go playground
       ];
     };
+
+
+    programs.vscode = lib.mkIf (config.programs.vscode.enable) {
+      userSettings = {
+        "go.toolsManagement.autoUpdate" = true;
+        "go.survey.prompt" = true;
+      };
+ 
+      extensions = with vsextensions.vscode-marketplace; [
+        golang.go
+        yokoe.vscode-postfix-go
+        honnamkuan.golang-snippets
+        premparihar.gotestexplorer
+      ];
+
+      userTasks = {
+        version = "2.0.0";
+        tasks = [
+          {
+            type = "shell";
+            label = "$(beaker) Golang generate all";
+            command = "go generate ./...";
+            presentation = {
+              reveal = "always";
+            };
+            options = { 
+              statusbar = {
+                label = "$(beaker) Go-Gen";
+                detail = "Golang generate all";
+                color = "#00ADD8";
+              };
+            };
+            problemMatcher = ["$go"];
+          }
+          {
+            type = "shell";
+            label = "$(run-all) Golang test all";
+            command = "go test -race -cover ./...";
+            presentation = {
+              reveal = "always";
+            };
+            options = { 
+              statusbar = {
+                hide = true;
+              };
+            };
+            problemMatcher = ["$go"];
+          }
+          {
+            type = "shell";
+            label = "$(gather) Golang mod tidy";
+            command = "go mod tidy -v";
+            presentation = {
+              reveal = "always";
+            };
+            options = { 
+              statusbar = {
+                hide = true;
+              };
+            };
+            problemMatcher = ["$go"];
+          }
+        ];
+      };
+    };
+
 
     home.sessionPath = ["$HOME/go/bin"];
 
