@@ -34,7 +34,10 @@
 
         # Optionally, use home-manager.extraSpecialArgs to pass
         # arguments to home.nix
-        home-manager.extraSpecialArgs = { flatpaks = inputs.flatpaks; };
+        home-manager.extraSpecialArgs = {
+          flatpaks = inputs.flatpaks; 
+          vsextensions = inputs.nix-vscode-extensions.extensions.${system};
+        };
       }
     ];
   }

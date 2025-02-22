@@ -12,6 +12,7 @@
     flatpaks.url = "github:gmodena/nix-flatpak/main";
     nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
     disko.url = "github:nix-community/disko";
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
 
     sops-nix = {
       url = "github:Mic92/sops-nix";
