@@ -39,7 +39,7 @@
             "presentation": {
                 "reveal": "always"
             },
-            "command": "nixos-rebuild --use-remote-sudo switch --flake $HOME/.dotfiles#nas-server -v",
+            "command": "nixos-rebuild --use-remote-sudo switch --flake $HOME/.dotfiles#nas-server --target-host nas@nas.firefly.red -v",
             "options": { 
                 "statusbar": {
                     "label": "$(server) Sw-Nas",
