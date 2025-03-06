@@ -1,4 +1,9 @@
-{config, lib, pkgs, ...}:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = builtins.fromJSON (builtins.readFile ./config.json);
@@ -37,8 +42,8 @@ in
 
     security.acme.certs = {
       ${cfg.grafana-domain} = lib.mkIf (
-        config.services.grafana.enable &&
-        config.services.nginx.virtualHosts."${cfg.grafana-domain}".enableACME
+        config.services.grafana.enable
+        && config.services.nginx.virtualHosts."${cfg.grafana-domain}".enableACME
       ) config.security.acme.defaults;
     };
 
@@ -139,19 +144,23 @@ in
         scrapeConfigs = [
           {
             job_name = "nodes";
-            static_configs = [{
-              targets = [
-                "${toString listenAddress}:${toString exporters.node.port}"
-              ];
-            }];
+            static_configs = [
+              {
+                targets = [
+                  "${toString listenAddress}:${toString exporters.node.port}"
+                ];
+              }
+            ];
           }
           {
             job_name = "smartctl";
-            static_configs = [{
-              targets = [
-                "${cfg.inner-interface}:${toString config.services.prometheus.exporters.smartctl.port}"
-              ];
-            }];
+            static_configs = [
+              {
+                targets = [
+                  "${cfg.inner-interface}:${toString config.services.prometheus.exporters.smartctl.port}"
+                ];
+              }
+            ];
           }
         ];
       };
@@ -187,51 +196,50 @@ in
           };
 
           schema_config = {
-           configs = [
-             {
-               from = "2024-04-25";
-               store = "tsdb";
-               object_store = "filesystem";
-               schema = "v13";
-               index = {
-                 prefix = "index_";
-                 period = "24h";
-               };
-             }
-           ];
+            configs = [
+              {
+                from = "2024-04-25";
+                store = "tsdb";
+                object_store = "filesystem";
+                schema = "v13";
+                index = {
+                  prefix = "index_";
+                  period = "24h";
+                };
+              }
+            ];
           };
 
           storage_config = {
-           tsdb_shipper = {
-             active_index_directory = "/var/lib/loki/tsdb-shipper-active";
-             cache_location = "/var/lib/loki/tsdb-shipper-cache";
-             cache_ttl = "24h";
-           };
+            tsdb_shipper = {
+              active_index_directory = "/var/lib/loki/tsdb-shipper-active";
+              cache_location = "/var/lib/loki/tsdb-shipper-cache";
+              cache_ttl = "24h";
+            };
 
-           filesystem = {
-             directory = "/var/lib/loki/chunks";
-           };
+            filesystem = {
+              directory = "/var/lib/loki/chunks";
+            };
           };
 
           limits_config = {
-           reject_old_samples = true;
-           reject_old_samples_max_age = "168h";
-           volume_enabled = true;
+            reject_old_samples = true;
+            reject_old_samples_max_age = "168h";
+            volume_enabled = true;
           };
 
-
           table_manager = {
-           retention_deletes_enabled = false;
-           retention_period = "0s";
+            retention_deletes_enabled = false;
+            retention_period = "0s";
           };
 
           compactor = {
-           working_directory = "/var/lib/loki";
-           compactor_ring = {
-             kvstore = {
-               store = "inmemory";
-             };
-           };
+            working_directory = "/var/lib/loki";
+            compactor_ring = {
+              kvstore = {
+                store = "inmemory";
+              };
+            };
           };
         };
       };
@@ -243,7 +251,9 @@ in
             http_listen_port = promtail-listen-port;
             grpc_listen_port = 0;
           };
-          clients = [ { url = "http://${cfg.inner-interface}:${toString loki-listen-port}/loki/api/v1/push"; } ];
+          clients = [
+            { url = "http://${cfg.inner-interface}:${toString loki-listen-port}/loki/api/v1/push"; }
+          ];
         };
       };
 
@@ -257,14 +267,14 @@ in
         upstreams = {
           "grafana" = {
             servers = {
-              "${grafana-full-path}" = {};
+              "${grafana-full-path}" = { };
             };
           };
-#          "prometheus" = {
-#            servers = {
-#              "${prometheus-full-path}" = {};
-#            };
-#          };
+          #          "prometheus" = {
+          #            servers = {
+          #              "${prometheus-full-path}" = {};
+          #            };
+          #          };
         };
 
         virtualHosts."${cfg.grafana-domain}" = {
@@ -276,21 +286,28 @@ in
             proxyWebsockets = true;
           };
           listen = [
-            { addr = cfg.external-interface; port = 80; }
-            { addr = cfg.external-interface; port = 443; ssl = true; }
+            {
+              addr = cfg.external-interface;
+              port = 80;
+            }
+            {
+              addr = cfg.external-interface;
+              port = 443;
+              ssl = true;
+            }
           ];
         };
 
-#        virtualHosts."${cfg.prometheus-domain}" = {
-#          locations."/" = {
-#            proxyPass = http://prometheus;
-#            proxyWebsockets = true;
-#          };
-#          listen = [
-#            { addr = cfg.external-interface; port = 80; }
-#            { addr = cfg.external-interface; port = 443; ssl = true; }
-#          ];
-#        };
+        #        virtualHosts."${cfg.prometheus-domain}" = {
+        #          locations."/" = {
+        #            proxyPass = http://prometheus;
+        #            proxyWebsockets = true;
+        #          };
+        #          listen = [
+        #            { addr = cfg.external-interface; port = 80; }
+        #            { addr = cfg.external-interface; port = 443; ssl = true; }
+        #          ];
+        #        };
 
       };
 

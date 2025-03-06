@@ -1,9 +1,11 @@
-{ config, pkgs, ... }: let
+{ config, pkgs, ... }:
+let
   hibernateEnvironment = {
     HIBERNATE_SECONDS = "1800";
     HIBERNATE_LOCK = "/var/run/autohibernate.lock";
   };
-in {
+in
+{
   systemd.services."awake-after-suspend-for-a-time" = {
     description = "Sets up the suspend so that it'll wake for hibernation";
     wantedBy = [ "suspend.target" ];

@@ -1,4 +1,9 @@
-{inputs, config, pkgs, lib, ...}:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   config = {
@@ -23,6 +28,7 @@
           "org.telegram.desktop.desktop"
           "dev.vencord.Vesktop.desktop"
           "slack.desktop"
+          "codium.desktop"
           "goland.desktop"
           "datagrip.desktop"
           "com.getpostman.Postman.desktop"
@@ -44,14 +50,20 @@
       "org/gnome/mutter" = {
         edge-tiling = true;
         overlay-key = "Super_R";
-        experimental-features = ["scale-monitor-framebuffer"];
+        experimental-features = [ "scale-monitor-framebuffer" ];
       };
 
       "org/gnome/desktop/input-sources" = {
         per-window = true;
         sources = [
-          (mkTuple ["xkb" "us"])
-          (mkTuple ["xkb" "ru"])
+          (mkTuple [
+            "xkb"
+            "us"
+          ])
+          (mkTuple [
+            "xkb"
+            "ru"
+          ])
         ];
       };
 
@@ -143,12 +155,17 @@
       };
 
       "org/gnome/shell/extensions/vitals" = {
-        alphabetize  = true;
+        alphabetize = true;
         fixed-widths = true;
         update-time = mkInt32 5;
         battery-slot = mkInt32 1;
         position-in-panel = mkInt32 0;
-        hot-sensors = ["_processor_usage_" "_memory_usage_" "__temperature_avg__" "__network-rx_max__"];
+        hot-sensors = [
+          "_processor_usage_"
+          "_memory_usage_"
+          "__temperature_avg__"
+          "__network-rx_max__"
+        ];
       };
 
       "org/gnome/desktop/privacy" = {
@@ -165,7 +182,7 @@
         font-antialiasing = "rgba";
         font-hinting = "slight";
         monospace-font-name = config.gtk.font.name + " 12"; # + toString(config.gtk.font.size); # It's convinient to use
-        document-font-name = config.gtk.font.name + " " + toString(config.gtk.font.size); # It's convinient to use
+        document-font-name = config.gtk.font.name + " " + toString (config.gtk.font.size); # It's convinient to use
       };
     };
 
@@ -183,11 +200,11 @@
         package = pkgs.qogir-icon-theme;
       };
 
-#      theme = {
-#        name = "palenight";
-#        package = pkgs.palenight-theme;
-#      };
-#
+      #      theme = {
+      #        name = "palenight";
+      #        package = pkgs.palenight-theme;
+      #      };
+      #
       cursorTheme = {
         name = "Qogir-dark";
         package = pkgs.qogir-icon-theme;
@@ -210,7 +227,7 @@
       portal = lib.mkIf (config.xdg.portal.enable) {
         config = {
           preferred = {
-            default = ["gnome"];
+            default = [ "gnome" ];
           };
         };
         extraPortals = with pkgs.unstable; [
@@ -219,21 +236,23 @@
       };
     };
 
-
-    home.packages = with pkgs; [
-      gnome-tweaks
-      dconf-editor
-      gnome-software
-      gnome-extension-manager
-      gnome-sound-recorder
-    ] ++ (with pkgs.unstable.gnomeExtensions; [
-      appindicator
-      blur-my-shell
-      caffeine
-      vitals
-      hibernate-status-button
-      user-themes
-    ]);
+    home.packages =
+      with pkgs;
+      [
+        gnome-tweaks
+        dconf-editor
+        gnome-software
+        gnome-extension-manager
+        gnome-sound-recorder
+      ]
+      ++ (with pkgs.unstable.gnomeExtensions; [
+        appindicator
+        blur-my-shell
+        caffeine
+        vitals
+        hibernate-status-button
+        user-themes
+      ]);
 
     programs = {
       gnome-terminal = {

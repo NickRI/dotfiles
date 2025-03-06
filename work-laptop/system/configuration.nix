@@ -2,18 +2,24 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ grub-themes, sops-secrets, config, pkgs, ... }:
+{
+  grub-themes,
+  sops-secrets,
+  config,
+  pkgs,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./networking.nix
-      ./disk-config.nix
-      ./gnome.nix
-      ./modules/ai.nix
-      ./modules/yubikey.nix
-      ../../shared/system
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./networking.nix
+    ./disk-config.nix
+    ./gnome.nix
+    ./modules/ai.nix
+    ./modules/yubikey.nix
+    ../../shared/system
+  ];
 
   # Bootloader.
   boot.loader = {
@@ -28,7 +34,7 @@
     };
   };
 
-  boot.binfmt.emulatedSystems = ["aarch64-linux"];
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Set your time zone.
   time.timeZone = null;
@@ -113,46 +119,56 @@
 
   nix.settings = {
     extra-platforms = config.boot.binfmt.emulatedSystems;
-    experimental-features = [ "nix-command" "flakes"];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
   };
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-   users.users.nikolai = {
-     isNormalUser = true;
-     extraGroups = [ "networkmanager" "wheel" "docker" ]; # Enable ‘sudo’ docker and other for the user.
-     hashedPasswordFile = config.sops.secrets."laptop/user-password".path;
-     shell = pkgs.zsh;
-  #   packages = with pkgs; [
-  #     firefox
-  #     tree
-  #   ];
-   };
+  # Define a user account. Don't forget to set a password with 'passwd'.
+  users.users.nikolai = {
+    isNormalUser = true;
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "docker"
+    ]; # Enable 'sudo' docker and other for the user.
+    hashedPasswordFile = config.sops.secrets."laptop/user-password".path;
+    shell = pkgs.zsh;
+    #   packages = with pkgs; [
+    #     firefox
+    #     tree
+    #   ];
+  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-   environment.systemPackages = with pkgs; [
-  #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-     inetutils
-     wget
-     htop
-     file
-     gcc
-     tree
-     openssl
-     gnumake
-     unixtools.xxd
-     xclip
-     sops
+  environment.systemPackages = with pkgs; [
+    #   vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    inetutils
+    wget
+    htop
+    file
+    gcc
+    tree
+    openssl
+    gnumake
+    unixtools.xxd
+    xclip
+    sops
+    playwright
 
-     nvd
-     nix-tree
-     nix-du
-     nix-index
+    nvd
+    nix-tree
+    nix-du
+    nix-index
+    nixfmt-rfc-style
+    nixd
 
-     wineWowPackages.stable
-     winetricks
-     wineWowPackages.waylandFull
-   ];
+    wineWowPackages.stable
+    winetricks
+    wineWowPackages.waylandFull
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -179,7 +195,10 @@
     '';
   };
 
-  environment.pathsToLink = [ "/share/xdg-desktop-portal" "/share/applications" ];
+  environment.pathsToLink = [
+    "/share/xdg-desktop-portal"
+    "/share/applications"
+  ];
 
   virtualisation = {
     docker.enable = true;
@@ -204,4 +223,3 @@
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.05"; # Did you read the comment?
 }
-

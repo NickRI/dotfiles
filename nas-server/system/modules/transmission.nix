@@ -1,4 +1,9 @@
-{config, lib, pkgs, ...}:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   cfg = builtins.fromJSON (builtins.readFile ./config.json);
 
@@ -9,27 +14,27 @@ in
   config = {
     security.acme.certs = {
       ${cfg.transmission-domain} = lib.mkIf (
-        config.services.transmission.enable &&
-        config.services.nginx.virtualHosts."${cfg.transmission-domain}".enableACME
+        config.services.transmission.enable
+        && config.services.nginx.virtualHosts."${cfg.transmission-domain}".enableACME
       ) config.security.acme.defaults;
     };
 
     sops = {
       secrets = {
-        "nas/transmission/username" = {};
-        "nas/transmission/password" = {};
+        "nas/transmission/username" = { };
+        "nas/transmission/password" = { };
       };
 
       templates."transmission.json" = {
         mode = "0644";
-        content = ''{
-          "rpc-authentication-required": true,
-          "rpc-username": "${config.sops.placeholder."nas/transmission/username"}",
-          "rpc-password": "${config.sops.placeholder."nas/transmission/password"}"
-        }'';
+        content = ''
+          {
+                    "rpc-authentication-required": true,
+                    "rpc-username": "${config.sops.placeholder."nas/transmission/username"}",
+                    "rpc-password": "${config.sops.placeholder."nas/transmission/password"}"
+                  }'';
       };
     };
-
 
     services = {
       transmission = {
@@ -43,7 +48,6 @@ in
           watch-dir = "/storage/transmission/watch";
           download-dir = "/storage/transmission/downloads";
           incomplete-dir = "/storage/transmission/incomplete";
-
 
           rpc-enabled = true;
           rpc-bind-address = cfg.inner-interface;
@@ -63,7 +67,7 @@ in
         upstreams = {
           "transmission" = {
             servers = {
-              "${transmission-full-path}" = {};
+              "${transmission-full-path}" = { };
             };
           };
         };
@@ -78,8 +82,15 @@ in
           };
 
           listen = [
-            { addr = cfg.external-interface; port = 80; }
-            { addr = cfg.external-interface; port = 443; ssl = true; }
+            {
+              addr = cfg.external-interface;
+              port = 80;
+            }
+            {
+              addr = cfg.external-interface;
+              port = 443;
+              ssl = true;
+            }
           ];
         };
       };

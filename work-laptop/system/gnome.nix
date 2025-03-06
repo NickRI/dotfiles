@@ -1,4 +1,4 @@
-{config, lib, pkgs, ...}:
+{ pkgs, ... }:
 
 {
   config = {
@@ -22,14 +22,16 @@
 
     services.udev.packages = with pkgs; [ gnome-settings-daemon ];
 
-    environment.gnome.excludePackages = (with pkgs; [
-      gnome-tour
-      kgx
-    ]) ++ (with pkgs; [
-      epiphany
-      geary
-      totem
-    ]);
+    environment.gnome.excludePackages =
+      (with pkgs; [
+        gnome-tour
+        kgx
+      ])
+      ++ (with pkgs; [
+        epiphany
+        geary
+        totem
+      ]);
 
     programs.kdeconnect.package = pkgs.gnomeExtensions.gsconnect;
   };

@@ -1,4 +1,9 @@
-{config, pkgs, lib, ...}:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 let
   cfg = builtins.fromJSON (builtins.readFile ./config.json);
@@ -20,8 +25,8 @@ in
 
     security.acme.certs = {
       ${cfg.nextcloud-domain} = lib.mkIf (
-        config.services.nextcloud.enable &&
-        config.services.nginx.virtualHosts."${cfg.nextcloud-domain}".enableACME
+        config.services.nextcloud.enable
+        && config.services.nginx.virtualHosts."${cfg.nextcloud-domain}".enableACME
       ) config.security.acme.defaults;
     };
 
@@ -30,17 +35,18 @@ in
       secrets."nas/nextcloud/exporter-password".owner = "nextcloud-exporter";
 
       secrets = {
-        "smtp/login" = {};
-        "smtp/password" = {};
+        "smtp/login" = { };
+        "smtp/password" = { };
       };
 
       templates."smtp.json" = {
         mode = "0644";
         owner = "nextcloud";
-        content = ''{
-          "mail_smtpname": "${config.sops.placeholder."smtp/login"}",
-          "mail_smtppassword": "${config.sops.placeholder."smtp/password"}"
-        }'';
+        content = ''
+          {
+                    "mail_smtpname": "${config.sops.placeholder."smtp/login"}",
+                    "mail_smtppassword": "${config.sops.placeholder."smtp/password"}"
+                  }'';
       };
     };
 
@@ -132,17 +138,18 @@ in
             calendar
             phonetrack
             previewgenerator
-            unsplash;
-            duplicatefinder = pkgs.fetchNextcloudApp {
-              url = "https://github.com/eldertek/duplicatefinder/releases/download/v1.6.0/duplicatefinder-v1.6.0.tar.gz";
-              hash = "sha256-J+P+9Ajz998ua1RRwuj1h4WOOl0WODu3uVJNGosbObI=";
-              license = "agpl3Only";
-            };
-            twofactor_totp = pkgs.fetchNextcloudApp {
-              url = "https://github.com/nextcloud/twofactor_totp/archive/refs/tags/v30.0.4.tar.gz";
-              hash = "sha256-WydCFsIUlHSSTkrwRZ6z33dl952nDauv16Va2wdisMs=";
-              license = "agpl3Only";
-            };
+            unsplash
+            ;
+          duplicatefinder = pkgs.fetchNextcloudApp {
+            url = "https://github.com/eldertek/duplicatefinder/releases/download/v1.6.0/duplicatefinder-v1.6.0.tar.gz";
+            hash = "sha256-J+P+9Ajz998ua1RRwuj1h4WOOl0WODu3uVJNGosbObI=";
+            license = "agpl3Only";
+          };
+          twofactor_totp = pkgs.fetchNextcloudApp {
+            url = "https://github.com/nextcloud/twofactor_totp/archive/refs/tags/v30.0.4.tar.gz";
+            hash = "sha256-WydCFsIUlHSSTkrwRZ6z33dl952nDauv16Va2wdisMs=";
+            license = "agpl3Only";
+          };
         };
 
         config = {
@@ -163,26 +170,36 @@ in
           forceSSL = true;
           enableACME = true;
           listen = [
-            { addr = cfg.external-interface; port = 80; }
-            { addr = cfg.external-interface; port = 443; ssl = true; }
+            {
+              addr = cfg.external-interface;
+              port = 80;
+            }
+            {
+              addr = cfg.external-interface;
+              port = 443;
+              ssl = true;
+            }
           ];
         };
       };
 
-
       promtail = lib.mkIf (config.services.nextcloud.enable) {
-        configuration.scrape_configs = [{
-          job_name = "system";
-          static_configs = [{
-            targets = [ "localhost" ];
-            labels = {
-              instance = cfg.nextcloud-domain;
-              env = "${config.networking.hostName}";
-              job = "nextcloud";
-              __path__ = "/storage/${nextcloud-dir}/data/{nextcloud,audit}.log";
-            };
-          }];
-        }];
+        configuration.scrape_configs = [
+          {
+            job_name = "system";
+            static_configs = [
+              {
+                targets = [ "localhost" ];
+                labels = {
+                  instance = cfg.nextcloud-domain;
+                  env = "${config.networking.hostName}";
+                  job = "nextcloud";
+                  __path__ = "/storage/${nextcloud-dir}/data/{nextcloud,audit}.log";
+                };
+              }
+            ];
+          }
+        ];
       };
 
       prometheus = lib.mkIf (config.services.nextcloud.enable) {
@@ -198,14 +215,18 @@ in
             ];
           };
         };
-        scrapeConfigs = [{
-          job_name = "nextcloud";
-          static_configs = [{
-            targets = [
-              "${cfg.inner-interface}:${toString config.services.prometheus.exporters.nextcloud.port}"
+        scrapeConfigs = [
+          {
+            job_name = "nextcloud";
+            static_configs = [
+              {
+                targets = [
+                  "${cfg.inner-interface}:${toString config.services.prometheus.exporters.nextcloud.port}"
+                ];
+              }
             ];
-          }];
-        }];
+          }
+        ];
       };
 
     };

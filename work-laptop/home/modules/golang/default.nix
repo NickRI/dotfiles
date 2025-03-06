@@ -1,62 +1,70 @@
-{ config, pkgs, lib, vsextensions, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 let
-    inherit (pkgs) fetchFromGitHub;
+  inherit (pkgs) fetchFromGitHub;
 
-    sqlc = pkgs.unstable.sqlc.overrideAttrs(oldAttrs: rec {
-        version = "1.27.0";
-        vendorHash = "sha256-ndOw3uShF5TngpxYNumoK3H3R9v4crfi5V3ZCoSqW90=";
+  sqlc = pkgs.unstable.sqlc.overrideAttrs (oldAttrs: rec {
+    version = "1.27.0";
+    vendorHash = "sha256-ndOw3uShF5TngpxYNumoK3H3R9v4crfi5V3ZCoSqW90=";
 
-        src = fetchFromGitHub {
-          owner = oldAttrs.src.owner;
-          repo = oldAttrs.src.repo;
-          rev = "v${version}";
-          sha256 = "sha256-wxQ+YPsDX0Z6B8whlQ/IaT2dRqapPL8kOuFEc6As1rU=";
-        };
-    });
+    src = fetchFromGitHub {
+      owner = oldAttrs.src.owner;
+      repo = oldAttrs.src.repo;
+      rev = "v${version}";
+      sha256 = "sha256-wxQ+YPsDX0Z6B8whlQ/IaT2dRqapPL8kOuFEc6As1rU=";
+    };
+  });
 
-    minimock = pkgs.unstable.go-minimock.overrideAttrs(oldAttrs: rec {
-        version = "3.1.3";
-        vendorHash = "sha256-fiSU2NB9rWIPQLdnui5CB5VcadTVUg2JaO3ma7DAYqo=";
+  minimock = pkgs.unstable.go-minimock.overrideAttrs (oldAttrs: rec {
+    version = "3.1.3";
+    vendorHash = "sha256-fiSU2NB9rWIPQLdnui5CB5VcadTVUg2JaO3ma7DAYqo=";
 
-        src = fetchFromGitHub {
-          owner = oldAttrs.src.owner;
-          repo = oldAttrs.src.repo;
-          rev = "v${version}";
-          sha256 = "sha256-6n5FOHTfsLYqnhlDO3etMnrypeOElmwdvoFQb3aSBts=";
-        };
+    src = fetchFromGitHub {
+      owner = oldAttrs.src.owner;
+      repo = oldAttrs.src.repo;
+      rev = "v${version}";
+      sha256 = "sha256-6n5FOHTfsLYqnhlDO3etMnrypeOElmwdvoFQb3aSBts=";
+    };
 
-        ldflags = [
-          "-s" "-w" "-X main.version=${version}"
-        ];
-    });
+    ldflags = [
+      "-s"
+      "-w"
+      "-X main.version=${version}"
+    ];
+  });
 
-    enumer = pkgs.unstable.enumer.overrideAttrs(oldAttrs: rec {
-        version = "1.5.10";
-        vendorHash = "sha256-CJCay24FlzDmLjfZ1VBxih0f+bgBNu+Xn57QgWT13TA=";
+  enumer = pkgs.unstable.enumer.overrideAttrs (oldAttrs: rec {
+    version = "1.5.10";
+    vendorHash = "sha256-CJCay24FlzDmLjfZ1VBxih0f+bgBNu+Xn57QgWT13TA=";
 
-        src = fetchFromGitHub {
-          owner = oldAttrs.src.owner;
-          repo = oldAttrs.src.repo;
-          rev = "refs/tags/v${version}";
-          hash = "sha256-7tU1etCrgG05HU1N9c1o2S9VNXRONFBCoM317pIddcw=";
-        };
-    });
+    src = fetchFromGitHub {
+      owner = oldAttrs.src.owner;
+      repo = oldAttrs.src.repo;
+      rev = "refs/tags/v${version}";
+      hash = "sha256-7tU1etCrgG05HU1N9c1o2S9VNXRONFBCoM317pIddcw=";
+    };
+  });
 
-    golangci-lint = pkgs.unstable.golangci-lint.overrideAttrs(oldAttrs: rec {
-        version = "1.60.3";
-        vendorHash = "sha256-ixeswsfx36D0Tg103swbBD8UXXLNYbxSMYDE+JOm+uw=";
+  golangci-lint = pkgs.unstable.golangci-lint.overrideAttrs (oldAttrs: rec {
+    version = "1.60.3";
+    vendorHash = "sha256-ixeswsfx36D0Tg103swbBD8UXXLNYbxSMYDE+JOm+uw=";
 
-        src = fetchFromGitHub {
-          owner = oldAttrs.src.owner;
-          repo = oldAttrs.src.repo;
-          rev = "refs/tags/v${version}";
-          hash = "sha256-0ScdJ5td2N8WF1dwHQ3dBSjyr1kqgrzCfBzbRg9cRrw=";
-        };
-    });
+    src = fetchFromGitHub {
+      owner = oldAttrs.src.owner;
+      repo = oldAttrs.src.repo;
+      rev = "refs/tags/v${version}";
+      hash = "sha256-0ScdJ5td2N8WF1dwHQ3dBSjyr1kqgrzCfBzbRg9cRrw=";
+    };
+  });
 in
 {
   imports = [
     ./custom-config.nix
+    ./vscode.nix
   ];
 
   config = {
@@ -69,6 +77,9 @@ in
     };
 
     home.packages = with pkgs.unstable; [
+      jetbrains.goland
+      jetbrains.datagrip
+
       cfssl
       protoc-gen-go
       protoc-gen-go-grpc
@@ -92,73 +103,7 @@ in
       ];
     };
 
-
-    programs.vscode = lib.mkIf (config.programs.vscode.enable) {
-      userSettings = {
-        "go.toolsManagement.autoUpdate" = true;
-        "go.survey.prompt" = true;
-      };
- 
-      extensions = with vsextensions.vscode-marketplace; [
-        golang.go
-        yokoe.vscode-postfix-go
-        honnamkuan.golang-snippets
-        premparihar.gotestexplorer
-      ];
-
-      userTasks = {
-        version = "2.0.0";
-        tasks = [
-          {
-            type = "shell";
-            label = "$(beaker) Golang generate all";
-            command = "go generate ./...";
-            presentation = {
-              reveal = "always";
-            };
-            options = { 
-              statusbar = {
-                label = "$(beaker) Go-Gen";
-                detail = "Golang generate all";
-                color = "#00ADD8";
-              };
-            };
-            problemMatcher = ["$go"];
-          }
-          {
-            type = "shell";
-            label = "$(run-all) Golang test all";
-            command = "go test -race -cover ./...";
-            presentation = {
-              reveal = "always";
-            };
-            options = { 
-              statusbar = {
-                hide = true;
-              };
-            };
-            problemMatcher = ["$go"];
-          }
-          {
-            type = "shell";
-            label = "$(gather) Golang mod tidy";
-            command = "go mod tidy -v";
-            presentation = {
-              reveal = "always";
-            };
-            options = { 
-              statusbar = {
-                hide = true;
-              };
-            };
-            problemMatcher = ["$go"];
-          }
-        ];
-      };
-    };
-
-
-    home.sessionPath = ["$HOME/go/bin"];
+    home.sessionPath = [ "$HOME/go/bin" ];
 
     programs.zsh = lib.mkIf (config.programs.zsh.enable) {
       oh-my-zsh.plugins = [ "golang" ];

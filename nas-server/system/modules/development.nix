@@ -1,4 +1,4 @@
-{config, lib, ...}:
+{ config, lib, ... }:
 let
   cfg = builtins.fromJSON (builtins.readFile ./config.json);
 
@@ -21,12 +21,11 @@ in
 
     security.acme.certs = {
       ${cfg.gitea-domain} = lib.mkIf (
-        config.services.gitea.enable &&
-        config.services.nginx.virtualHosts."${cfg.gitea-domain}".enableACME
+        config.services.gitea.enable && config.services.nginx.virtualHosts."${cfg.gitea-domain}".enableACME
       ) config.security.acme.defaults;
       ${cfg.athens-domain} = lib.mkIf (
-        config.services.athens.enable &&
-        config.services.nginx.virtualHosts."${cfg.athens-domain}".enableACME
+        config.services.athens.enable
+        && config.services.nginx.virtualHosts."${cfg.athens-domain}".enableACME
       ) config.security.acme.defaults;
     };
 
@@ -51,9 +50,9 @@ in
           "service.explore".REQUIRE_SIGNIN_VIEW = true;
           service.DISABLE_REGISTRATION = true;
           session.COOKIE_SECURE = true;
-#          mailer = {
-#
-#          };
+          #          mailer = {
+          #
+          #          };
         };
       };
 
@@ -74,12 +73,12 @@ in
         upstreams = {
           "gitea" = lib.mkIf (config.services.gitea.enable) {
             servers = {
-              "${gitea-full-path}" = {};
+              "${gitea-full-path}" = { };
             };
           };
           "athens" = lib.mkIf (config.services.athens.enable) {
             servers = {
-              "${athens-full-path}" = {};
+              "${athens-full-path}" = { };
             };
           };
         };
@@ -94,8 +93,15 @@ in
           };
 
           listen = [
-            { addr = cfg.external-interface; port = 80; }
-            { addr = cfg.external-interface; port = 443; ssl = true; }
+            {
+              addr = cfg.external-interface;
+              port = 80;
+            }
+            {
+              addr = cfg.external-interface;
+              port = 443;
+              ssl = true;
+            }
           ];
         };
 
@@ -109,21 +115,32 @@ in
           };
 
           listen = [
-            { addr = cfg.external-interface; port = 80; }
-            { addr = cfg.external-interface; port = 443; ssl = true; }
+            {
+              addr = cfg.external-interface;
+              port = 80;
+            }
+            {
+              addr = cfg.external-interface;
+              port = 443;
+              ssl = true;
+            }
           ];
         };
       };
 
       prometheus = lib.mkIf (config.services.gitea.enable) {
-        scrapeConfigs = [{
-          job_name = "gitea";
-          static_configs = [{
-            targets = [
-              gitea-full-path
+        scrapeConfigs = [
+          {
+            job_name = "gitea";
+            static_configs = [
+              {
+                targets = [
+                  gitea-full-path
+                ];
+              }
             ];
-          }];
-        }];
+          }
+        ];
       };
     };
 

@@ -1,16 +1,21 @@
-{config, pkgs, lib, ...}:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   config = {
     home.file = {
       ".config/1Password/ssh/agent.toml".text = ''
-      [[ssh-keys]]
-      item =  "Github"
-      vault = "work"
+        [[ssh-keys]]
+        item =  "Github"
+        vault = "work"
 
-      [[ssh-keys]]
-      item =  "Soho-key"
-      vault = "soho"
+        [[ssh-keys]]
+        item =  "Soho-key"
+        vault = "soho"
       '';
     };
 
@@ -22,7 +27,7 @@
 
     programs.ssh = lib.mkIf (config.programs.ssh.enable) {
       extraConfig = ''
-      IdentityAgent = ~/.1password/agent.sock
+        IdentityAgent = ~/.1password/agent.sock
       '';
     };
 

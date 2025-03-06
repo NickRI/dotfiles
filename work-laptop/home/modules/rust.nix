@@ -1,4 +1,9 @@
-{config, pkgs, lib, ...}:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   config = {
@@ -6,7 +11,7 @@
       pkgs.unstable.rustup
     ];
 
-    home.sessionPath = ["$HOME/.cargo/bin"];
+    home.sessionPath = [ "$HOME/.cargo/bin" ];
 
     programs.zsh = lib.mkIf (config.programs.zsh.enable) {
       oh-my-zsh.plugins = [ "rust" ];

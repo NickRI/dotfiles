@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   imports = [
@@ -19,7 +19,11 @@
       rec {
         name = "gogo-protobuf";
         version = "1.3.2";
-        subPackages = [ "protoc-gen-gogo" "protoc-gen-gogoslick" "gogoproto" ];
+        subPackages = [
+          "protoc-gen-gogo"
+          "protoc-gen-gogoslick"
+          "gogoproto"
+        ];
         owner = "gogo";
         repo = "protobuf";
         rev = "v${version}";
