@@ -1,10 +1,12 @@
-{ config, lib, pkgs, flatpaks, vsextensions, ... }:
+{
+  lib,
+  pkgs,
+  vsextensions,
+  ...
+}:
 
 {
-  imports = [
-    ./modules
-    flatpaks.homeManagerModules.nix-flatpak
-  ];
+  imports = [ ./modules ];
 
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -23,9 +25,6 @@
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with pkgs.unstable; [
-    jetbrains.goland
-    jetbrains.datagrip
-
     docker-compose
 
     slack
@@ -34,8 +33,8 @@
     zoom-us
 
     gsmartcontrol
-#    discord
-#    viber
+    #    discord
+    #    viber
     skypeforlinux
     telegram-desktop
 
@@ -89,27 +88,6 @@
     # '')
   ];
 
-  services = {
-    flatpak = {
-      enable = true;
-
-      uninstallUnmanaged = true;
-
-      update = {
-        onActivation = true;
-        auto = { enable = true; onCalendar = "weekly"; };
-      };
-
-      packages = [
-        "com.boxy_svg.BoxySVG"
-        "com.ktechpit.colorwall"
-        "com.dropbox.Client"
-        "com.getpostman.Postman"
-        "dev.vencord.Vesktop"
-      ];
-    };
-  };
-
   autoStart = with pkgs; [
     meteo
     slack
@@ -120,7 +98,7 @@
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
   # plain files is through 'home.file'.
-  home.file = {};
+  home.file = { };
 
   home.activation.certsForPostman = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     ${pkgs.openssl}/bin/openssl req -subj '/C=US/CN=Postman Proxy' -new -newkey rsa:2048 -sha256 -days 365 -nodes -x509 \
@@ -156,7 +134,7 @@
       enable = true;
       config = {
         preferred = {
-          default = lib.mkDefault ["gtk"];
+          default = lib.mkDefault [ "gtk" ];
         };
       };
       extraPortals = with pkgs.unstable; [
@@ -194,42 +172,70 @@
     };
 
     vscode = {
-      enable = true;
+      enable = false;
       enableUpdateCheck = false;
-      package = pkgs.vscodium;
-      
+      package = pkgs.unstable.vscodium;
+
       extensions = with vsextensions.vscode-marketplace; [
         eamodio.gitlens
-        jeff-hykin.better-nix-syntax
+        jnoortheen.nix-ide
         redhat.vscode-yaml
         quicktype.quicktype
         zxh404.vscode-proto3
         nhoizey.gremlins
         gruntfuggly.todo-tree
         actboy168.tasks
+        zhuangtongfa.material-theme
+        file-icons.file-icons
+        postman.postman-for-vscode
+        alefragnani.project-manager
+        formulahendry.code-runner
+        igorsbitnev.error-gutters
+        mikestead.dotenv
+        cweijan.vscode-database-client2
+        github.vscode-pull-request-github
+        ms-azuretools.vscode-docker
       ];
 
       userSettings = {
         "update.mode" = "none";
         "git.autofetch" = true;
-        "files.autoSave" = "afterDelay";
+        "files.autoSave" = "onFocusChange";
         "editor.fontFamily" = "Roboto Mono for Powerline";
-        "editor.fontSize" = 15;
+        "editor.fontSize" = 16;
+        "editor.formatOnSave" = true;
+        "editor.bracketPairColorization.enabled" = true;
         "terminal.integrated.fontFamily" = "MesloLGS NF";
         "terminal.integrated.fontSize" = 14;
         "terminal.integrated.fontLigatures" = true;
+        "workbench.colorTheme" = "One Dark Pro Mix";
+        "gremlins.showInProblemPane" = true;
+        "window.newWindowDimensions" = "maximized";
+        "editor.rulers" = [ 80 ];
       };
 
       keybindings = [
-        { "key" = "shift shift"; "command" = "workbench.action.showCommands"; }
-        { "key" = "ctrl+d"; "command" = "editor.action.duplicateSelection"; }
-        { "key" = "ctrl ctrl"; "command" = "workbench.action.tasks.runTask"; }
-        { "key" = "alt alt"; "command" = "workbench.action.terminal.toggleTerminal"; }
+        {
+          "key" = "shift shift";
+          "command" = "workbench.action.showCommands";
+        }
+        {
+          "key" = "ctrl+d";
+          "command" = "editor.action.duplicateSelection";
+        }
+        {
+          "key" = "ctrl ctrl";
+          "command" = "workbench.action.tasks.runTask";
+        }
+        {
+          "key" = "alt alt";
+          "command" = "workbench.action.terminal.toggleTerminal";
+        }
       ];
 
       userTasks = {
         version = "2.0.0";
-        tasks = [];
+        tasks = [ ];
       };
     };
 
