@@ -156,7 +156,6 @@
     unixtools.xxd
     xclip
     sops
-    playwright
 
     nvd
     nix-tree
@@ -164,10 +163,6 @@
     nix-index
     nixfmt-rfc-style
     nixd
-
-    wineWowPackages.stable
-    winetricks
-    wineWowPackages.waylandFull
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -186,8 +181,6 @@
   programs.nix-ld.enable = true;
   programs.kdeconnect.enable = true;
 
-  programs.steam.enable = true;
-
   system.activationScripts.diff = {
     supportsDryActivation = true;
     text = ''
@@ -200,10 +193,7 @@
     "/share/applications"
   ];
 
-  virtualisation = {
-    docker.enable = true;
-    virtualbox.host.enable = true;
-  };
+  virtualisation.docker.enable = true;
 
   # List services that you want to enable:
 

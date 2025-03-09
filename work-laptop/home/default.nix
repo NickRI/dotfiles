@@ -32,7 +32,6 @@
     whatsapp-for-linux
     zoom-us
 
-    gsmartcontrol
     #    discord
     #    viber
     skypeforlinux
@@ -40,7 +39,6 @@
 
     kubectl
 
-    denaro
     ledger-live-desktop
 
     meteo
