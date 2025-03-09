@@ -10,7 +10,7 @@
                 "reveal": "always"
             },
             "command": "nix flake update --commit-lock-file --flake $HOME/.dotfiles -v",
-            "options": { 
+            "options": {
                 "statusbar": {
                     "label": "$(cloud-download) Up-Flakes",
                     "detail": "Nixos update flake",
@@ -25,7 +25,7 @@
                 "reveal": "always"
             },
             "command": "nixos-rebuild --use-remote-sudo switch --flake $HOME/.dotfiles#work-laptop -v",
-            "options": { 
+            "options": {
                 "statusbar": {
                     "label": "$(symbol-event) Sw-Laptop",
                     "detail": "Nixos switch work-laptop",
@@ -40,7 +40,7 @@
                 "reveal": "always"
             },
             "command": "nixos-rebuild --use-remote-sudo switch --flake $HOME/.dotfiles#nas-server --target-host nas@nas.firefly.red -v",
-            "options": { 
+            "options": {
                 "statusbar": {
                     "label": "$(server) Sw-Nas",
                     "detail": "Nixos switch nas-server",
