@@ -21,10 +21,6 @@
             };
             windows = {
               size = "160GB";
-              content = {
-                type = "filesystem";
-                format = "ntfs";
-              };
             };
             swap = {
               size = "34GB";

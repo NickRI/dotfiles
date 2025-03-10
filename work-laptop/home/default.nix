@@ -170,8 +170,9 @@
     };
 
     vscode = {
-      enable = false;
+      enable = true;
       enableUpdateCheck = false;
+      enableExtensionUpdateCheck = true;
       package = pkgs.unstable.vscodium;
 
       extensions = with vsextensions.vscode-marketplace; [
@@ -230,11 +231,6 @@
           "command" = "workbench.action.terminal.toggleTerminal";
         }
       ];
-
-      userTasks = {
-        version = "2.0.0";
-        tasks = [ ];
-      };
     };
 
     # Let Home Manager install and manage itself.
