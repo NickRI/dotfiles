@@ -173,7 +173,6 @@
       enable = true;
       enableUpdateCheck = false;
       enableExtensionUpdateCheck = true;
-      package = pkgs.unstable.vscodium;
 
       extensions = with vsextensions.vscode-marketplace; [
         eamodio.gitlens
