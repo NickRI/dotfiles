@@ -29,7 +29,6 @@
       enable = true;
       device = "nodev";
       efiSupport = true;
-      efiInstallAsRemovable = true;
       theme = grub-themes.packages.${pkgs.system}.hyperfluent;
     };
   };
