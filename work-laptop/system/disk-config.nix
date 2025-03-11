@@ -3,9 +3,10 @@
 {
   disko.devices = {
     disk = {
-      nvme0n1 = {
-        device = "/dev/nvme0n1";
-        type = "disk";
+      main = {
+       #device = "/dev/disk/by-id/nvme-WD_BLACK_SN770_500GB_22381C805393";
+       device = "/dev/nvme0n1"; 
+       type = "disk";
         content = {
           type = "gpt";
           partitions = {
@@ -20,10 +21,10 @@
               };
             };
             windows = {
-              size = "160GB";
+              size = "160G";
             };
             swap = {
-              size = "34GB";
+              size = "34G";
               content = {
                 type = "swap";
                 discardPolicy = "both";
@@ -44,3 +45,4 @@
     };
   };
 }
+
