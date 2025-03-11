@@ -123,7 +123,15 @@ in
 
         phpOptions = {
           "opcache.interned_strings_buffer" = 16;
+          memory_limit = lib.mkDefault "2G";
+          max_execution_time = 600;
+          max_input_time = 600;
+          default_socket_timeout = 360;
+          post_max_size = "512M";
+          upload_max_filesize = "512M";
         };
+
+        fastcgiTimeout = 240;
 
         secretFile = config.sops.templates."smtp.json".path;
 
