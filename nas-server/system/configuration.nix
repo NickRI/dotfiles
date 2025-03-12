@@ -79,6 +79,8 @@
     trusted-users = [ "nas" ];
   };
 
+  users.mutableUsers = false;
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.nas = {
     isNormalUser = true;
