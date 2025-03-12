@@ -8,12 +8,26 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    nixos-hardware.url = "github:NixOS/nixos-hardware/master";
-    flatpaks.url = "github:gmodena/nix-flatpak/main";
-    nixos-grub-themes.url = "github:jeslie0/nixos-grub-themes";
-    disko.url = "github:nix-community/disko";
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
-
+    nixos-hardware = {
+      url = "github:NixOS/nixos-hardware/master";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    flatpaks = {
+      url = "github:gmodena/nix-flatpak/main";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    nixos-grub-themes = {
+      url = "github:jeslie0/nixos-grub-themes";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
+    nix-vscode-extensions = {
+      url = "github:nix-community/nix-vscode-extensions";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     sops-nix = {
       url = "github:Mic92/sops-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -24,14 +38,27 @@
     };
   };
 
-  outputs = { nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs:
-  let
-   baseContext = { inherit inputs nixpkgs nixpkgs-unstable home-manager; };
-  in
-  {
-    nixosConfigurations = {
-      work-laptop = import ./work-laptop baseContext;
-      nas-server = import ./nas-server baseContext;
+  outputs =
+    {
+      nixpkgs,
+      nixpkgs-unstable,
+      home-manager,
+      ...
+    }@inputs:
+    let
+      baseContext = {
+        inherit
+          inputs
+          nixpkgs
+          nixpkgs-unstable
+          home-manager
+          ;
+      };
+    in
+    {
+      nixosConfigurations = {
+        work-laptop = import ./work-laptop baseContext;
+        nas-server = import ./nas-server baseContext;
+      };
     };
-  };
 }
