@@ -98,12 +98,6 @@
   # plain files is through 'home.file'.
   home.file = { };
 
-  home.activation.certsForPostman = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    ${pkgs.openssl}/bin/openssl req -subj '/C=US/CN=Postman Proxy' -new -newkey rsa:2048 -sha256 -days 365 -nodes -x509 \
-    -keyout $HOME/.var/app/com.getpostman.Postman/config/Postman/proxy/postman-proxy-ca.key \
-    -out $HOME/.var/app/com.getpostman.Postman/config/Postman/proxy/postman-proxy-ca.crt
-  '';
-
   # You can also manage environment variables but you will have to manually
   # source
   #
