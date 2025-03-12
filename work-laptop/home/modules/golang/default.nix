@@ -62,10 +62,7 @@ let
   });
 in
 {
-  imports = [
-    ./custom-config.nix
-    ./vscode.nix
-  ];
+  imports = [ ./vscode.nix ];
 
   config = {
     programs.go = {
@@ -74,6 +71,12 @@ in
       goPrivate = [
         "github.com/wert-io"
       ];
+    };
+
+    home.sessionPath = [ "$HOME/go/bin" ];
+
+    home.sessionVariables = {
+      GOPROXY = "https://athens.nas.firefly.red";
     };
 
     home.packages = with pkgs.unstable; [
@@ -102,8 +105,6 @@ in
         { id = "adhapdickilojlhiicaffdhbgaedfodo"; } # Go playground
       ];
     };
-
-    home.sessionPath = [ "$HOME/go/bin" ];
 
     programs.zsh = lib.mkIf (config.programs.zsh.enable) {
       oh-my-zsh.plugins = [ "golang" ];

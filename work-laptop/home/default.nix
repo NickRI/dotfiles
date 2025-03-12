@@ -204,6 +204,7 @@
         "gremlins.showInProblemPane" = true;
         "window.newWindowDimensions" = "maximized";
         "editor.rulers" = [ 80 ];
+        "explorer.confirmDelete" = false;
       };
 
       keybindings = [
