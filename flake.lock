@@ -185,11 +185,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1741043164,
-        "narHash": "sha256-9lfmSZLz6eq9Ygr6cCmvQiiBEaPb54pUBcjvbEMPORc=",
+        "lastModified": 1741644481,
+        "narHash": "sha256-E0RrMykMtEv15V3QhpsFutgoSKhL1JBhidn+iZajOyg=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "3f2412536eeece783f0d0ad3861417f347219f4d",
+        "rev": "e653d71e82575a43fe9d228def8eddb73887b866",
         "type": "github"
       },
       "original": {
@@ -201,10 +201,10 @@
     "sops-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1738462210,
-        "narHash": "sha256-+B5Vx5Xf4ReqsNIUuAebBAtugv8zJp1yGlYoIHFj6eE=",
+        "lastModified": 1741887772,
+        "narHash": "sha256-Y0tI8uCbAnt1H3fEBrWEySpJaAEcN2BrPo0ksbVBthM=",
         "ref": "main",
-        "rev": "0f53d1e80370a0cc3c963937276fa70ae6c72634",
+        "rev": "d6ae371395d7ce879d23c95b322a645202daaaad",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/NickRI/nix-secrets.git"

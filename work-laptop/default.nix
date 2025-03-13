@@ -44,10 +44,15 @@ nixpkgs.lib.nixosSystem {
       home-manager.useUserPackages = true;
       home-manager.users.nikolai = import ./home;
 
+      home-manager.sharedModules = [
+        inputs.sops-nix.homeManagerModules.sops
+        inputs.flatpaks.homeManagerModules.nix-flatpak
+      ];
+
       # Optionally, use home-manager.extraSpecialArgs to pass
       # arguments to home.nix
       home-manager.extraSpecialArgs = {
-        flatpaks = inputs.flatpaks;
+        sops-secrets = inputs.sops-secrets;
         vsextensions = inputs.nix-vscode-extensions.extensions.${system};
       };
     }

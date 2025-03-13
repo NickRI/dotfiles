@@ -1,10 +1,7 @@
-{ flatpaks, ... }:
+{ ... }:
 
 {
-  imports = [ flatpaks.homeManagerModules.nix-flatpak ];
-
   config = {
-
     services = {
       flatpak = {
         enable = true;
