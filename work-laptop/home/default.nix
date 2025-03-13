@@ -205,6 +205,8 @@
         "window.newWindowDimensions" = "maximized";
         "editor.rulers" = [ 80 ];
         "explorer.confirmDelete" = false;
+        "explorer.confirmDragAndDrop" = false;
+        "git.confirmSync" = false;
       };
 
       keybindings = [
