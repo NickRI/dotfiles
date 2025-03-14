@@ -29,6 +29,7 @@
       enable = true;
       device = "nodev";
       efiSupport = true;
+      useOSProber = true;
       theme = grub-themes.packages.${pkgs.system}.hyperfluent;
     };
   };
