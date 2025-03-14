@@ -12,6 +12,6 @@
     ./golang
     ./rust.nix
     ./vpn.nix
-    ./accounts.nix
+    ./email.nix
   ];
 }
