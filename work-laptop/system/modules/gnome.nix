@@ -25,6 +25,7 @@
     environment.gnome.excludePackages =
       (with pkgs; [
         gnome-tour
+        gnome.gnome-shell-extensions
         kgx
       ])
       ++ (with pkgs; [
@@ -32,6 +33,8 @@
         geary
         totem
       ]);
+
+    services.gnome.sushi.enable = true;
 
     programs.kdeconnect.package = pkgs.gnomeExtensions.gsconnect;
   };

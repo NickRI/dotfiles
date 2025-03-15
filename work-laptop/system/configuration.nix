@@ -14,9 +14,9 @@
     # Include the results of the hardware scan.
     ./networking.nix
     ./disk-config.nix
-    ./gnome.nix
     ./modules/ai.nix
     ./modules/yubikey.nix
+    ./modules/gnome.nix
     ../../shared/system
     ../../shared/system/sops.nix
   ];

@@ -7,6 +7,25 @@
 
 {
   config = {
+    home.packages =
+      with pkgs;
+      [
+        gnome-tweaks
+        dconf-editor
+        gnome-software
+        gnome-extension-manager
+        gnome-sound-recorder
+      ]
+      ++ (with pkgs.unstable.gnomeExtensions; [
+        appindicator
+        blur-my-shell
+        caffeine
+        vitals
+        hibernate-status-button
+        user-themes
+        hide-minimized
+      ]);
+
     dconf.settings = with lib.hm.gvariant; {
       "org/gnome/shell" = {
         disable-user-extensions = false;
@@ -21,6 +40,7 @@
           "user-theme@gnome-shell-extensions.gcampax.github.com"
           "gsconnect@andyholmes.github.io"
           "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
+          "hide-minimized@danigm.net"
         ];
 
         favorite-apps = [
@@ -236,24 +256,6 @@
         ];
       };
     };
-
-    home.packages =
-      with pkgs;
-      [
-        gnome-tweaks
-        dconf-editor
-        gnome-software
-        gnome-extension-manager
-        gnome-sound-recorder
-      ]
-      ++ (with pkgs.unstable.gnomeExtensions; [
-        appindicator
-        blur-my-shell
-        caffeine
-        vitals
-        hibernate-status-button
-        user-themes
-      ]);
 
     programs = {
       gnome-terminal = {
