@@ -33,7 +33,7 @@
           "datagrip.desktop"
           "com.getpostman.Postman.desktop"
           "org.gnome.Calendar.desktop"
-          "Mailspring.desktop"
+          "thunderbird.desktop"
           "org.gnome.Nautilus.desktop"
         ];
       };
@@ -214,6 +214,7 @@
     xdg = {
       mimeApps = lib.mkIf (config.xdg.mimeApps.enable) {
         defaultApplications = {
+          "text/calendar" = "org.gnome.Calendar.desktop";
           "image/jpeg" = "org.gnome.Loupe.desktop";
           "image/gif" = "org.gnome.Loupe.desktop";
           "image/png" = "org.gnome.Loupe.desktop";

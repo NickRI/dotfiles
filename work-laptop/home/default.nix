@@ -28,7 +28,7 @@
     docker-compose
 
     slack
-    mailspring
+
     whatsapp-for-linux
     zoom-us
 
@@ -89,7 +89,7 @@
   autoStart = with pkgs; [
     meteo
     slack
-    mailspring
+    thunderbird
     telegram-desktop
     todoist-electron
   ];
@@ -207,6 +207,7 @@
         "explorer.confirmDelete" = false;
         "explorer.confirmDragAndDrop" = false;
         "git.confirmSync" = false;
+        "database-client.autoSync" = false;
       };
 
       keybindings = [

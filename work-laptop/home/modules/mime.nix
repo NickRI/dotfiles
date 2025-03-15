@@ -8,6 +8,7 @@
         "image/svg+xml" = [ "com.boxy_svg.BoxySVG.desktop" ];
         "application/pdf" = [ "com.github.xournalpp.xournalpp.desktop" ];
         "application/vnd.sqlite3" = "org.nickvision.money.desktop";
+        "x-scheme-handler/mailto" = "thunderbird.desktop";
         "text/html" = "chromium-browser.desktop";
         "x-scheme-handler/http" = "chromium-browser.desktop";
         "x-scheme-handler/https" = "chromium-browser.desktop";
