@@ -25,7 +25,7 @@
     environment.gnome.excludePackages =
       (with pkgs; [
         gnome-tour
-        gnome.gnome-shell-extensions
+        gnome-shell-extensions
         kgx
       ])
       ++ (with pkgs; [
