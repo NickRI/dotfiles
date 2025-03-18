@@ -53,7 +53,6 @@ nixpkgs.lib.nixosSystem {
       # arguments to home.nix
       home-manager.extraSpecialArgs = {
         sops-secrets = inputs.sops-secrets;
-        vsextensions = inputs.nix-vscode-extensions.extensions.${system};
       };
     }
   ];

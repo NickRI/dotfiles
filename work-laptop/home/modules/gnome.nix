@@ -23,6 +23,7 @@
         vitals
         hibernate-status-button
         user-themes
+        auto-move-windows
         hide-minimized
       ]);
 
@@ -48,7 +49,6 @@
           "org.telegram.desktop.desktop"
           "dev.vencord.Vesktop.desktop"
           "slack.desktop"
-          "codium.desktop"
           "goland.desktop"
           "datagrip.desktop"
           "com.getpostman.Postman.desktop"

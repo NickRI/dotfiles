@@ -9,7 +9,7 @@
     ./gnome.nix
     ./flatpak.nix
     ./1password.nix
-    ./golang
+    ./golang.nix
     ./rust.nix
     ./vpn.nix
     ./email.nix

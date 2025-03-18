@@ -1,7 +1,6 @@
 {
   lib,
   pkgs,
-  vsextensions,
   ...
 }:
 
@@ -160,73 +159,6 @@
         { id = "aiifbnbfobpmeekipheeijimdpnlpgpp"; } # StationWallet
         { id = "egjidjbpglichdcondbcbdnbeeppgdph"; } # TrustWallet
         { id = "gphhapmejobijbbhgpjhcjognlahblep"; } # GnomeExtenstion
-      ];
-    };
-
-    vscode = {
-      enable = true;
-      enableUpdateCheck = false;
-      enableExtensionUpdateCheck = true;
-
-      extensions = with vsextensions.vscode-marketplace; [
-        eamodio.gitlens
-        jnoortheen.nix-ide
-        redhat.vscode-yaml
-        quicktype.quicktype
-        zxh404.vscode-proto3
-        nhoizey.gremlins
-        gruntfuggly.todo-tree
-        actboy168.tasks
-        zhuangtongfa.material-theme
-        file-icons.file-icons
-        postman.postman-for-vscode
-        alefragnani.project-manager
-        formulahendry.code-runner
-        igorsbitnev.error-gutters
-        mikestead.dotenv
-        cweijan.vscode-database-client2
-        github.vscode-pull-request-github
-        ms-azuretools.vscode-docker
-      ];
-
-      userSettings = {
-        "update.mode" = "none";
-        "git.autofetch" = true;
-        "files.autoSave" = "onFocusChange";
-        "editor.fontFamily" = "Roboto Mono for Powerline";
-        "editor.fontSize" = 16;
-        "editor.formatOnSave" = true;
-        "editor.bracketPairColorization.enabled" = true;
-        "terminal.integrated.fontFamily" = "MesloLGS NF";
-        "terminal.integrated.fontSize" = 14;
-        "terminal.integrated.fontLigatures" = true;
-        "workbench.colorTheme" = "One Dark Pro Mix";
-        "gremlins.showInProblemPane" = true;
-        "window.newWindowDimensions" = "maximized";
-        "editor.rulers" = [ 80 ];
-        "explorer.confirmDelete" = false;
-        "explorer.confirmDragAndDrop" = false;
-        "git.confirmSync" = false;
-        "database-client.autoSync" = false;
-      };
-
-      keybindings = [
-        {
-          "key" = "shift shift";
-          "command" = "workbench.action.showCommands";
-        }
-        {
-          "key" = "ctrl+d";
-          "command" = "editor.action.duplicateSelection";
-        }
-        {
-          "key" = "ctrl ctrl";
-          "command" = "workbench.action.tasks.runTask";
-        }
-        {
-          "key" = "alt alt";
-          "command" = "workbench.action.terminal.toggleTerminal";
-        }
       ];
     };
 

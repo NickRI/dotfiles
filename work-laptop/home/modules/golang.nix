@@ -62,8 +62,6 @@ let
   });
 in
 {
-  imports = [ ./vscode.nix ];
-
   config = {
     programs.go = {
       enable = true;
