@@ -1,4 +1,4 @@
-{ config, ... }@args:
+{ ... }:
 
 {
   imports = [
@@ -8,7 +8,6 @@
     ./mime.nix # need to include first than gnome to correct override
     ./gnome.nix
     ./flatpak.nix
-    ./1password.nix
     ./golang.nix
     ./rust.nix
     ./vpn.nix

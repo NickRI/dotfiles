@@ -17,6 +17,7 @@
     ./modules/ai.nix
     ./modules/yubikey.nix
     ./modules/gnome.nix
+    ./modules/1password.nix
     ../../shared/system
     ../../shared/system/sops.nix
   ];
@@ -160,15 +161,6 @@
   # started in user sessions.
   # programs.mtr.enable = true;
   programs.zsh.enable = true;
-  programs._1password = {
-    enable = true;
-    package = pkgs.unstable._1password-cli;
-  };
-  programs._1password-gui = {
-    enable = true;
-    polkitPolicyOwners = [ "nikolai" ];
-    package = pkgs.unstable._1password-gui;
-  };
   programs.nix-ld.enable = true;
   programs.kdeconnect.enable = true;
 
