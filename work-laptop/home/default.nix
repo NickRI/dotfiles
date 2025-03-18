@@ -3,7 +3,9 @@
   pkgs,
   ...
 }:
-
+let
+  upkgs = pkgs.unstable;
+in
 {
   imports = [ ./modules ];
 
@@ -23,7 +25,7 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages = with pkgs.unstable; [
+  home.packages = with upkgs; [
     docker-compose
 
     slack
@@ -85,12 +87,13 @@
     # '')
   ];
 
-  autoStart = with pkgs; [
+  autoStart = with upkgs; [
     meteo
     slack
     thunderbird
     telegram-desktop
     todoist-electron
+    nextcloud-client
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -128,7 +131,7 @@
           default = lib.mkDefault [ "gtk" ];
         };
       };
-      extraPortals = with pkgs.unstable; [
+      extraPortals = with upkgs; [
         xdg-desktop-portal-gtk
       ];
     };
@@ -139,6 +142,7 @@
 
     git = {
       enable = true;
+      package = upkgs.git;
       userEmail = "nicktt2008@yandex.ru";
       userName = "NickRI";
       signing.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAj9J0TmP14mZ7UUEETiaR+h/5kh6h19jwQgkYDPQcZ7";
@@ -151,7 +155,7 @@
 
     chromium = {
       enable = true;
-      package = pkgs.chromium;
+      package = upkgs.chromium;
       extensions = [
         { id = "nkbihfbeogaeaoehlefnkodbefgpgknn"; } # Metamask
         { id = "gighmmpiobklfepjocnamgkkbiglidom"; } # AdBlock

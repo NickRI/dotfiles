@@ -5,9 +5,12 @@
   ...
 }:
 let
+
+  upkgs = pkgs.unstable;
+
   inherit (pkgs) fetchFromGitHub;
 
-  sqlc = pkgs.unstable.sqlc.overrideAttrs (oldAttrs: rec {
+  sqlc = upkgs.sqlc.overrideAttrs (oldAttrs: rec {
     version = "1.27.0";
     vendorHash = "sha256-ndOw3uShF5TngpxYNumoK3H3R9v4crfi5V3ZCoSqW90=";
 
@@ -19,7 +22,7 @@ let
     };
   });
 
-  minimock = pkgs.unstable.go-minimock.overrideAttrs (oldAttrs: rec {
+  minimock = upkgs.go-minimock.overrideAttrs (oldAttrs: rec {
     version = "3.1.3";
     vendorHash = "sha256-fiSU2NB9rWIPQLdnui5CB5VcadTVUg2JaO3ma7DAYqo=";
 
@@ -37,9 +40,11 @@ let
     ];
   });
 
-  enumer = pkgs.unstable.enumer.overrideAttrs (oldAttrs: rec {
+  enumer = upkgs.enumer.overrideAttrs (oldAttrs: rec {
     version = "1.5.10";
     vendorHash = "sha256-CJCay24FlzDmLjfZ1VBxih0f+bgBNu+Xn57QgWT13TA=";
+
+    doCheck = false;
 
     src = fetchFromGitHub {
       owner = oldAttrs.src.owner;
@@ -49,7 +54,7 @@ let
     };
   });
 
-  golangci-lint = pkgs.unstable.golangci-lint.overrideAttrs (oldAttrs: rec {
+  golangci-lint = upkgs.golangci-lint.overrideAttrs (oldAttrs: rec {
     version = "1.60.3";
     vendorHash = "sha256-ixeswsfx36D0Tg103swbBD8UXXLNYbxSMYDE+JOm+uw=";
 
@@ -65,7 +70,7 @@ in
   config = {
     programs.go = {
       enable = true;
-      package = pkgs.unstable.go;
+      package = upkgs.go;
       goPrivate = [
         "github.com/wert-io"
       ];
@@ -77,7 +82,7 @@ in
       GOPROXY = "https://athens.nas.firefly.red";
     };
 
-    home.packages = with pkgs.unstable; [
+    home.packages = with upkgs; [
       jetbrains.goland
       jetbrains.datagrip
 
