@@ -44,9 +44,9 @@ in
         owner = "nextcloud";
         content = ''
           {
-                    "mail_smtpname": "${config.sops.placeholder."smtp/login"}",
-                    "mail_smtppassword": "${config.sops.placeholder."smtp/password"}"
-                  }'';
+            "mail_smtpname": "${config.sops.placeholder."smtp/login"}",
+            "mail_smtppassword": "${config.sops.placeholder."smtp/password"}"
+          }'';
       };
     };
 
