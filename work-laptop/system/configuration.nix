@@ -96,6 +96,9 @@
     lidSwitchDocked = "suspend";
     lidSwitchExternalPower = "ignore";
   };
+  services.journald.extraConfig = "
+    SystemMaxUse=1G
+  ";
 
   # Don't let USB devices wake the computer from sleep.
   # nix-shell -p usbutils --run lsusb

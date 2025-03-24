@@ -152,8 +152,8 @@
       };
 
       "org/gnome/gnome-system-monitor" = {
-        graph-update-interval = mkInt32 500;
-        update-interval = mkInt32 1000;
+        graph-update-interval = mkInt32 1000;
+        update-interval = mkInt32 1500;
       };
 
       "org/gnome/shell/extensions/hibernate-status-button" = {
