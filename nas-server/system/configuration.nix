@@ -107,17 +107,10 @@
     wget
     htop
     file
-    gcc
     tree
     openssl
     gnumake
     unixtools.xxd
-    xclip
-
-    nvd
-    nix-tree
-    nix-du
-    nix-index
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
