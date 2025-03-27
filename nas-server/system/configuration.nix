@@ -68,7 +68,9 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  services.fprintd.enable = true;
+  services.journald.extraConfig = "
+    SystemMaxUse=512M
+  ";
 
   nix.settings = {
     extra-platforms = config.boot.binfmt.emulatedSystems;
