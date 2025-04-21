@@ -180,6 +180,7 @@
         update-time = mkInt32 5;
         battery-slot = mkInt32 1;
         position-in-panel = mkInt32 0;
+        network-speed-format = mkInt32 1;
         hot-sensors = [
           "_processor_usage_"
           "_memory_usage_"
