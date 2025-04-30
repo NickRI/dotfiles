@@ -64,7 +64,7 @@ in
     inkscape
     graphviz
     pinta
-    pkgs.passes
+    passes
 
     tradingview
     todoist-electron
