@@ -164,6 +164,7 @@ in
         { id = "aiifbnbfobpmeekipheeijimdpnlpgpp"; } # StationWallet
         { id = "egjidjbpglichdcondbcbdnbeeppgdph"; } # TrustWallet
         { id = "gphhapmejobijbbhgpjhcjognlahblep"; } # GnomeExtenstion
+        { id = "meimoidfecamngeoanhnpdjjdcefoldn"; } # Fireflies
       ];
     };
 

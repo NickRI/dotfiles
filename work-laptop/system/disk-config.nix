@@ -4,13 +4,13 @@
   disko.devices = {
     disk = {
       main = {
-       device = "/dev/disk/by-id/nvme-WD_BLACK_SN770_500GB_22381C805393";
-       type = "disk";
+        device = "/dev/disk/by-id/nvme-WD_BLACK_SN770_500GB_22381C805393";
+        type = "disk";
         content = {
           type = "gpt";
           partitions = {
-	    MBR = {
-	      type = "EF02";
+            MBR = {
+              type = "EF02";
               size = "1M";
               priority = 1;
             };
@@ -23,9 +23,6 @@
                 mountpoint = "/boot";
                 mountOptions = [ "umask=0077" ];
               };
-            };
-            windows = {
-              size = "160G";
             };
             swap = {
               size = "34G";
@@ -43,10 +40,12 @@
                 mountpoint = "/";
               };
             };
+            windows = {
+              size = "160G";
+            };
           };
         };
       };
     };
   };
 }
-

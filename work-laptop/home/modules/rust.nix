@@ -4,11 +4,13 @@
   lib,
   ...
 }:
-
+let
+  upkgs = pkgs.unstable;
+in
 {
   config = {
-    home.packages = [
-      pkgs.unstable.rustup
+    home.packages = with upkgs; [
+      rustup
     ];
 
     home.sessionPath = [ "$HOME/.cargo/bin" ];
