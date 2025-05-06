@@ -4,64 +4,106 @@
   pkgs,
   ...
 }:
-
 let
-  cfg = builtins.fromJSON (builtins.readFile ./config.json);
-
   grafana-listen-port = 3000;
+  grafana-domain = "grafana.nas.firefly.red";
   prometheus-listen-port = 9090;
   loki-listen-port = 3100;
   promtail-listen-port = 9080;
-  grafana-full-path = "${cfg.inner-interface}:${toString grafana-listen-port}";
-  prometheus-full-path = "${cfg.inner-interface}:${toString prometheus-listen-port}";
-  loki-full-path = "${cfg.inner-interface}:${toString loki-listen-port}";
+  scrutiny-listen-port = 8089;
 in
 {
+  options.monitoring = {
+    dashboards-path = lib.mkOption {
+      type = lib.types.str;
+      default = "grafana-dashboards";
+      example = "grafana-dashboards";
+    };
+    dashboards = lib.mkOption {
+      description = "List grafana dashboards";
+      type = lib.types.listOf (
+        lib.types.submodule {
+          options = {
+            filename = lib.mkOption {
+              type = lib.types.str;
+              example = "upstream";
+            };
+            user = lib.mkOption {
+              type = lib.types.str;
+              default = "grafana";
+              example = "grafana";
+            };
+            group = lib.mkOption {
+              type = lib.types.str;
+              default = "grafana";
+              example = "grafana";
+            };
+            mode = lib.mkOption {
+              type = lib.types.str;
+              default = "0444";
+              example = "0444";
+            };
+          };
+        }
+      );
+    };
+  };
+
   config = {
-
-    environment.etc = lib.mkIf (config.services.grafana.enable) {
-      "${cfg.dashboards-dir}/node-exporter-full-rev5.json" = {
-        source = ../../files/${cfg.dashboards-dir}/node-exporter-full-rev5.json;
-        group = "grafana";
-        user = "grafana";
-        mode = "0444";
+    acme.upstreams =
+      [ ]
+      ++ lib.optional (config.services.grafana.enable) {
+        name = "grafana";
+        domain = grafana-domain;
+        local-port = grafana-listen-port;
+      }
+      ++ lib.optional (config.services.prometheus.enable) {
+        name = "prometheus";
+        domain = "prometheus.nas.firefly.red";
+        local-port = prometheus-listen-port;
+      }
+      ++ lib.optional (config.services.scrutiny.enable) {
+        name = "scrutiny";
+        domain = "scrutiny.nas.firefly.red";
+        local-port = scrutiny-listen-port;
       };
-      "${cfg.dashboards-dir}/raid_mdadm_rev1.json" = {
-        source = ../../files/${cfg.dashboards-dir}/raid_mdadm_rev1.json;
-        group = "grafana";
-        user = "grafana";
-        mode = "0444";
-      };
-      "${cfg.dashboards-dir}/smartctl_exporter_rev1.json" = {
-        source = ../../files/${cfg.dashboards-dir}/smartctl_exporter_rev1.json;
-        group = "grafana";
-        user = "grafana";
-        mode = "0444";
-      };
-    };
 
-    security.acme.certs = {
-      ${cfg.grafana-domain} = lib.mkIf (
-        config.services.grafana.enable
-        && config.services.nginx.virtualHosts."${cfg.grafana-domain}".enableACME
-      ) config.security.acme.defaults;
-    };
-
-    environment.systemPackages = with pkgs; [
-      lm_sensors # needed for temperature
+    monitoring.dashboards = lib.mkIf (config.services.grafana.enable) [
+      {
+        filename = "node-exporter-full-rev5.json";
+      }
+      {
+        filename = "raid_mdadm_rev1.json";
+      }
+      {
+        filename = "smartctl_exporter_rev1.json";
+      }
     ];
+
+    environment = lib.mkIf (config.services.grafana.enable) {
+      systemPackages = with pkgs; [
+        lm_sensors # needed for temperature
+      ];
+      etc = lib.listToAttrs (
+        map (dashboard: {
+          name = "${config.monitoring.dashboards-path}/${dashboard.filename}";
+          value = {
+            source = ../../files/${config.monitoring.dashboards-path}/${dashboard.filename};
+            group = dashboard.group;
+            user = dashboard.user;
+            mode = dashboard.mode;
+          };
+        }) config.monitoring.dashboards
+      );
+    };
 
     services = {
       grafana = {
-        enable = true;
         settings = {
           server = {
-            # Listening Address
-            http_addr = cfg.inner-interface;
-            # and Port
             http_port = grafana-listen-port;
             # Grafana needs to know on which domain and URL it's running
-            domain = cfg.grafana-domain;
+            domain = grafana-domain;
           };
           users = {
             default_theme = "system";
@@ -80,7 +122,7 @@ in
               providers = [
                 {
                   name = "My Dashboards";
-                  options.path = "/etc/${cfg.dashboards-dir}";
+                  options.path = "/etc/${config.monitoring.dashboards-path}";
                 }
               ];
             };
@@ -90,13 +132,13 @@ in
               name = "Prometheus";
               type = "prometheus";
               access = "proxy";
-              url = "http://${prometheus-full-path}";
+              url = "http://localhost:${toString prometheus-listen-port}";
             }
             {
               name = "Loki";
               type = "loki";
               access = "proxy";
-              url = "http://${loki-full-path}";
+              url = "http://localhost:${toString loki-listen-port}";
             }
           ];
         };
@@ -104,7 +146,7 @@ in
 
       prometheus = lib.mkIf (config.services.grafana.enable) rec {
         enable = true;
-        listenAddress = cfg.inner-interface;
+        listenAddress = "localhost";
         port = prometheus-listen-port;
 
         exporters = {
@@ -131,7 +173,8 @@ in
           };
           smartctl = {
             enable = true;
-            listenAddress = cfg.inner-interface;
+            port = 9633;
+            listenAddress = listenAddress;
           };
         };
 
@@ -157,7 +200,7 @@ in
             static_configs = [
               {
                 targets = [
-                  "${cfg.inner-interface}:${toString config.services.prometheus.exporters.smartctl.port}"
+                  "${toString listenAddress}:${toString exporters.smartctl.port}"
                 ];
               }
             ];
@@ -173,14 +216,14 @@ in
           server.http_listen_port = loki-listen-port;
 
           common = {
-            instance_addr = cfg.inner-interface;
+            instance_addr = "localhost";
             path_prefix = "/tmp/loki";
             ring.kvstore.store = "inmemory";
           };
 
           ingester = {
             lifecycler = {
-              address = cfg.inner-interface;
+              address = "localhost";
               ring = {
                 kvstore = {
                   store = "inmemory";
@@ -252,66 +295,17 @@ in
             grpc_listen_port = 0;
           };
           clients = [
-            { url = "http://${cfg.inner-interface}:${toString loki-listen-port}/loki/api/v1/push"; }
+            { url = "http://localhost:${toString loki-listen-port}/loki/api/v1/push"; }
           ];
         };
       };
 
-      nginx = lib.mkIf (config.services.grafana.enable) {
-        enable = true;
-        recommendedProxySettings = true;
-        recommendedOptimisation = true;
-        recommendedGzipSettings = true;
-        # recommendedTlsSettings = true;
-
-        upstreams = {
-          "grafana" = {
-            servers = {
-              "${grafana-full-path}" = { };
-            };
-          };
-          #          "prometheus" = {
-          #            servers = {
-          #              "${prometheus-full-path}" = {};
-          #            };
-          #          };
+      scrutiny = {
+        settings.web.listen = {
+          host = "localhost";
+          port = scrutiny-listen-port;
         };
-
-        virtualHosts."${cfg.grafana-domain}" = {
-          forceSSL = true;
-          enableACME = true;
-
-          locations."/" = {
-            proxyPass = "http://grafana";
-            proxyWebsockets = true;
-          };
-          listen = [
-            {
-              addr = cfg.external-interface;
-              port = 80;
-            }
-            {
-              addr = cfg.external-interface;
-              port = 443;
-              ssl = true;
-            }
-          ];
-        };
-
-        #        virtualHosts."${cfg.prometheus-domain}" = {
-        #          locations."/" = {
-        #            proxyPass = http://prometheus;
-        #            proxyWebsockets = true;
-        #          };
-        #          listen = [
-        #            { addr = cfg.external-interface; port = 80; }
-        #            { addr = cfg.external-interface; port = 443; ssl = true; }
-        #          ];
-        #        };
-
       };
-
     };
   };
-
 }
