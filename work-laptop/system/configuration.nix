@@ -34,6 +34,12 @@
     };
   };
 
+  zramSwap = {
+    enable = true;
+    memoryPercent = 40;
+    priority = 10;
+  };
+
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Set your time zone.
