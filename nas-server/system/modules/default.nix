@@ -18,7 +18,7 @@
     nextcloud.enable = true;
     gitea.enable = true;
     transmission.enable = true;
-    bitmagnet.enable = true;
+    bitmagnet.enable = false;
     homepage-dashboard.enable = true;
     athens.enable = true;
     ncps.enable = true;
