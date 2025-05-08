@@ -59,16 +59,16 @@
       recommendedGzipSettings = true;
       # recommendedTlsSettings = true;
 
-      upstreams = lib.listToAttrs (
-        map (upstream: {
-          name = upstream.name;
-          value = {
-            servers = {
-              "localhost:${toString upstream.local-port}" = { };
-            };
-          };
-        }) config.acme.upstreams
-      );
+      #      upstreams = lib.listToAttrs (
+      #        map (upstream: {
+      #          name = upstream.name;
+      #          value = {
+      #            servers = {
+      #              "localhost:${toString upstream.local-port}" = { };
+      #            };
+      #          };
+      #        }) config.acme.upstreams
+      #      );
 
       virtualHosts = lib.listToAttrs (
         map (upstream: {
@@ -78,7 +78,7 @@
             enableACME = true;
 
             locations."/" = {
-              proxyPass = "http://${upstream.name}";
+              proxyPass = "http://127.0.0.1:${toString upstream.local-port}";
               proxyWebsockets = true;
             };
 
