@@ -118,6 +118,8 @@
 
   nix.settings = {
     extra-platforms = config.boot.binfmt.emulatedSystems;
+    substituters = [ "https://ncps.nas.firefly.red" ];
+    trusted-public-keys = [ "nas-server:cuyVqPWGdChzp3u2CM0KEOfCrUubxo1uJYhPASuaKyQ" ];
     experimental-features = [
       "nix-command"
       "flakes"
