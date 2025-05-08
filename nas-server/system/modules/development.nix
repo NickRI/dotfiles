@@ -1,8 +1,8 @@
 { config, lib, ... }:
+
 let
   gitea-listen-port = 6911;
   gitea-domain = "gitea.nas.firefly.red";
-  athens-listen-port = 6934;
 in
 {
   acme.upstreams =
@@ -11,11 +11,6 @@ in
       name = "gitea";
       domain = gitea-domain;
       local-port = gitea-listen-port;
-    }
-    ++ lib.optional (config.services.athens.enable) {
-      name = "athens";
-      domain = "athens.nas.firefly.red";
-      local-port = athens-listen-port;
     };
 
   monitoring.dashboards = lib.mkIf (config.services.gitea.enable) [
@@ -48,13 +43,6 @@ in
         #
         #          };
       };
-    };
-
-    athens = {
-      enable = true;
-      storage.disk.rootPath = "/storage/athens";
-      port = athens-listen-port;
-      logLevel = "info";
     };
 
     prometheus = lib.mkIf (config.services.gitea.enable) {

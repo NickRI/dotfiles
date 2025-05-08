@@ -170,6 +170,15 @@ in
                 }
               ];
             }
+            {
+              "Get ncps pubkey" = [
+                {
+                  abbr = "NCPS";
+                  icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/nixos.svg";
+                  href = "https://ncps.nas.firefly.red";
+                }
+              ];
+            }
           ];
         }
         {
