@@ -80,6 +80,27 @@ in
       }
     ];
 
+    homepage.services.Infrastructure = {
+      Grafana = lib.mkIf (config.services.grafana.enable) rec {
+        description = "The open and composable observability platform";
+        icon = "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/grafana-icon.svg";
+        href = "https://grafana.nas.firefly.red/";
+        siteMonitor = href;
+      };
+      Prometheus = lib.mkIf (config.services.prometheus.enable) rec {
+        description = "Monitoring system & time series database";
+        icon = "https://www.svgrepo.com/download/354219/prometheus.svg";
+        href = "https://prometheus.nas.firefly.red/";
+        siteMonitor = href;
+      };
+      Scrutiny = lib.mkIf (config.services.scrutiny.enable) rec {
+        description = "WebUI for smartd S.M.A.R.T monitoring";
+        icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/scrutiny.svg";
+        href = "https://scrutiny.nas.firefly.red/";
+        siteMonitor = href;
+      };
+    };
+
     environment = lib.mkIf (config.services.grafana.enable) {
       systemPackages = with pkgs; [
         lm_sensors # needed for temperature

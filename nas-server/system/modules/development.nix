@@ -13,6 +13,15 @@ in
       local-port = gitea-listen-port;
     };
 
+  homepage.services.Development = {
+    Gitea = lib.mkIf (config.services.gitea.enable) rec {
+      description = "Open source content collaboration platform";
+      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/gitea.svg";
+      href = "https://gitea.nas.firefly.red/";
+      siteMonitor = href;
+    };
+  };
+
   monitoring.dashboards = lib.mkIf (config.services.gitea.enable) [
     {
       filename = "gitea_rev1.json";

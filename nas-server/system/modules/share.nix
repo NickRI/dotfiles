@@ -24,6 +24,15 @@ in
       local-port = ncps-listen-port;
     };
 
+  homepage.services.Development = {
+    Athens = lib.mkIf (config.services.athens.enable) rec {
+      description = "A Go module datastore and proxy";
+      icon = "https://www.svgrepo.com/download/215353/parthenon-athens.svg";
+      href = "https://athens.nas.firefly.red/";
+      siteMonitor = href;
+    };
+  };
+
   services = {
     samba = {
       enable = config.services.transmission.enable;

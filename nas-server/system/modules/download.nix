@@ -22,6 +22,21 @@ in
       local-port = bitmagnet-listen-port;
     };
 
+  homepage.services.Services = {
+    Transmission = lib.mkIf (config.services.transmission.enable) rec {
+      description = "A fast, easy and free Bittorrent client for macOS, Windows and Linux";
+      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/transmission.svg";
+      href = "https://transmission.nas.firefly.red/";
+      siteMonitor = href;
+    };
+    Bitmagnet = lib.mkIf (config.services.bitmagnet.enable) rec {
+      description = "A self-hosted BitTorrent indexer, DHT crawler";
+      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/bitmagnet.png";
+      href = "https://bitmagnet.nas.firefly.red/";
+      siteMonitor = href;
+    };
+  };
+
   sops = {
     secrets = {
       "nas/transmission/username" = { };

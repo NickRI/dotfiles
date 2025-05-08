@@ -17,6 +17,15 @@ in
     }
   ];
 
+  homepage.services.Services = {
+    Nextcloud = lib.mkIf (config.services.nextcloud.enable) rec {
+      description = "Open source content collaboration platform";
+      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/nextcloud.svg";
+      href = "https://nextcloud.nas.firefly.red/";
+      siteMonitor = href;
+    };
+  };
+
   security.acme.certs = {
     ${nextcloud-domain} = lib.mkIf (config.services.nextcloud.enable) config.security.acme.defaults;
   };
