@@ -38,6 +38,11 @@ in
               type = lib.types.int;
               example = 1921;
             };
+            location-extra-config = lib.mkOption {
+              type = lib.types.str;
+              default = "";
+              example = "proxy_connect_timeout 30m;";
+            };
           };
         }
       );
@@ -100,6 +105,7 @@ in
                 else
                   "http://127.0.0.1:${toString entry.local-port}";
               proxyWebsockets = true;
+              extraConfig = entry.location-extra-config;
             };
 
             listen = [

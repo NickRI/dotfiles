@@ -19,6 +19,11 @@ in
     ncps = lib.mkIf (config.services.ncps.enable) {
       domain = "ncps.nas.firefly.red";
       local-port = ncps-listen-port;
+      location-extra-config = "
+        proxy_connect_timeout 1m;
+        proxy_read_timeout 5m;
+        proxy_send_timeout 1m;
+      ";
     };
   };
 
