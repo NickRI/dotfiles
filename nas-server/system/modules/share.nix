@@ -11,18 +11,16 @@ let
 in
 
 {
-  acme.upstreams =
-    [ ]
-    ++ lib.optional (config.services.athens.enable) {
-      name = "athens";
+  hosts.entries = {
+    athens = lib.mkIf (config.services.athens.enable) {
       domain = "athens.nas.firefly.red";
       local-port = athens-listen-port;
-    }
-    ++ lib.optional (config.services.ncps.enable) {
-      name = "ncps";
+    };
+    ncps = lib.mkIf (config.services.ncps.enable) {
       domain = "ncps.nas.firefly.red";
       local-port = ncps-listen-port;
     };
+  };
 
   homepage.services.Development = {
     Athens = lib.mkIf (config.services.athens.enable) rec {

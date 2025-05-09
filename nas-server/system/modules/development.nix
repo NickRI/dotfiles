@@ -5,13 +5,12 @@ let
   gitea-domain = "gitea.nas.firefly.red";
 in
 {
-  acme.upstreams =
-    [ ]
-    ++ lib.optional (config.services.gitea.enable) {
-      name = "gitea";
+  hosts.entries = {
+    gitea = lib.mkIf (config.services.gitea.enable) {
       domain = gitea-domain;
       local-port = gitea-listen-port;
     };
+  };
 
   homepage.services.Development = {
     Gitea = lib.mkIf (config.services.gitea.enable) rec {

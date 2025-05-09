@@ -50,23 +50,20 @@ in
   };
 
   config = {
-    acme.upstreams =
-      [ ]
-      ++ lib.optional (config.services.grafana.enable) {
-        name = "grafana";
+    hosts.entries = {
+      grafana = lib.mkIf (config.services.grafana.enable) {
         domain = grafana-domain;
         local-port = grafana-listen-port;
-      }
-      ++ lib.optional (config.services.prometheus.enable) {
-        name = "prometheus";
+      };
+      prometheus = lib.mkIf (config.services.prometheus.enable) {
         domain = "prometheus.nas.firefly.red";
         local-port = prometheus-listen-port;
-      }
-      ++ lib.optional (config.services.scrutiny.enable) {
-        name = "scrutiny";
+      };
+      scrutiny = lib.mkIf (config.services.scrutiny.enable) {
         domain = "scrutiny.nas.firefly.red";
         local-port = scrutiny-listen-port;
       };
+    };
 
     monitoring.dashboards = lib.mkIf (config.services.grafana.enable) [
       {

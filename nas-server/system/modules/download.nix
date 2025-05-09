@@ -9,18 +9,16 @@ let
   bitmagnet-listen-port = 3333;
 in
 {
-  acme.upstreams =
-    [ ]
-    ++ lib.optional (config.services.transmission.enable) {
-      name = "transmission";
+  hosts.entries = {
+    transmission = lib.mkIf (config.services.transmission.enable) {
       domain = "transmission.nas.firefly.red";
       local-port = transmission-listen-port;
-    }
-    ++ lib.optional (config.services.bitmagnet.enable) {
-      name = "bitmagnet";
+    };
+    bitmagnet = lib.mkIf (config.services.bitmagnet.enable) {
       domain = "bitmagnet.nas.firefly.red";
       local-port = bitmagnet-listen-port;
     };
+  };
 
   homepage.services.Services = {
     Transmission = lib.mkIf (config.services.transmission.enable) rec {

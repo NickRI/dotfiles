@@ -33,18 +33,12 @@ in
   };
 
   config = {
-    acme.hosts = lib.mkIf (config.services.homepage-dashboard.enable) [
-      {
-        name = "homepage";
-        domain = "nas.firefly.red";
-        local-port = homepage-listen-port;
-      }
-      {
-        name = "homepage";
+    hosts.entries = {
+      homepage = lib.mkIf (config.services.homepage-dashboard.enable) {
         domain = "home.nas.firefly.red";
         local-port = homepage-listen-port;
-      }
-    ];
+      };
+    };
 
     services = {
       homepage-dashboard = {

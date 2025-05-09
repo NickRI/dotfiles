@@ -172,11 +172,11 @@ in
       enableACME = true;
       listen = [
         {
-          addr = config.acme.external-interface;
+          addr = config.hosts.external-interface;
           port = 80;
         }
         {
-          addr = config.acme.external-interface;
+          addr = config.hosts.external-interface;
           port = 443;
           ssl = true;
         }
