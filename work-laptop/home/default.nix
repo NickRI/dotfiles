@@ -35,7 +35,6 @@ in
 
     #    discord
     #    viber
-    skypeforlinux
     telegram-desktop
 
     kubectl
