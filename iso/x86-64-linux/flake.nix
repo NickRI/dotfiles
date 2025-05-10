@@ -75,6 +75,12 @@
               openssl
             ];
 
+            environment.etc.issue.text = ''
+              Here is x86-64 linux installer.
+              Use nmcli or nmtui to enable internet connection.
+              For install use install-dotfiles command.
+            '';
+
             # Enable the OpenSSH daemon.
             services.openssh = {
               enable = true;
