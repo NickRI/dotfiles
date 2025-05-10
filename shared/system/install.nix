@@ -34,16 +34,30 @@ let
 
     configuration=$(nix flake show --json | nix run "nixpkgs#jq" -- -r '.nixosConfigurations | keys[]' | nix run "nixpkgs#fzf" -- --header="Please select your configuration:" --prompt="configuration: ")
     disko_mode=$(echo -e "mount\nformat\ndestroy" | nix run "nixpkgs#fzf" -- --header="Please select disko mode:" --prompt="disko_mode: ")
-    installer=$(echo -e "disko-install\nnixos-anywhere" | nix run "nixpkgs#fzf" -- --header="Please select installer:" --prompt="installer: ")
+    installer=$(echo -e "disko-install\nnixos-anywhere\nnixos-install" | nix run "nixpkgs#fzf" -- --header="Please select installer:" --prompt="installer: ")
 
+    read -p "Enter optional substituters (leave empty for https://ncps.nas.firefly.red): " substituters
+
+    if [ -n "$substituters" ]; then
+      nix_options="--option substituters $substituters"
+    else
+      nix_options="--option substituters https://ncps.nas.firefly.red"
+    fi
 
     case "$installer" in
        "disko-install")
-          logrun sudo nix run "github:nix-community/disko/latest#disko-install" -- --flake "./dotfiles#\$configuration" --mode "$disko_mode"
+          logrun sudo nix run "github:nix-community/disko/latest#disko-install" -- --flake "./dotfiles#$configuration" --mode "$disko_mode" $nix_options
           ;;
        "nixos-anywhere")
           read -p "Please enter remote user@host: " target_host
-          logrun nix run "github:nix-community/nixos-anywhere" -- --disko-mode "$disko_mode" --flake "./dotfiles#\$configuration" --target-host "$target_host"
+          logrun nix run "github:nix-community/nixos-anywhere" -- --disko-mode "$disko_mode" --flake "./dotfiles#$configuration" --target-host "$target_host" $nix_options
+          ;;
+      "nixos-install")
+          if [ ! -d /mnt ]; then
+            echo "/mnt not found, probably not mounted abort"
+            exit 1
+          fi
+          logrun sudo nixos-install --flake "./dotfiles#$configuration" $nix_options
           ;;
        *)
           echo "You need to select installer, abort"
