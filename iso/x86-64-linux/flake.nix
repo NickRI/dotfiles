@@ -26,6 +26,7 @@
           {
             imports = [
               "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix"
+              ../../shared/system/install.nix
             ];
 
             boot = {
