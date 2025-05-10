@@ -20,6 +20,7 @@
     ./modules/1password.nix
     ../../shared/system
     ../../shared/system/sops.nix
+    ../../shared/system/install.nix
   ];
 
   # Bootloader.
