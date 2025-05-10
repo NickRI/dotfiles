@@ -10,29 +10,29 @@ let
       "$@"
     }
 
-    if [ ! -f .ssh/id_ed25519 ]
-    then
-      echo -n "Paste your id_ed25519: "
-      read -s id_ed25519
-
+    if [ ! -d $HOME/.ssh ]; then
       mkdir .ssh
-      echo $id_ed25519 > .ssh/id_ed25519
-      chmod 600 .ssh/id_ed25519
     fi
 
-    if [ ! -d ./dotfiles ]; then
+    if [ ! -f $HOME/.ssh/id_ed25519 ]
+    then
+      echo "Private key $HOME/.ssh/id_ed25519 not found. You need to add it manually. Abort!"
+      exit 1
+    fi
+
+    if [ ! -d $HOME/dotfiles ]; then
      logrun git clone https://github.com/nickRI/dotfiles
     fi
 
-    if [ ! -d ./dotfiles/nix-secrets ]; then
-      logrun git clone git@github.com:NickRI/nix-secrets.git ./dotfiles/nix-secrets
+    if [ ! -d $HOME/dotfiles/nix-secrets ]; then
+      logrun git clone git@github.com:NickRI/nix-secrets.git $HOME/dotfiles/nix-secrets
     fi
 
     echo "Rewrite flake secret path"
 
-    logrun sed -i "s|git+ssh://git@github.com/NickRI/nix-secrets.git?ref=main&shallow=1|path:$(pwd)/nix-secrets|" ./dotfiles/flake.nix
+    logrun sed -i "s|git+ssh://git@github.com/NickRI/nix-secrets.git?ref=main&shallow=1|path:$(pwd)/nix-secrets|" $HOME/dotfiles/flake.nix
 
-    configuration=$(nix flake show --json | nix run "nixpkgs#jq" -- -r '.nixosConfigurations | keys[]' | nix run "nixpkgs#fzf" -- --header="Please select your configuration:" --prompt="configuration: ")
+    configuration=$(nix flake show --json github:NickRI/dotfiles | nix run "nixpkgs#jq" -- -r '.nixosConfigurations | keys[]' | nix run "nixpkgs#fzf" -- --header="Please select your configuration:" --prompt="configuration: ")
     disko_mode=$(echo -e "mount\nformat\ndestroy" | nix run "nixpkgs#fzf" -- --header="Please select disko mode:" --prompt="disko_mode: ")
     installer=$(echo -e "disko-install\nnixos-anywhere\nnixos-install" | nix run "nixpkgs#fzf" -- --header="Please select installer:" --prompt="installer: ")
 
@@ -46,18 +46,18 @@ let
 
     case "$installer" in
        "disko-install")
-          logrun sudo nix run "github:nix-community/disko/latest#disko-install" -- --flake "./dotfiles#$configuration" --mode "$disko_mode" $nix_options
+          logrun sudo nix run $nix_options "github:nix-community/disko/latest#disko-install" -- --flake "$HOME/dotfiles#$configuration" --mode "$disko_mode"
           ;;
        "nixos-anywhere")
           read -p "Please enter remote user@host: " target_host
-          logrun nix run "github:nix-community/nixos-anywhere" -- --disko-mode "$disko_mode" --flake "./dotfiles#$configuration" --target-host "$target_host" $nix_options
+          logrun nix run $nix_options "github:nix-community/nixos-anywhere" -- --disko-mode "$disko_mode" --flake "$HOME/dotfiles#$configuration" --target-host "$target_host"
           ;;
       "nixos-install")
           if [ ! -d /mnt ]; then
             echo "/mnt not found, probably not mounted abort"
             exit 1
           fi
-          logrun sudo nixos-install --flake "./dotfiles#$configuration" $nix_options
+          logrun sudo nixos-install $nix_options --flake "$HOME/dotfiles#$configuration"
           ;;
        *)
           echo "You need to select installer, abort"
