@@ -30,7 +30,7 @@ let
 
     echo "Rewrite flake secret path"
 
-    logrun sed -i "s|git+ssh://git@github.com/NickRI/nix-secrets.git?ref=main&shallow=1|path:$(pwd)/nix-secrets|" $HOME/dotfiles/flake.nix
+    logrun sed -i "s|git+ssh://git@github.com/NickRI/nix-secrets.git?ref=main&shallow=1|path:$HOME/dotfiles/nix-secrets|" $HOME/dotfiles/flake.nix
 
     configuration=$(nix flake show --json github:NickRI/dotfiles | nix run "nixpkgs#jq" -- -r '.nixosConfigurations | keys[]' | nix run "nixpkgs#fzf" -- --header="Please select your configuration:" --prompt="configuration: ")
     disko_mode=$(echo -e "mount\nformat\ndestroy" | nix run "nixpkgs#fzf" -- --header="Please select disko mode:" --prompt="disko_mode: ")
