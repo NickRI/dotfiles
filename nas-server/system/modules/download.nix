@@ -75,7 +75,7 @@ in
         tmdb.enabled = false;
         http_server.port = ":${toString bitmagnet-listen-port}";
         postgres = {
-          host = "localhost:5432";
+          host = "localhost";
           name = "bitmagnet";
           user = "bitmagnet";
         };
