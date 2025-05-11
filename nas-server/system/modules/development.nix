@@ -51,6 +51,23 @@ in
         #
         #          };
       };
+
+      database = {
+        type = "postgres";
+        host = "localhost";
+        createDatabase = false;
+      };
+    };
+
+    postgresql = {
+      ensureDatabases = [ "gitea" ];
+      ensureUsers = [
+        {
+          # TODO: WAIT FOR passwordFile option https://github.com/NixOS/nixpkgs/pull/326306
+          name = "gitea";
+          ensureDBOwnership = true;
+        }
+      ];
     };
 
     prometheus = lib.mkIf (config.services.gitea.enable) {

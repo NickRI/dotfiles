@@ -62,6 +62,23 @@ in
       storage.disk.rootPath = "/storage/athens";
       port = athens-listen-port;
       logLevel = "info";
+      indexType = "postgres";
+      index.postgres = {
+        user = "athens";
+        database = "athens";
+        host = "localhost";
+      };
+    };
+
+    postgresql = {
+      ensureDatabases = [ "athens" ];
+      ensureUsers = [
+        {
+          # TODO: WAIT FOR passwordFile option https://github.com/NixOS/nixpkgs/pull/326306
+          name = "athens";
+          ensureDBOwnership = true;
+        }
+      ];
     };
 
     ncps = {

@@ -74,7 +74,25 @@ in
       settings = {
         tmdb.enabled = false;
         http_server.port = ":${toString bitmagnet-listen-port}";
+        postgres = {
+          host = "localhost:5432";
+          name = "bitmagnet";
+          user = "bitmagnet";
+        };
       };
+
+      useLocalPostgresDB = false;
+    };
+
+    postgresql = {
+      ensureDatabases = [ "bitmagnet" ];
+      ensureUsers = [
+        {
+          # TODO: WAIT FOR passwordFile option https://github.com/NixOS/nixpkgs/pull/326306
+          name = "bitmagnet";
+          ensureDBOwnership = true;
+        }
+      ];
     };
   };
 }

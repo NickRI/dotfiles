@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./database.nix
     ./acme.nix
     ./monitoring.nix
     ./nextcloud.nix
@@ -12,6 +13,7 @@
   ];
 
   config.services = {
+    postgresql.enable = true;
     nginx.enable = true;
     grafana.enable = true;
     scrutiny.enable = true;

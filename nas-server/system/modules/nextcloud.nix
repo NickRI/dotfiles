@@ -163,8 +163,22 @@ in
         adminuser = "nikolai";
         adminpassFile = config.sops.secrets."nas/nextcloud/admin-password".path;
 
-        dbtype = "sqlite";
+        dbtype = "pgsql";
+        dbhost = "localhost:5432";
+        dbuser = "nextcloud";
+        dbname = "nextcloud";
       };
+    };
+
+    postgresql = {
+      ensureDatabases = [ "nextcloud" ];
+      ensureUsers = [
+        {
+          # TODO: WAIT FOR passwordFile option https://github.com/NixOS/nixpkgs/pull/326306
+          name = "nextcloud";
+          ensureDBOwnership = true;
+        }
+      ];
     };
 
     nginx.virtualHosts."${nextcloud-domain}" = lib.mkIf (config.services.nextcloud.enable) {
