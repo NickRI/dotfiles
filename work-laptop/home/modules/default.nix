@@ -12,5 +12,6 @@
     ./rust.nix
     ./vpn.nix
     ./email.nix
+    # ./sync.nix TODO: Wait until new version of home-manager
   ];
 }
