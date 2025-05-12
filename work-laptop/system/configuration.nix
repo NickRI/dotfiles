@@ -179,13 +179,6 @@
   programs.nix-ld.enable = true;
   programs.kdeconnect.enable = true;
 
-  system.activationScripts.diff = {
-    supportsDryActivation = true;
-    text = ''
-      ${pkgs.nix}/bin/nix store diff-closures /run/current-system "$systemConfig" --impure
-    '';
-  };
-
   environment.pathsToLink = [
     "/share/xdg-desktop-portal"
     "/share/applications"
