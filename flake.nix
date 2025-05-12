@@ -23,7 +23,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     sops-secrets = {
-      url = "path:/home/nixos/dotfiles/nix-secrets";
+      url = "git+ssh://git@github.com/NickRI/nix-secrets.git?ref=main&shallow=1";
       flake = false;
     };
   };
