@@ -36,7 +36,7 @@ nixpkgs.lib.nixosSystem {
     home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
     inputs.sops-nix.nixosModules.sops
-    ../platforms/zimablade-7700.nix
+    ../shared/platforms/zimablade-7700.nix
     ./system/configuration.nix
     {
       home-manager.useGlobalPkgs = true;

@@ -37,7 +37,7 @@ nixpkgs.lib.nixosSystem {
     home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
     inputs.sops-nix.nixosModules.sops
-    ../platforms/framework-13-amd-ai-300-series.nix
+    ../shared/platforms/framework-13-amd-ai-300-series.nix
     ./system/configuration.nix
     {
       home-manager.useGlobalPkgs = true;
