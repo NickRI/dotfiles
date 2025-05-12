@@ -1,6 +1,5 @@
 {
-  config,
-  lib,
+  pkgs,
   modulesPath,
   nixos-hardware,
   ...
@@ -20,9 +19,5 @@
     "usbhid"
     "sd_mod"
   ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [ ];
-
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 }
