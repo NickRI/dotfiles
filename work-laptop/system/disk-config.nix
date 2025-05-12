@@ -17,6 +17,7 @@
             ESP = {
               type = "EF00";
               size = "550M";
+              priority = 2;
               content = {
                 type = "filesystem";
                 format = "vfat";
@@ -26,6 +27,7 @@
             };
             swap = {
               size = "34G";
+              priority = 3;
               content = {
                 type = "swap";
                 discardPolicy = "both";
@@ -33,7 +35,8 @@
               };
             };
             root = {
-              size = "100%";
+              size = "280G";
+              priority = 4;
               content = {
                 type = "filesystem";
                 format = "ext4";
@@ -41,7 +44,8 @@
               };
             };
             windows = {
-              size = "160G";
+              size = "100%";
+              priority = 5;
             };
           };
         };

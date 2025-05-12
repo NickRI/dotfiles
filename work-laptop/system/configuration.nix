@@ -30,7 +30,6 @@
 
     grub = {
       enable = true;
-      devices = lib.mkForce [ config.disko.devices.disk.main.device ];
       efiSupport = true;
       theme = grub-themes.packages.${pkgs.system}.hyperfluent;
     };
