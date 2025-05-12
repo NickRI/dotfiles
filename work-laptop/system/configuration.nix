@@ -6,6 +6,7 @@
   grub-themes,
   config,
   pkgs,
+  lib,
   ...
 }:
 
@@ -29,10 +30,12 @@
 
     grub = {
       enable = true;
-      device = "nodev";
+      devices = lib.mkForce [ config.disko.devices.disk.main.device ];
       efiSupport = true;
       theme = grub-themes.packages.${pkgs.system}.hyperfluent;
     };
+
+    efi.canTouchEfiVariables = true;
   };
 
   zramSwap = {

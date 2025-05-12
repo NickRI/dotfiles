@@ -9,7 +9,7 @@
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
-    nixos-hardware.nixosModules.amd-ai-300-series
+    nixos-hardware.nixosModules.framework-amd-ai-300-series
   ];
 
   boot.initrd.availableKernelModules = [
