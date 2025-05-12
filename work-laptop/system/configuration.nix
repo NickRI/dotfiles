@@ -97,7 +97,6 @@
   # services.xserver.libinput.enable = true;
 
   services.flatpak.enable = true;
-  services.fprintd.enable = true;
   services.fwupd.enable = true;
   services.fstrim.enable = true;
   services.logind = {
