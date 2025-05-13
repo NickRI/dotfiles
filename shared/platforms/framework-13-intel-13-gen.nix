@@ -19,5 +19,5 @@
     "usbhid"
     "sd_mod"
   ];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+
 }

@@ -18,5 +18,8 @@
     "thunderbolt"
     "usbhid"
   ];
+
+  boot.blacklistedKernelModules = [ "ucsi_acpi" ];
+
   boot.kernelPackages = pkgs.linuxPackages_latest;
 }
