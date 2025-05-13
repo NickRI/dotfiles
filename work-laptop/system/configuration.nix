@@ -112,6 +112,13 @@
     }
   ];
 
+  systemd.services."systemd-suspend-then-hibernate".aliases = [ "systemd-suspend.service" ];
+
+  systemd.sleep.extraConfig = ''
+    HibernateDelaySec=30m
+    HibernateOnACPower=1h
+  '';
+
   nix.settings = {
     extra-platforms = config.boot.binfmt.emulatedSystems;
     substituters = [ "https://ncps.nas.firefly.red" ];
