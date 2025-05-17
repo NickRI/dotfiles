@@ -115,6 +115,11 @@ in
     NIXOS_OZONE_WL = "1";
   };
 
+  home.shellAliases = {
+    "sops-master" =
+      "SOPS_AGE_KEY=$(op item get hscy7ap6gqdv3dqoe55oqbgrui --reveal --fields private_key | nix run nixpkgs#ssh-to-age -- -private-key) sops";
+  };
+
   xdg = {
     enable = true;
     systemDirs.data = [
