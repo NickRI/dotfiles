@@ -1,10 +1,15 @@
-{ ... }:
+{ ... }@args:
 
 {
   imports = [
     ../../../shared/home/autostart.nix
     ../../../shared/home/shell.nix
-    ../../../shared/home/sops.nix
+    (import ../../../shared/home/sops.nix (
+      args
+      // {
+        sops-file = "work-laptop-home.yaml";
+      }
+    ))
     ./mime.nix # need to include first than gnome to correct override
     ./gnome.nix
     ./flatpak.nix
@@ -12,6 +17,6 @@
     ./rust.nix
     ./vpn.nix
     ./email.nix
-    # ./sync.nix TODO: Wait until new version of home-manager
+    ./sync.nix
   ];
 }

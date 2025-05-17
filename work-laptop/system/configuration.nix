@@ -8,7 +8,7 @@
   pkgs,
   lib,
   ...
-}:
+}@args:
 
 {
   imports = [
@@ -20,7 +20,12 @@
     ./modules/gnome.nix
     ./modules/1password.nix
     ../../shared/system
-    ../../shared/system/sops.nix
+    (import ../../shared/system/sops.nix (
+      args
+      // {
+        sops-file = "work-laptop-system.yaml";
+      }
+    ))
     ../../shared/system/install.nix
   ];
 

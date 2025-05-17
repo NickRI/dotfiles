@@ -1,9 +1,13 @@
-{ config, sops-secrets, ... }:
+{
+  sops-secrets,
+  sops-file ? "secrets.yaml",
+  ...
+}:
 
 {
   config = {
     sops = {
-      defaultSopsFile = "${toString sops-secrets}/secrets.yaml";
+      defaultSopsFile = "${toString sops-secrets}/${sops-file}";
       defaultSopsFormat = "yaml";
       age = {
         keyFile = "/var/lib/sops-nix/key.txt";
