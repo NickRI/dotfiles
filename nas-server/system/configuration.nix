@@ -4,11 +4,10 @@
 
 {
   grub-themes,
-  sops-secrets,
   config,
   pkgs,
   ...
-}:
+}@args:
 
 {
   imports = [
@@ -17,6 +16,12 @@
     ./disk-config.nix
     ./modules
     ../../shared/system/i18n.nix
+    (import ../../shared/system/sops.nix (
+      args
+      // {
+        sops-file = "nas.yaml";
+      }
+    ))
   ];
 
   # Bootloader.
@@ -56,14 +61,7 @@
     #media-session.enable = true;
   };
 
-  sops = {
-    defaultSopsFile = "${toString sops-secrets}/secrets.yaml";
-    defaultSopsFormat = "yaml";
-
-    secrets = {
-      "nas/user-password".neededForUsers = true;
-    };
-  };
+  sops.secrets."user-password".neededForUsers = true;
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
@@ -91,7 +89,7 @@
       "wheel"
       "docker"
     ]; # Enable ‘sudo’ docker and other for the user.
-    hashedPasswordFile = config.sops.secrets."nas/user-password".path;
+    hashedPasswordFile = config.sops.secrets."user-password".path;
     shell = pkgs.zsh;
 
     openssh.authorizedKeys.keyFiles = [ ../../shared/files/authorized_keys ];

@@ -37,8 +37,8 @@ in
 
   sops = {
     secrets = {
-      "nas/transmission/username" = { };
-      "nas/transmission/password" = { };
+      "transmission/username" = { };
+      "transmission/password" = { };
     };
 
     templates."transmission.json" = {
@@ -46,8 +46,8 @@ in
       content = ''
         {
           "rpc-authentication-required": true,
-          "rpc-username": "${config.sops.placeholder."nas/transmission/username"}",
-          "rpc-password": "${config.sops.placeholder."nas/transmission/password"}"
+          "rpc-username": "${config.sops.placeholder."transmission/username"}",
+          "rpc-password": "${config.sops.placeholder."transmission/password"}"
         }'';
     };
   };

@@ -31,8 +31,8 @@ in
   };
 
   sops = lib.mkIf (config.services.nextcloud.enable) {
-    secrets."nas/nextcloud/admin-password".owner = "nextcloud";
-    secrets."nas/nextcloud/exporter-password".owner = "nextcloud-exporter";
+    secrets."nextcloud/admin-password".owner = "nextcloud";
+    secrets."nextcloud/exporter-password".owner = "nextcloud-exporter";
 
     secrets = {
       "smtp/login" = { };
@@ -161,7 +161,7 @@ in
 
       config = {
         adminuser = "nikolai";
-        adminpassFile = config.sops.secrets."nas/nextcloud/admin-password".path;
+        adminpassFile = config.sops.secrets."nextcloud/admin-password".path;
 
         dbtype = "pgsql";
         dbhost = "localhost:5432";
@@ -221,7 +221,7 @@ in
         nextcloud = {
           enable = true;
           listenAddress = "localhost";
-          tokenFile = config.sops.secrets."nas/nextcloud/exporter-password".path;
+          tokenFile = config.sops.secrets."nextcloud/exporter-password".path;
           url = "https://${config.services.nextcloud.hostName}";
           timeout = "60s";
           extraFlags = [
