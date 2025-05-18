@@ -26,10 +26,11 @@ in
   # The home.packages option allows you to install Nix packages into your
   # environment.
   home.packages = with upkgs; [
+    code-cursor
+
     docker-compose
 
     slack
-
     whatsapp-for-linux
     zoom-us
 
@@ -67,7 +68,6 @@ in
 
     tradingview
     todoist-electron
-    nextcloud-client
 
     rpi-imager
     impression
