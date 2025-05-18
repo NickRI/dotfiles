@@ -10,6 +10,10 @@
       url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    home-manager-unstable = {
+      url = "github:nix-community/home-manager/master";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     nixos-grub-themes = {
       url = "github:jeslie0/nixos-grub-themes";
       inputs.nixpkgs.follows = "nixpkgs-unstable";

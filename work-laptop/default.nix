@@ -53,6 +53,7 @@ nixpkgs.lib.nixosSystem {
       # arguments to home.nix
       home-manager.extraSpecialArgs = {
         sops-secrets = inputs.sops-secrets;
+        home-manager-unstable = inputs.home-manager-unstable;
       };
     }
   ];
