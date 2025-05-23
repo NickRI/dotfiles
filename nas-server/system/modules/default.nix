@@ -9,7 +9,9 @@
     ./download.nix
     ./development.nix
     ./share.nix
+    ./sync.nix
     ./homepage.nix
+    ./misc.nix
   ];
 
   config.services = {
@@ -24,5 +26,7 @@
     homepage-dashboard.enable = true;
     athens.enable = true;
     ncps.enable = true;
+    kavita.enable = true;
+    immich.enable = true;
   };
 }

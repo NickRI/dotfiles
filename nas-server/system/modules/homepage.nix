@@ -104,6 +104,15 @@ in
                 ];
               }
               {
+                HomePage = [
+                  {
+                    abbr = "HPG";
+                    icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/png/homepage.png";
+                    href = "https://gethomepage.dev/";
+                  }
+                ];
+              }
+              {
                 Selfhost = [
                   {
                     abbr = "SLH";

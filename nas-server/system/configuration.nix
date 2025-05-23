@@ -116,13 +116,6 @@
   # programs.mtr.enable = true;
   programs.zsh.enable = true;
 
-  system.activationScripts.diff = {
-    supportsDryActivation = true;
-    text = ''
-      ${pkgs.nix}/bin/nix store diff-closures /run/current-system "$systemConfig" --impure
-    '';
-  };
-
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;

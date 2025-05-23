@@ -20,7 +20,7 @@ in
     };
   };
 
-  homepage.services.Services = {
+  homepage.services.Downloads = {
     Transmission = lib.mkIf (config.services.transmission.enable) rec {
       description = "A fast, easy and free Bittorrent client for macOS, Windows and Linux";
       icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/transmission.svg";
