@@ -205,6 +205,140 @@
         monospace-font-name = config.gtk.font.name + " 12"; # + toString(config.gtk.font.size); # It's convinient to use
         document-font-name = config.gtk.font.name + " " + toString (config.gtk.font.size); # It's convinient to use
       };
+
+      "org/gnome/desktop/app-folders" = {
+        "folder-children" = [
+          "Internet"
+          "Security"
+          "System"
+          "AudioVideo"
+          "Editors"
+          "Configs"
+          "Readers"
+          "Utilities"
+          "Office"
+          "Misc"
+        ];
+      };
+
+      "org/gnome/desktop/app-folders/folders/Internet" = {
+        "name" = "Интернет";
+        "apps" = [
+          "com.github.xeco23.WasIstLos.desktop"
+          "Zoom.desktop"
+          "AnyDesk.desktop"
+          "com.dropbox.Client.desktop"
+          "todoist.desktop"
+          "org.gnome.Connections.desktop"
+          "com.gitlab.bitseater.meteo.desktop"
+          "syncthingtray.desktop"
+          "com.ktechpit.colorwall.desktop"
+        ];
+      };
+
+      "org/gnome/desktop/app-folders/folders/Security" = {
+        "name" = "Безопасность";
+        "apps" = [
+          "org.gnome.seahorse.Application.desktop"
+          "com.surfshark.Surfshark.desktop"
+          "1password.desktop"
+          "ykman-gui.desktop"
+          "com.yubico.authenticator.desktop"
+          "yubikey-personalization-gui.desktop"
+        ];
+      };
+
+      "org/gnome/desktop/app-folders/folders/System" = {
+        "name" = "Система";
+        "apps" = [
+          "org.gnome.Terminal.desktop"
+          "io.missioncenter.MissionCenter.desktop"
+          "org.gnome.SystemMonitor.desktop"
+          "htop.desktop"
+        ];
+      };
+
+      "org/gnome/desktop/app-folders/folders/AudioVideo" = {
+        "name" = "Аудио и видео";
+        "apps" = [
+          "org.gnome.SoundRecorder.desktop"
+          "org.gnome.Music.desktop"
+          "vlc.desktop"
+          "org.gnome.Snapshot.desktop"
+        ];
+      };
+
+      "org/gnome/desktop/app-folders/folders/Editors" = {
+        "name" = "Редакторы";
+        "apps" = [
+          "org.gnome.TextEditor.desktop"
+          "obsidian.desktop"
+          "com.boxy_svg.BoxySVG.desktop"
+          "pinta.desktop"
+          "org.inkscape.Inkscape.desktop"
+          "gimp.desktop"
+          "com.github.xournalpp.xournalpp.desktop"
+        ];
+      };
+
+      "org/gnome/desktop/app-folders/folders/Configs" = {
+        "name" = "Настройки";
+        "apps" = [
+          "org.gnome.Extensions.desktop"
+          "com.mattjakeman.ExtensionManager.desktop"
+          "ca.desrt.dconf-editor.desktop"
+          "org.gnome.Settings.desktop"
+          "org.gnome.tweaks.desktop"
+        ];
+      };
+
+      "org/gnome/desktop/app-folders/folders/Utilities" = {
+        "name" = "Утилиты";
+        "apps" = [
+          "org.gnome.baobab.desktop"
+          "org.gnome.DiskUtility.desktop"
+          "org.gnome.Logs.desktop"
+          "org.gnome.Characters.desktop"
+          "org.gnome.font-viewer.desktop"
+          "io.gitlab.adhami3310.Impression.desktop"
+          "org.gnome.FileRoller.desktop"
+          "org.raspberrypi.rpi-imager.desktop"
+        ];
+      };
+
+      "org/gnome/desktop/app-folders/folders/Office" = {
+        "name" = "Офис";
+        "apps" = [
+          "calc.desktop"
+          "impress.desktop"
+          "writer.desktop"
+          "math.desktop"
+          "draw.desktop"
+          "base.desktop"
+          "startcenter.desktop"
+        ];
+      };
+
+      "org/gnome/desktop/app-folders/folders/Misc" = {
+        "name" = "Разное";
+        "apps" = [
+          "cups.desktop"
+          "yelp.desktop"
+          "simple-scan.desktop"
+          "nixos-manual.desktop"
+        ];
+      };
+
+      "org/gnome/desktop/app-folders/folders/Readers" = {
+        "name" = "Чтение";
+        "apps" = [
+          "org.gnome.Evince.desktop"
+          "org.gnome.Loupe.desktop"
+          "com.github.johnfactotum.Foliate.desktop"
+          "me.sanchezrodriguez.passes.desktop"
+        ];
+      };
+
     };
 
     gtk = {
