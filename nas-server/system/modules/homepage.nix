@@ -43,6 +43,7 @@ in
     services = {
       homepage-dashboard = {
         listenPort = homepage-listen-port;
+        allowedHosts = "home.nas.firefly.red,nas.firefly.red";
 
         services = builtins.map (category: {
           "${category}" = builtins.map (service: {

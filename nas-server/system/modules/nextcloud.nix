@@ -71,7 +71,7 @@ in
 
   services = {
     nextcloud = {
-      package = pkgs.nextcloud30;
+      package = pkgs.nextcloud31;
 
       datadir = "/storage/${nextcloud-dir}";
 
@@ -145,11 +145,10 @@ in
           calendar
           phonetrack
           previewgenerator
-          unsplash
           ;
-        duplicatefinder = pkgs.fetchNextcloudApp {
-          url = "https://github.com/eldertek/duplicatefinder/releases/download/v1.6.0/duplicatefinder-v1.6.0.tar.gz";
-          hash = "sha256-J+P+9Ajz998ua1RRwuj1h4WOOl0WODu3uVJNGosbObI=";
+        unsplash = pkgs.fetchNextcloudApp {
+          url = "https://github.com/nextcloud/unsplash/archive/refs/tags/v3.1.0.tar.gz";
+          hash = "sha256-mB794rONgvhpcg3ND0clcdTcjVaAtWHgnsEyLK30xjA=";
           license = "agpl3Only";
         };
         twofactor_totp = pkgs.fetchNextcloudApp {

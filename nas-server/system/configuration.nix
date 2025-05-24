@@ -46,7 +46,6 @@
   security.rtkit.enable = true;
   security.sudo.wheelNeedsPassword = false;
 
-  hardware.pulseaudio.enable = false;
   # Enable sound with pipewire.
   services.pipewire = {
     enable = true;

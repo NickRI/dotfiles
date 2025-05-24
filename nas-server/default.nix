@@ -47,7 +47,5 @@ nixpkgs.lib.nixosSystem {
       # arguments to home.nix
       home-manager.extraSpecialArgs = { };
     }
-    # TODO: Delete after new version of nixpkgs
-    "${nixpkgs-unstable}/nixos/modules/services/networking/ncps.nix"
   ];
 }
