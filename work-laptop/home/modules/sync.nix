@@ -7,6 +7,9 @@
   ...
 }:
 
+let
+  upkgs = pkgs.unstable;
+in
 {
   # TODO: Fix that asap
   disabledModules = [ "${modulesPath}/services/syncthing.nix" ];
@@ -22,10 +25,28 @@
     };
   };
 
+  home.packages =
+    with upkgs;
+    lib.mkIf (config.services.syncthing.enable) [
+      syncthingtray
+    ];
+
+  autoStart =
+    with upkgs;
+    lib.mkIf (config.services.syncthing.enable) [
+      syncthingtray
+    ];
+
+  # Overridden to hide
+  xdg.desktopEntries.syncthing-ui = {
+    name = "Syncthing UI";
+    noDisplay = true;
+    type = "Application";
+  };
+
   services.syncthing = {
     package = pkgs.unstable.syncthing;
     enable = true;
-    tray.enable = config.services.syncthing.enable;
     key = config.sops.secrets."syncthing/key".path;
     cert = config.sops.secrets."syncthing/cert".path;
 

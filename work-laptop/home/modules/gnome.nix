@@ -12,11 +12,10 @@
       [
         gnome-tweaks
         dconf-editor
-        gnome-software
         gnome-extension-manager
         gnome-sound-recorder
       ]
-      ++ (with pkgs.unstable.gnomeExtensions; [
+      ++ (with pkgs.gnomeExtensions; [
         appindicator
         blur-my-shell
         caffeine
