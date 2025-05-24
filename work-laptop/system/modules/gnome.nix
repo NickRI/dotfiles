@@ -24,6 +24,7 @@
     (with pkgs; [
       gnome-tour
       gnome-shell-extensions
+      gnome-software
       kgx
     ])
     ++ (with pkgs; [

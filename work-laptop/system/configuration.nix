@@ -6,7 +6,6 @@
   grub-themes,
   config,
   pkgs,
-  lib,
   ...
 }@args:
 
@@ -55,9 +54,9 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-
   # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
+
   hardware.ledger.enable = true;
   hardware.bluetooth = {
     enable = true;

@@ -23,7 +23,6 @@
 
   users.users.nikolai.packages = with pkgs; [
     yubikey-personalization-gui
-    yubikey-manager-qt
     yubioath-flutter
   ];
 }

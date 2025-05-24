@@ -2,8 +2,6 @@
   config,
   pkgs,
   lib,
-  modulesPath,
-  home-manager-unstable,
   ...
 }:
 
@@ -11,11 +9,6 @@ let
   upkgs = pkgs.unstable;
 in
 {
-  # TODO: Fix that asap
-  disabledModules = [ "${modulesPath}/services/syncthing.nix" ];
-
-  imports = [ "${home-manager-unstable}/modules/services/syncthing.nix" ];
-
   sops = lib.mkIf (config.services.syncthing.enable) {
     secrets."syncthing/key" = {
       mode = "0644";

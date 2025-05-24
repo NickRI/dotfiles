@@ -241,7 +241,6 @@
           "org.gnome.seahorse.Application.desktop"
           "com.surfshark.Surfshark.desktop"
           "1password.desktop"
-          "ykman-gui.desktop"
           "com.yubico.authenticator.desktop"
           "yubikey-personalization-gui.desktop"
         ];
@@ -264,6 +263,7 @@
           "org.gnome.Music.desktop"
           "vlc.desktop"
           "org.gnome.Snapshot.desktop"
+          "org.gnome.Decibels.desktop"
         ];
       };
 
@@ -350,7 +350,7 @@
       };
 
       iconTheme = {
-        name = "Qogir-dark";
+        name = "Qogir-Dark";
         package = pkgs.qogir-icon-theme;
       };
 
@@ -360,7 +360,7 @@
       #      };
       #
       cursorTheme = {
-        name = "Qogir-dark";
+        name = "Qogir-Dark";
         package = pkgs.qogir-icon-theme;
       };
     };

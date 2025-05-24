@@ -102,7 +102,7 @@ in
 
     zsh = {
       enable = true;
-      initExtra = ''
+      initContent = ''
         # Sources
         source ~/.p10k.zsh
         autoload -U compinit && compinit
