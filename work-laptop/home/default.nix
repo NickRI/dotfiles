@@ -93,7 +93,6 @@ in
     thunderbird
     telegram-desktop
     todoist-electron
-    nextcloud-client
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -122,10 +121,6 @@ in
 
   xdg = {
     enable = true;
-    systemDirs.data = [
-      "/var/lib/flatpak/exports/share"
-      "$HOME/.local/share/flatpak/exports/share"
-    ];
 
     configFile."mimeapps.list".force = true;
 
