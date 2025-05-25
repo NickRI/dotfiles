@@ -119,8 +119,9 @@
   systemd.services."systemd-suspend-then-hibernate".aliases = [ "systemd-suspend.service" ];
 
   systemd.sleep.extraConfig = ''
-    HibernateDelaySec=15m
-    HibernateOnACPower=30m
+    AllowSuspendThenHibernate=yes
+    HibernateOnACPower=yes
+    HibernateDelaySec=30m
   '';
 
   nix.settings = {
