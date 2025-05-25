@@ -46,13 +46,13 @@
         favorite-apps = [
           "chromium-browser.desktop"
           "org.telegram.desktop.desktop"
-          "dev.vencord.Vesktop.desktop"
           "slack.desktop"
+          "thunderbird.desktop"
           "goland.desktop"
           "datagrip.desktop"
           "com.getpostman.Postman.desktop"
           "org.gnome.Calendar.desktop"
-          "thunderbird.desktop"
+          "dev.vencord.Vesktop.desktop"
           "org.gnome.Nautilus.desktop"
         ];
       };
@@ -346,7 +346,7 @@
       font = {
         name = "Inter Variable";
         size = 10;
-        package = pkgs.unstable.inter-nerdfont;
+        package = pkgs.inter-nerdfont;
       };
 
       iconTheme = {
