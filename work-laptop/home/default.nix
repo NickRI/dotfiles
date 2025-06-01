@@ -65,6 +65,7 @@ in
     graphviz
     pinta
     passes
+    typst
 
     tradingview
     todoist-electron

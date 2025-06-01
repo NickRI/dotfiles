@@ -159,6 +159,7 @@
     inetutils
     wget
     unzip
+    zip
     htop
     file
     gcc
