@@ -71,7 +71,10 @@ in
     immich = {
       port = immich-listen-port;
       host = "127.0.0.1";
-      mediaLocation = "/storage/immich";
+      mediaLocation = "/storage/immich/media";
+      machine-learning.environment = {
+        MACHINE_LEARNING_CACHE_FOLDER = lib.mkForce "/storage/immich/cache";
+      };
       secretsFile = config.sops.templates.secretsFile.path;
       database = {
         createDB = false;
