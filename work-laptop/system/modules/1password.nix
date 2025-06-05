@@ -46,6 +46,10 @@
         oh-my-zsh.plugins = [ "1password" ];
       };
 
+      home.sessionVariables = {
+        SSH_AUTH_SOCK = "$HOME/.1password/agent.sock";
+      };
+
       autoStart = [ pkgs.unstable._1password-gui ];
     };
 }
