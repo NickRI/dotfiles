@@ -62,7 +62,6 @@
     enable = true;
     settings = {
       General = {
-        ClassicBondedOnly = false;
         ControllerMode = "dual";
         Experimental = true;
       };
