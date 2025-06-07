@@ -8,6 +8,7 @@
 let
   athens-listen-port = 6934;
   ncps-listen-port = 8501;
+  microbin-listen-port = 8521;
 in
 
 {
@@ -15,6 +16,10 @@ in
     athens = lib.mkIf (config.services.athens.enable) {
       domain = "athens.nas.firefly.red";
       local-port = athens-listen-port;
+    };
+    microbin = lib.mkIf (config.services.microbin.enable) {
+      domain = "microbin.nas.firefly.red";
+      local-port = microbin-listen-port;
     };
     ncps = lib.mkIf (config.services.ncps.enable) {
       domain = "ncps.nas.firefly.red";
@@ -33,6 +38,14 @@ in
         description = "A Go module datastore and proxy";
         icon = "https://www.svgrepo.com/download/215353/parthenon-athens.svg";
         href = "https://athens.nas.firefly.red/";
+        siteMonitor = href;
+      };
+    };
+    Downloads = {
+      Microbin = lib.mkIf (config.services.microbin.enable) rec {
+        description = "A secure, configurable file-sharing and URL shortening web app written in Rust";
+        icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/microbin.svg";
+        href = "https://microbin.nas.firefly.red/";
         siteMonitor = href;
       };
     };
@@ -101,6 +114,17 @@ in
         secretKeyPath = config.sops.secrets."ncps/secretKeyFile".path;
         hostName = config.networking.hostName;
         databaseURL = "sqlite:/storage/ncps/db.sqlite";
+      };
+    };
+
+    microbin = {
+      dataDir = "/storage/microbin";
+      settings = {
+        MICROBIN_PORT = microbin-listen-port;
+        MICROBIN_BIND = "127.0.0.1";
+        MICROBIN_ENCRYPTION_CLIENT_SIDE = true;
+        MICROBIN_ENCRYPTION_SERVER_SIDE = true;
+        MICROBIN_ENABLE_READONLY = true;
       };
     };
   };

@@ -26,6 +26,7 @@
     homepage-dashboard.enable = true;
     athens.enable = true;
     ncps.enable = true;
+    microbin.enable = true;
     kavita.enable = true;
     immich.enable = true;
   };
