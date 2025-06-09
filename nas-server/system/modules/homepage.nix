@@ -73,6 +73,15 @@ in
                   }
                 ];
               }
+              {
+                Alternativeto = [
+                  {
+                    abbr = "ALT";
+                    icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/alternativeto.svg";
+                    href = "https://alternativeto.net/";
+                  }
+                ];
+              }
 
             ];
           }

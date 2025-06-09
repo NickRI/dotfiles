@@ -113,7 +113,10 @@ in
           devices = [ "work-laptop" ];
           versioning = {
             type = "simple";
-            params.keep = "10";
+            params = {
+              keep = "10";
+              cleanoutDays = "180";
+            };
           };
         };
         nikolai-music = {
@@ -129,7 +132,10 @@ in
           devices = [ "work-laptop" ];
           versioning = {
             type = "simple";
-            params.keep = "10";
+            params = {
+              keep = "10";
+              cleanoutDays = "180";
+            };
           };
         };
         nikolai-videos = {
