@@ -32,6 +32,7 @@ in
       glow
       soft-serve
       lazydocker
+      lazygit
       goose
       go-task
       gollama
