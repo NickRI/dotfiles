@@ -66,7 +66,7 @@
   # services.xserver.libinput.enable = true;
 
   services.journald.extraConfig = "
-    SystemMaxUse=512M
+    SystemMaxUse=256M
   ";
 
   nix.settings = {
