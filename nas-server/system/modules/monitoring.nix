@@ -162,10 +162,10 @@ in
         };
       };
 
-      prometheus = lib.mkIf (config.services.grafana.enable) rec {
-        enable = true;
+      prometheus = rec {
         listenAddress = "localhost";
         port = prometheus-listen-port;
+        retentionTime = "7d";
 
         exporters = {
           node = {
@@ -226,8 +226,7 @@ in
         ];
       };
 
-      loki = lib.mkIf (config.services.grafana.enable) {
-        enable = true;
+      loki = {
         configuration = {
           auth_enabled = false;
           analytics.reporting_enabled = false;
@@ -286,12 +285,13 @@ in
           limits_config = {
             reject_old_samples = true;
             reject_old_samples_max_age = "168h";
+            retention_period = "168h";
             volume_enabled = true;
           };
 
           table_manager = {
-            retention_deletes_enabled = false;
-            retention_period = "0s";
+            retention_deletes_enabled = true;
+            retention_period = "168h";
           };
 
           compactor = {
@@ -305,8 +305,7 @@ in
         };
       };
 
-      promtail = lib.mkIf (config.services.loki.enable) {
-        enable = true;
+      promtail = {
         configuration = {
           server = {
             http_listen_port = promtail-listen-port;

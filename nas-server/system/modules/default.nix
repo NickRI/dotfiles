@@ -18,6 +18,9 @@
     postgresql.enable = true;
     nginx.enable = true;
     grafana.enable = true;
+    prometheus.enable = true;
+    promtail.enable = true;
+    loki.enable = true;
     scrutiny.enable = true;
     nextcloud.enable = true;
     gitea.enable = true;
