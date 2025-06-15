@@ -105,20 +105,10 @@ in
       initContent = ''
         # Sources
         source ~/.p10k.zsh
-        autoload -U compinit && compinit
+        autoload -Uz compinit && compinit -C
 
         # Keybindings
         bindkey '^f' autosuggest-accept
-
-        # History
-        HISTDUP=erase
-        setopt appendhistory
-        setopt sharehistory
-        setopt hist_ignore_space
-        setopt hist_ignore_all_dups
-        setopt hist_save_no_dups
-        setopt hist_find_no_dups
-        setopt hist_ignore_dups
 
         # Other options
         setopt globdots
@@ -128,17 +118,30 @@ in
         zstyle ':completion:*' menu no
 
         zstyle ':fzf-tab:complete:*' fzf-preview 'if [ -d $realpath ]; then eza -al --icons --color=always --no-permissions --no-time --no-user --group-directories-first $realpath; else bat -n --color=always --line-range :500 $realpath; fi'
+
+        sudo-command-line() {
+            [[ -z $BUFFER ]] && zle up-history
+            if [[ $BUFFER == sudo\ * ]]; then
+                LBUFFER="''${LBUFFER#sudo }"
+            else
+                LBUFFER="sudo $LBUFFER"
+            fi
+        }
+        zle -N sudo-command-line
+        # Defined shortcut keys: [Esc] [Esc]
+        bindkey "\e\e" sudo-command-line
       '';
 
-      oh-my-zsh = {
-        enable = true;
-        theme = "robbyrussell";
-        plugins = [
-          "git"
-          "sudo"
-          "docker"
-          "themes"
-        ];
+      history = {
+        size = 20000;
+        save = 20000;
+        append = true;
+        share = true;
+        saveNoDups = true;
+        findNoDups = true;
+        ignoreDups = true;
+        ignoreSpace = true;
+        ignoreAllDups = true;
       };
 
       plugins = [

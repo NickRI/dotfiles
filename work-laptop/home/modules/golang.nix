@@ -43,9 +43,5 @@ in
         { id = "adhapdickilojlhiicaffdhbgaedfodo"; } # Go playground
       ];
     };
-
-    programs.zsh = lib.mkIf (config.programs.zsh.enable) {
-      oh-my-zsh.plugins = [ "golang" ];
-    };
   };
 }
