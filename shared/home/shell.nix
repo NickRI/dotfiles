@@ -109,6 +109,8 @@ in
 
         # Keybindings
         bindkey '^f' autosuggest-accept
+        bindkey "^[[1;5C" forward-word
+        bindkey "^[[1;5D" backward-word
 
         # Other options
         setopt globdots
