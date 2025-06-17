@@ -64,7 +64,7 @@ let
 
     logrun sudo nixos-install $nix_options --flake "$HOME/dotfiles#$configuration" --root /mnt --no-root-password
 
-    echo "Clear master age key"
+    echo "Delete master age key"
 
     logrus sudo rm /mnt$sopsKeyFile
   '';
