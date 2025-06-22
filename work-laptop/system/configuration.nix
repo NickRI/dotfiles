@@ -43,7 +43,7 @@
 
   zramSwap = {
     enable = true;
-    memoryPercent = 30;
+    memoryPercent = 20;
     priority = 10;
   };
 
