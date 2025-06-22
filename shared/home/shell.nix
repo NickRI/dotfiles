@@ -26,6 +26,8 @@ in
       extraOptions = [ "--color=always" ];
     };
 
+    btop.enable = true;
+
     #      alacritty = {
     #        enable = true;
     #        settings = {
