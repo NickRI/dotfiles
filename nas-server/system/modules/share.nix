@@ -102,6 +102,7 @@ in
 
     ncps = {
       package = pkgs.unstable.ncps;
+      logLevel = "trace";
       server.addr = "localhost:${toString ncps-listen-port}";
       upstream = {
         caches = [ "https://cache.nixos.org" ];
