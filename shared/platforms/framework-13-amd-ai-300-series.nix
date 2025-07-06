@@ -1,9 +1,4 @@
-{
-  pkgs,
-  modulesPath,
-  nixos-hardware,
-  ...
-}:
+{ modulesPath, nixos-hardware, ... }:
 
 {
   imports = [
@@ -14,9 +9,8 @@
   boot.initrd.availableKernelModules = [
     "nvme"
     "xhci_pci"
-    "thunderbolt"
     "usbhid"
   ];
 
-  boot.kernelPackages = pkgs.linuxPackages_latest; # TODO: Check newer versions of kernels for hibernation
+  boot.blacklistedKernelModules = [ "thunderbolt" ];
 }
