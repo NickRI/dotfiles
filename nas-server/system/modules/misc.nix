@@ -54,10 +54,6 @@ in
     };
   };
 
-  environment.systemPackages = with pkgs; [
-    immich-go
-  ];
-
   services = {
     kavita = {
       settings = {

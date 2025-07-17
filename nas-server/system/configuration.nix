@@ -41,7 +41,7 @@
   time.timeZone = "Europe/Madrid";
 
   # Enable CUPS to print documents.
-  services.printing.enable = true;
+  services.printing.enable = false;
 
   security.rtkit.enable = true;
   security.sudo.wheelNeedsPassword = false;

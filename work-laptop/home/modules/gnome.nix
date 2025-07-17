@@ -252,6 +252,7 @@
         "io.missioncenter.MissionCenter.desktop"
         "org.gnome.SystemMonitor.desktop"
         "htop.desktop"
+        "btop.desktop"
       ];
     };
 

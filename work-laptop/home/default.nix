@@ -60,7 +60,7 @@ in
     foliate
     libreoffice-qt
     obsidian
-    gimp
+    pkgs.gimp
     inkscape
     graphviz
     pinta

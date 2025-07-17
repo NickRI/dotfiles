@@ -11,6 +11,4 @@
     "xhci_pci"
     "usbhid"
   ];
-
-  boot.blacklistedKernelModules = [ "thunderbolt" ];
 }

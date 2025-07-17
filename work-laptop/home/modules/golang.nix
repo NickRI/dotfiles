@@ -24,8 +24,8 @@ in
     };
 
     home.packages = with upkgs; [
-      jetbrains.goland
-      jetbrains.datagrip
+      pkgs.jetbrains.goland
+      pkgs.jetbrains.datagrip
 
       cfssl
       scc
