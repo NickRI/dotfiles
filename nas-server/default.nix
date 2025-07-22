@@ -22,7 +22,6 @@ nixpkgs.lib.nixosSystem {
   inherit pkgs;
 
   specialArgs = {
-    grub-themes = inputs.nixos-grub-themes;
     sops-secrets = inputs.sops-secrets;
   };
 

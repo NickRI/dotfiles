@@ -3,7 +3,6 @@
 # and in the NixOS manual (accessible by running `nixos-help`).
 
 {
-  grub-themes,
   config,
   pkgs,
   ...
@@ -28,13 +27,8 @@
   boot.loader = {
     timeout = 3;
 
-    grub = {
-      enable = true;
-      device = "nodev";
-      efiSupport = true;
-      efiInstallAsRemovable = true;
-      theme = grub-themes.packages.${pkgs.system}.hyperfluent;
-    };
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
   };
 
   # Set your time zone.
