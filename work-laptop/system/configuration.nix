@@ -50,9 +50,6 @@
 
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
-  # Set your time zone.
-  time.timeZone = null;
-
   # Enable CUPS to print documents.
   services.printing.enable = false;
   # Enable sound with pipewire.
