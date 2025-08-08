@@ -42,7 +42,6 @@ in
 
     ledger-live-desktop
 
-    meteo
     anydesk
     qemu
 
@@ -60,7 +59,7 @@ in
     foliate
     libreoffice-qt
     obsidian
-    pkgs.gimp
+    gimp
     inkscape
     graphviz
     pinta
@@ -89,7 +88,6 @@ in
   ];
 
   autoStart = with upkgs; [
-    meteo
     slack
     thunderbird
     telegram-desktop
