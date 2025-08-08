@@ -19,6 +19,7 @@
     ./modules/gnome.nix
     ./modules/1password.nix
     ../../shared/system
+    ../../shared/system/geo.nix
     (import ../../shared/system/sops.nix (
       args
       // {

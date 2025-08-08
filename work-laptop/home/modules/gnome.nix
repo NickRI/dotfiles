@@ -85,6 +85,18 @@
       ];
     };
 
+    "org/gnome/system/location" = {
+      enabled = true;
+    };
+
+    "org/gnome/shell/weather" = {
+      automatic-location = true;
+    };
+
+    "org/gnome/desktop/datetime" = {
+      automatic-timezone = true;
+    };
+
     "org/gnome/settings-daemon/plugins/color" = {
       night-light-enabled = true;
       night-light-schedule-automatic = true;
