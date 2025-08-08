@@ -12,6 +12,7 @@ import (
 )
 
 var listenAddress = flag.String("listen", "127.0.0.1:1223", "Listen address")
+var ipAddress = flag.String("ip-address", "", "Use selected ip address instead of auto-detection")
 
 func main() {
 	flag.Parse()
@@ -24,7 +25,6 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/", MainHandler)
 	mux.HandleFunc("/time-zone", TimeZoneHandler)
 
 	server := &http.Server{Addr: *listenAddress, Handler: mux}

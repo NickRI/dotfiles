@@ -121,41 +121,15 @@ func TimeZoneHandler(w http.ResponseWriter, r *http.Request) {
 		slog.Int64("timestamp-id", timestamp),
 	)
 
-	infos, err := getWifiInfo(r.Context())
+	zone, err := GetTimeZone(r.Context(), *ipAddress)
 	if err != nil {
-		hlog.Error("failed to get wifi infos", "err", err)
+		hlog.Error("failed to get timezone", "err", err)
 		internalServerError(w, err)
 		return
 	}
 
-	sort.Slice(infos, func(i, j int) bool {
-		return infos[i].SignalStrength > infos[j].SignalStrength
-	})
+	hlog.Info("time zone", slog.String("zone", zone))
 
-	for _, info := range infos {
-		lookups, err := LookupBSSID(info.MacAddress)
-		if err != nil {
-			hlog.Error("failed to lookup bssid", "err", err)
-			internalServerError(w, fmt.Errorf("failed to lookup bssid: %w", err))
-			return
-		}
-
-		for _, lookup := range lookups {
-			if lookup.Correct() {
-				hlog.Info("found wifi access point", slog.Any("lookup", lookup))
-
-				zone, err := getTimeZone(lookup.Latitude, lookup.Longitude)
-				if err != nil {
-					hlog.Error("failed to lookup timezone", "err", err)
-					internalServerError(w, err)
-					return
-				}
-
-				hlog.Info("time zone", slog.String("zone", zone))
-
-				w.WriteHeader(http.StatusOK)
-				_, _ = fmt.Fprint(w, zone)
-			}
-		}
-	}
+	w.WriteHeader(http.StatusOK)
+	_, _ = fmt.Fprint(w, zone)
 }
