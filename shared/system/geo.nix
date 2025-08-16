@@ -5,7 +5,13 @@ let
     inherit pkgs;
   };
 
-  listen-address = "127.0.0.1:443";
+  listen-address = "127.0.0.1:1223";
+
+  geo-chrome-extension = import ../tools/geo/chromium-extension {
+    inherit pkgs;
+    geo-server-url = "http://${listen-address}/geolocate";
+  };
+
 in
 {
   systemd.services.wifi-geo-location = {
@@ -25,18 +31,26 @@ in
 
   services.geoclue2 = {
     enable = true;
-    geoProviderUrl = "https://www.googleapis.com/geolocation/v1/geolocate";
+    geoProviderUrl = "http://${listen-address}/geolocate";
   };
 
   # Chromium and others hack
-  networking.extraHosts = ''
-    127.0.0.1 googleapis.com
-    127.0.0.1 www.googleapis.com
-  '';
+  home-manager.users.nikolai =
+    {
+      ...
+    }:
+    {
+      programs.chromium = {
+        extensions = [
+          {
+            id = "magbmbgbholcmdmahidlgcflopedpejb";
+            crxPath = "${geo-chrome-extension}/geo-extension.crx";
+            version = "1.0";
+          }
+        ];
+      };
 
-  security.pki.certificateFiles = [
-    ../tools/geo/googleapis-hack/www.googleapis.com.crt
-  ];
+    };
 
   # Timezone setter
   time.timeZone = lib.mkForce null; # Force to do it automatically
@@ -46,7 +60,7 @@ in
     wants = [ "wifi-geo-location.service" ];
     after = [ "wifi-geo-location.service" ];
     script = ''
-      timezone="$(${pkgs.curl}/bin/curl -sS https://www.googleapis.com/time-zone)"
+      timezone="$(${pkgs.curl}/bin/curl -sS http://${listen-address}/time-zone)"
       if [[ -n "$timezone" ]]; then
         echo "Setting timezone to '$timezone'"
         timedatectl set-timezone "$timezone"

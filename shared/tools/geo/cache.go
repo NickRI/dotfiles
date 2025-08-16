@@ -9,36 +9,32 @@ import (
 	bolt "go.etcd.io/bbolt"
 )
 
-type cacheEntry struct {
-	Lookup    *LookupResult `json:"lookups"`
-	ExpiresAt time.Time     `json:"expires_at"` // в миллисекундах
+type cacheEntry[T any] struct {
+	Data      T         `json:"data"`
+	ExpiresAt time.Time `json:"expires_at"` // в миллисекундах
 }
 
-type WifiLookupCache struct {
-	db  *bolt.DB
-	ttl time.Duration
+type Cache[T any] struct {
+	db     *bolt.DB
+	bucket string
+	ttl    time.Duration
 }
 
-func NewWifiLookupCache(dbPath string, ttl time.Duration) (*WifiLookupCache, error) {
-	db, err := bolt.Open(dbPath, 0600, nil)
-	if err != nil {
-		return nil, fmt.Errorf("failed to open BoltDB: %w", err)
-	}
-
-	err = db.Update(func(tx *bolt.Tx) error {
-		_, err := tx.CreateBucketIfNotExists([]byte("bssid_cache"))
+func NewCache[T any](db *bolt.DB, bucket string, ttl time.Duration) (*Cache[T], error) {
+	err := db.Update(func(tx *bolt.Tx) error {
+		_, err := tx.CreateBucketIfNotExists([]byte(bucket))
 		return err
 	})
 	if err != nil {
 		return nil, fmt.Errorf("failed to create bucket: %w", err)
 	}
 
-	return &WifiLookupCache{db: db, ttl: ttl}, nil
+	return &Cache[T]{db: db, bucket: bucket, ttl: ttl}, nil
 }
 
-func (c *WifiLookupCache) Set(mac string, lookups *LookupResult) error {
-	entry := cacheEntry{
-		Lookup:    lookups,
+func (c *Cache[T]) Set(key string, cacheData T) error {
+	entry := cacheEntry[T]{
+		Data:      cacheData,
 		ExpiresAt: time.Now().Add(c.ttl),
 	}
 
@@ -48,31 +44,36 @@ func (c *WifiLookupCache) Set(mac string, lookups *LookupResult) error {
 	}
 
 	return c.db.Update(func(tx *bolt.Tx) error {
-		b := tx.Bucket([]byte("bssid_cache"))
-		return b.Put([]byte(mac), data)
+		b := tx.Bucket([]byte(c.bucket))
+		return b.Put([]byte(key), data)
 	})
 }
 
-func (c *WifiLookupCache) Get(mac string) (*LookupResult, bool, error) {
-	var entry cacheEntry
+func (c *Cache[T]) Get(key string) (T, bool, error) {
+	var (
+		zero  T
+		entry cacheEntry[T]
+	)
 
 	err := c.db.View(func(tx *bolt.Tx) error {
-		b := tx.Bucket([]byte("bssid_cache"))
-		data := b.Get([]byte(mac))
+		b := tx.Bucket([]byte(c.bucket))
+
+		data := b.Get([]byte(key))
 		if data == nil {
-			return errors.New("bssid not found")
+			return errors.New("key not found")
 		}
+
 		return json.Unmarshal(data, &entry)
 	})
 
 	if err != nil {
-		return nil, false, nil // just skip
+		return zero, false, nil // just skip
 	}
 
 	// check ttl
 	if time.Now().After(entry.ExpiresAt) {
-		return nil, false, nil
+		return zero, false, nil
 	}
 
-	return entry.Lookup, true, nil
+	return entry.Data, true, nil
 }
