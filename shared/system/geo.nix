@@ -43,7 +43,7 @@ in
       programs.chromium = {
         extensions = [
           {
-            id = "magbmbgbholcmdmahidlgcflopedpejb";
+            id = "${geo-chrome-extension.extensionId}";
             crxPath = "${geo-chrome-extension}/geo-extension.crx";
             version = "1.0";
           }
