@@ -1,9 +1,4 @@
-{
-  config,
-  pkgs,
-  sops-secrets,
-  ...
-}:
+{ pkgs, sops-secrets, ... }:
 let
   accounts = builtins.fromJSON (builtins.readFile "${toString sops-secrets}/accounts.json");
 
@@ -36,7 +31,7 @@ in
         };
         "minimizeonclose@rsjtdrjgfuzkfg.com" = {
           installation_mode = "normal_installed";
-          install_url = "https://github.com/NickRI/thunderbird-minimizeonclose/releases/download/v0.0.3/minimizeonclose.xpi";
+          install_url = "https://github.com/NickRI/thunderbird-minimizeonclose/releases/download/v0.0.4/minimizeonclose.xpi";
         };
       };
     };
