@@ -18,6 +18,10 @@ func GetWifiInfo(ctx context.Context) ([]AccessPoint, error) {
 
 	ifs, err := c.Interfaces()
 	for _, iface := range ifs {
+		if len(iface.Name) == 0 {
+			continue
+		}
+
 		hlog := slog.With("iface", iface.Name)
 		if err := c.Scan(ctx, iface); err != nil {
 			hlog.Warn(
