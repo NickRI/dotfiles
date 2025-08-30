@@ -110,6 +110,7 @@
       power-button-action = "suspend";
       sleep-inactive-ac-type = "suspend";
       sleep-inactive-battery-type = "suspend";
+      ambient-enabled = false;
     };
 
     "org/gnome/desktop/session" = {
