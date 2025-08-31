@@ -86,6 +86,10 @@ in
         user = "athens";
         database = "athens";
         host = "localhost";
+        params = {
+          connect_timeout = "30";
+          sslmode = "disable";
+        };
       };
     };
 
