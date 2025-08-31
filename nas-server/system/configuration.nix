@@ -63,13 +63,20 @@
     SystemMaxUse=256M
   ";
 
-  nix.settings = {
-    extra-platforms = config.boot.binfmt.emulatedSystems;
-    experimental-features = [
-      "nix-command"
-      "flakes"
-    ];
-    trusted-users = [ "nas" ];
+  nix = {
+    optimise.automatic = true;
+    gc = {
+      options = "--delete-older-than 1d";
+      automatic = true;
+    };
+    settings = {
+      extra-platforms = config.boot.binfmt.emulatedSystems;
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
+      trusted-users = [ "nas" ];
+    };
   };
 
   users.mutableUsers = false;
