@@ -123,8 +123,14 @@
 
   nix.settings = {
     extra-platforms = config.boot.binfmt.emulatedSystems;
-    substituters = [ "https://ncps.nas.firefly.red" ];
-    trusted-public-keys = [ "nas-server:CHFTyOLXZW0CjAs+4DnXPG3xYne4xhNCIxPRPZ8geG4=" ];
+    substituters = [
+      "https://ncps.nas.firefly.red"
+      "https://cache.nixos.org"
+    ];
+    trusted-public-keys = [
+      "nas-server:CHFTyOLXZW0CjAs+4DnXPG3xYne4xhNCIxPRPZ8geG4="
+      "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+    ];
     experimental-features = [
       "nix-command"
       "flakes"
