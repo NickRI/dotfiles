@@ -38,7 +38,6 @@ in
   };
 
   services.syncthing = {
-    package = pkgs.unstable.syncthing;
     enable = true;
     key = config.sops.secrets."syncthing/key".path;
     cert = config.sops.secrets."syncthing/cert".path;

@@ -90,7 +90,6 @@ in
   };
 
   services.syncthing = {
-    package = pkgs.unstable.syncthing;
     guiAddress = "127.0.0.1:${toString syncthing-listen-port}";
     enable = true;
     key = config.sops.secrets."syncthing/key".path;
