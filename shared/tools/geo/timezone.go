@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/bradfitz/latlong"
 	"log/slog"
 	"net/http"
 )
@@ -143,4 +144,8 @@ func GetTimeZone(ctx context.Context, ip string) (string, error) {
 	}
 
 	return "", fmt.Errorf("[%s] all timezone runners finalized without results", ip)
+}
+
+func GetTimeZoneByLatLng(lat, lng float64) string {
+	return latlong.LookupZoneName(lat, lng)
 }

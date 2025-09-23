@@ -60,6 +60,11 @@ in
     wants = [ "wifi-geo-location.service" ];
     after = [ "wifi-geo-location.service" ];
     script = ''
+      echo "Waiting for geo server..."
+      until ${pkgs.curl}/bin/curl -sS http://${listen-address}/time-zone >/dev/null 2>&1; do
+        sleep 2
+      done
+            
       timezone="$(${pkgs.curl}/bin/curl -sS http://${listen-address}/time-zone)"
       if [[ -n "$timezone" ]]; then
         echo "Setting timezone to '$timezone'"

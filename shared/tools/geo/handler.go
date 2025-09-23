@@ -7,8 +7,6 @@ import (
 	"io"
 	"log/slog"
 	"net/http"
-	"sort"
-	"strings"
 	"time"
 )
 
@@ -72,7 +70,7 @@ func sendLocation(w http.ResponseWriter, lookup *LookupResult) {
 	})
 }
 
-func GoogleLocationHandler(lcache *Cache[*LookupResult], wcache *Cache[[]AccessPoint]) func(w http.ResponseWriter, r *http.Request) {
+func GoogleLocationHandler(wfl *WifiLocator) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		timestamp := time.Now().UnixMilli()
 
@@ -112,95 +110,37 @@ func GoogleLocationHandler(lcache *Cache[*LookupResult], wcache *Cache[[]AccessP
 			return
 		}
 
-		if len(wreq.WifiAccessPoints) == 0 {
-			hlog.Warn("no wifi access points was received")
-
-			scanPoints, exists, err := wcache.Get("wifi-scan")
-			if err != nil {
-				internalServerError(hlog, w, fmt.Errorf("failed to find wifi scan cache: %w", err))
-				return
-			}
-
-			if exists {
-				hlog.Info("found cached access points", "count", len(scanPoints))
-				wreq.WifiAccessPoints = scanPoints
-			} else {
-				wreq.WifiAccessPoints, err = GetWifiInfo(r.Context())
-				if err != nil {
-					internalServerError(hlog, w, fmt.Errorf("failed to get WifiInfo: %w", err))
-					return
-				}
-
-				if err := wcache.Set("wifi-scan", wreq.WifiAccessPoints); err != nil {
-					internalServerError(hlog, w, fmt.Errorf("failed to cache WifiInfo: %w", err))
-					return
-				}
-			}
+		ap, err := wfl.TryProcessWifiAPS(r.Context(), wreq.WifiAccessPoints)
+		if err != nil {
+			internalServerError(hlog, w, fmt.Errorf("failed to lookup bssid: %w", err))
+			return
 		}
 
-		sort.Slice(wreq.WifiAccessPoints, func(i, j int) bool {
-			return wreq.WifiAccessPoints[i].InUse ||
-				wreq.WifiAccessPoints[i].SignalStrength > wreq.WifiAccessPoints[j].SignalStrength
-		})
-
-		hlog.Info("processing access points", slog.Any("wifi-access-points", wreq.WifiAccessPoints))
-
-		for _, ap := range wreq.WifiAccessPoints {
-			macAddress := strings.ReplaceAll(ap.MacAddress, "-", ":")
-
-			cLookup, exists, err := lcache.Get(macAddress)
-			if err != nil {
-				internalServerError(hlog, w, fmt.Errorf("failed to get cache bssid: %w", err))
-				return
-			}
-
-			if exists {
-				hlog.Info("found cached wifi access point", slog.Any("lookup", cLookup))
-				sendLocation(w, cLookup)
-				return
-			}
-
-			lookups, err := LookupBSSID(macAddress)
-			if err != nil {
-				internalServerError(hlog, w, fmt.Errorf("failed to lookup bssid: %w", err))
-				return
-			}
-
-			for _, lookup := range lookups {
-				if lookup.Correct() {
-					hlog.Info("found wifi access point", slog.Any("lookup", lookup))
-
-					if err := lcache.Set(macAddress, &lookup); err != nil {
-						internalServerError(hlog, w, fmt.Errorf("failed to set lookup to cache: %w", err))
-						return
-					}
-
-					sendLocation(w, &lookup)
-					return
-				} else {
-					hlog.Warn("wifi access point is incorrect", slog.Any("ap", lookup))
-				}
-			}
-		}
+		sendLocation(w, ap)
+		return
 	}
 }
 
-func TimeZoneHandler(w http.ResponseWriter, r *http.Request) {
-	timestamp := time.Now().UnixMilli()
+func TimeZoneHandler(wfl *WifiLocator) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		timestamp := time.Now().UnixMilli()
 
-	hlog := slog.With(
-		slog.String("url", r.URL.String()),
-		slog.Int64("timestamp-id", timestamp),
-	)
+		hlog := slog.With(
+			slog.String("url", r.URL.String()),
+			slog.Int64("timestamp-id", timestamp),
+		)
 
-	zone, err := GetTimeZone(r.Context(), *ipAddress)
-	if err != nil {
-		internalServerError(hlog, w, err)
-		return
+		aps, err := wfl.TryProcessWifiAPS(r.Context(), nil)
+		if err != nil {
+			internalServerError(hlog, w, err)
+			return
+		}
+
+		zone := GetTimeZoneByLatLng(aps.Latitude, aps.Longitude)
+
+		hlog.Info("time zone", slog.String("zone", zone))
+
+		w.WriteHeader(http.StatusOK)
+		_, _ = fmt.Fprint(w, zone)
 	}
-
-	hlog.Info("time zone", slog.String("zone", zone))
-
-	w.WriteHeader(http.StatusOK)
-	_, _ = fmt.Fprint(w, zone)
 }

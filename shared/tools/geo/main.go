@@ -56,8 +56,10 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/geolocate", GoogleLocationHandler(lookupCache, wifiCache))
-	mux.HandleFunc("/time-zone", TimeZoneHandler)
+	wifiLocator := NewWifiLocator(lookupCache, wifiCache, hlog.WithGroup("wifi_location"))
+
+	mux.HandleFunc("/geolocate", GoogleLocationHandler(wifiLocator))
+	mux.HandleFunc("/time-zone", TimeZoneHandler(wifiLocator))
 
 	server := http.Server{Addr: *listenAddress, Handler: mux}
 
