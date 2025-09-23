@@ -52,8 +52,6 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = false;
-  # Enable sound with pipewire.
-  services.pulseaudio.enable = false;
 
   hardware.ledger.enable = true;
   hardware.bluetooth = {
