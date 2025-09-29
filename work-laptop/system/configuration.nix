@@ -122,7 +122,7 @@
   nix = {
     optimise.automatic = true;
     gc = {
-      options = "--delete-older-than 3d";
+      options = "--delete-older-than 7d";
       automatic = true;
     };
     settings = {
