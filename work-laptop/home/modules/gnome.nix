@@ -129,6 +129,7 @@
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/"
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/"
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/"
+        "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/"
       ];
     };
 
@@ -160,6 +161,12 @@
       name = "calculator";
       command = "gnome-calculator";
       binding = "<Shift><Control>period";
+    };
+
+    "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5" = {
+      name = "todoist";
+      command = "todoist-electron";
+      binding = "<Shift><Control>q";
     };
 
     "org/gnome/gnome-system-monitor" = {
