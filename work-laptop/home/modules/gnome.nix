@@ -224,6 +224,11 @@
       document-font-name = config.gtk.font.name + " " + toString (config.gtk.font.size); # It's convinient to use
     };
 
+    "org/gnome/desktop/wm/preferences" = {
+      button-layout = "appmenu:minimize,close";
+      action-middle-click-titlebar = "lower";
+    };
+
     "org/gnome/desktop/app-folders" = {
       "folder-children" = [
         "Internet"
