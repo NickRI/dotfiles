@@ -13,6 +13,7 @@ in
     ll = "eza -la";
     tree = "eza --tree";
     cat = "bat --color=always";
+    reboot = "systemctl reboot";
   };
 
   home.file = {
