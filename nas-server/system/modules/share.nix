@@ -55,6 +55,8 @@ in
     "ncps/secretKeyFile".owner = "ncps";
   };
 
+  systemd.services.athens.after = [ "postgresql.service" ];
+
   services = {
     samba = {
       enable = config.services.transmission.enable;
