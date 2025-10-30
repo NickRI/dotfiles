@@ -31,7 +31,7 @@ in
     docker-compose
 
     slack
-    whatsapp-for-linux
+    wasistlos
     zoom-us
 
     #    discord
