@@ -36,7 +36,7 @@ in
     Development = {
       Athens = lib.mkIf (config.services.athens.enable) rec {
         description = "A Go module datastore and proxy";
-        icon = "https://www.svgrepo.com/download/215353/parthenon-athens.svg";
+        icon = "https://docs.gomods.io/logo@2x.png";
         href = "https://athens.nas.firefly.red/";
         siteMonitor = href;
       };
