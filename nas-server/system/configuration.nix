@@ -68,7 +68,7 @@
   nix = {
     optimise.automatic = true;
     gc = {
-      options = "--delete-older-than 1d";
+      options = "--delete-older-than 7d";
       automatic = true;
     };
     settings = {
