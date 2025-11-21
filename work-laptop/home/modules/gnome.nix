@@ -94,7 +94,7 @@
     };
 
     "org/gnome/desktop/datetime" = {
-      automatic-timezone = true;
+      automatic-timezone = false;
     };
 
     "org/gnome/settings-daemon/plugins/color" = {
