@@ -86,7 +86,7 @@ in
       };
       Prometheus = lib.mkIf (config.services.prometheus.enable) rec {
         description = "Monitoring system & time series database";
-        icon = "https://www.svgrepo.com/download/354219/prometheus.svg";
+        icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/prometheus.svg";
         href = "https://prometheus.nas.firefly.red/";
         siteMonitor = href;
       };
