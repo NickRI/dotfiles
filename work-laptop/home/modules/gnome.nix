@@ -204,6 +204,7 @@
         "_memory_usage_"
         "__temperature_avg__"
         "__network-rx_max__"
+        "__fan_avg__"
       ];
     };
 
