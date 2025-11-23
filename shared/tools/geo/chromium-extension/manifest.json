@@ -1,9 +1,12 @@
 {
   "manifest_version": 3,
   "name": "Custom Geolocation Override",
-  "version": "1.0",
-  "permissions": ["scripting", "activeTab"],
-  "host_permissions": ["<all_urls>"],
+  "version": "__VERSION__",
+  "permissions": ["scripting", "activeTab", "geolocation"],
+  "host_permissions": ["__SERVER_URL__"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": ["<all_urls>"],

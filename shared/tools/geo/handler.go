@@ -86,7 +86,9 @@ func GoogleLocationHandler(wfl *WifiLocator) func(w http.ResponseWriter, r *http
 		w.Header().Set("Access-Control-Allow-Private-Network", "true")
 
 		if r.Method == http.MethodOptions {
-			w.WriteHeader(http.StatusOK)
+			hlog.Info("Options request", slog.String("url", r.URL.String()))
+
+			w.WriteHeader(http.StatusNoContent)
 			return
 		}
 
@@ -104,10 +106,12 @@ func GoogleLocationHandler(wfl *WifiLocator) func(w http.ResponseWriter, r *http
 
 		var wreq WifiRequest
 
-		err = json.NewDecoder(&buf).Decode(&wreq)
-		if err != nil {
-			internalServerError(hlog, w, fmt.Errorf("failed to decode request: %w", err))
-			return
+		if buf.Len() > 0 {
+			err = json.NewDecoder(&buf).Decode(&wreq)
+			if err != nil {
+				internalServerError(hlog, w, fmt.Errorf("failed to decode request: %w", err))
+				return
+			}
 		}
 
 		ap, err := wfl.TryProcessWifiAPS(r.Context(), wreq.WifiAccessPoints)

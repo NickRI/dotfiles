@@ -45,7 +45,7 @@ in
           {
             id = "${geo-chrome-extension.extensionId}";
             crxPath = "${geo-chrome-extension}/geo-extension.crx";
-            version = "1.0";
+            version = "${geo-chrome-extension.version}";
           }
         ];
       };

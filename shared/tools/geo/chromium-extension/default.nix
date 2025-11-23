@@ -1,11 +1,14 @@
 { pkgs, geo-server-url, ... }:
 let
+  version = "1.1";
   buildDeriv = pkgs.stdenv.mkDerivation {
     name = "geo-extension";
     src = ./.;
 
     buildPhase = ''
-      substituteInPlace ./inject.js --replace-fail "__SERVER_URL__" "${geo-server-url}"
+      substituteInPlace ./background.js --replace-fail "__SERVER_URL__" "${geo-server-url}"
+      substituteInPlace ./manifest.json --replace-fail "__SERVER_URL__" "${geo-server-url}"
+      substituteInPlace ./manifest.json --replace-fail "__VERSION__" "${version}"
     '';
 
     installPhase = ''
@@ -19,6 +22,7 @@ let
 
   extension = buildDeriv // {
     extensionId = pkgs.lib.strings.trim (builtins.readFile "${buildDeriv}/extension-id");
+    version = version;
   };
 in
 extension
