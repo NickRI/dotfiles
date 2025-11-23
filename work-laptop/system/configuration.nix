@@ -117,6 +117,10 @@
     AllowSuspendThenHibernate=yes
     HibernateOnACPower=yes
     HibernateDelaySec=30m
+
+    # fix systemd-suspend-then-hibernate:
+    HibernateMode=shutdown
+    HibernateState=disk
   '';
 
   nix = {
