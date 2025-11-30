@@ -121,8 +121,6 @@ in
   xdg = {
     enable = true;
 
-    configFile."mimeapps.list".force = true;
-
     portal = {
       enable = true;
       config = {
@@ -137,19 +135,23 @@ in
   };
 
   programs = {
-    ssh.enable = true;
+    ssh = {
+      enable = true;
+    };
 
     git = {
       enable = true;
       package = upkgs.git;
-      userEmail = "nicktt2008@yandex.ru";
-      userName = "NickRI";
-      signing.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAj9J0TmP14mZ7UUEETiaR+h/5kh6h19jwQgkYDPQcZ7";
-      extraConfig = {
+      settings = {
+        user = {
+          email = "nicktt2008@yandex.ru";
+          name = "NickRI";
+        };
         url."git@github.com:" = {
           insteadOf = "https://github.com/";
         };
       };
+      signing.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAj9J0TmP14mZ7UUEETiaR+h/5kh6h19jwQgkYDPQcZ7";
     };
 
     chromium = {

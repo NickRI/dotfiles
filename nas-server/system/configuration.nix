@@ -63,7 +63,7 @@
     SystemMaxUse=256M
   ";
 
-  systemd.watchdog.rebootTime = "2m";
+  systemd.settings.Manager.RebootWatchdogSec = "2m";
 
   nix = {
     optimise.automatic = true;

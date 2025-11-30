@@ -36,7 +36,7 @@
     grub = {
       enable = true;
       efiSupport = true;
-      theme = grub-themes.packages.${pkgs.system}.hyperfluent;
+      theme = grub-themes.packages.${pkgs.stdenv.hostPlatform.system}.hyperfluent;
     };
 
     efi.canTouchEfiVariables = true;
@@ -92,10 +92,10 @@
   services.flatpak.enable = true;
   services.fwupd.enable = true;
   services.fstrim.enable = true;
-  services.logind = {
-    lidSwitch = "suspend";
-    lidSwitchDocked = "suspend";
-    lidSwitchExternalPower = "ignore";
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend";
+    HandleLidSwitchDocked = "suspend";
+    HandleLidSwitchExternalPower = "ignore";
   };
   services.journald.extraConfig = "
     SystemMaxUse=1G

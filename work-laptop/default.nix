@@ -8,19 +8,20 @@
 let
   system = "x86_64-linux";
   pkgs = import nixpkgs {
-    inherit system;
+    localSystem = {
+      system = system;
+    };
     config.allowUnfree = true;
   };
   unstable = import nixpkgs-unstable {
-    inherit system;
+    localSystem = {
+      system = system;
+    };
     config.allowUnfree = true;
   };
   overlay-unstable = final: prev: { inherit unstable; };
 in
 nixpkgs.lib.nixosSystem {
-  inherit system;
-  inherit pkgs;
-
   specialArgs = {
     nixos-hardware = inputs.nixos-hardware;
     grub-themes = inputs.nixos-grub-themes;
@@ -31,6 +32,7 @@ nixpkgs.lib.nixosSystem {
     (
       { ... }:
       {
+        nixpkgs.pkgs = pkgs;
         nixpkgs.overlays = [ overlay-unstable ];
       }
     )

@@ -92,5 +92,11 @@
         };
       };
     };
+
+    #    nodev.nix = {
+    #      type = "bind";
+    #      source = "/storage/nix";
+    #      mountpoint = "/nix";
+    #    };
   };
 }

@@ -71,7 +71,7 @@ in
 
   services = {
     nextcloud = {
-      package = pkgs.nextcloud31;
+      package = pkgs.nextcloud32;
 
       datadir = "/storage/${nextcloud-dir}";
 
@@ -95,9 +95,9 @@ in
         mail_smtpmode = "smtp";
         mail_smtptimeout = 5;
         mail_smtpsecure = "";
-        mail_smtpauth = 1;
+        mail_smtpauth = true;
         mail_smtphost = "smtp.mailersend.net";
-        mail_smtpport = "587";
+        mail_smtpport = 587;
 
         enable_previews = true;
         enabledPreviewProviders = [
@@ -139,18 +139,17 @@ in
       extraApps = with config.services.nextcloud.package.packages.apps; {
         inherit
           onlyoffice
-          maps
           memories
           contacts
           calendar
           phonetrack
           previewgenerator
           ;
-        unsplash = pkgs.fetchNextcloudApp {
-          url = "https://github.com/nextcloud/unsplash/archive/refs/tags/v3.1.0.tar.gz";
-          hash = "sha256-mB794rONgvhpcg3ND0clcdTcjVaAtWHgnsEyLK30xjA=";
-          license = "agpl3Only";
-        };
+        #        unsplash = pkgs.fetchNextcloudApp {
+        #          url = "https://github.com/nextcloud/unsplash/archive/refs/tags/v3.1.0.tar.gz";
+        #          hash = "sha256-mB794rONgvhpcg3ND0clcdTcjVaAtWHgnsEyLK30xjA=";
+        #          license = "agpl3Only";
+        #        };
         twofactor_totp = pkgs.fetchNextcloudApp {
           url = "https://github.com/nextcloud/twofactor_totp/archive/refs/tags/v30.0.4.tar.gz";
           hash = "sha256-WydCFsIUlHSSTkrwRZ6z33dl952nDauv16Va2wdisMs=";

@@ -12,7 +12,7 @@ in
     programs.go = {
       enable = true;
       package = upkgs.go;
-      goPrivate = [
+      env.GOPRIVATE = [
         "github.com/wert-io"
       ];
     };

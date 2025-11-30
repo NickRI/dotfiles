@@ -54,6 +54,7 @@ in
 
   services = {
     transmission = {
+      package = pkgs.transmission_4;
       webHome = pkgs.flood-for-transmission;
 
       credentialsFile = config.sops.templates."transmission.json".path;

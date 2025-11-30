@@ -37,9 +37,10 @@
       };
 
       programs.ssh = lib.mkIf (config.programs.ssh.enable) {
-        extraConfig = ''
-          IdentityAgent = ~/.1password/agent.sock
-        '';
+        enableDefaultConfig = false;
+        matchBlocks."*" = {
+          identityAgent = "~/.1password/agent.sock";
+        };
       };
 
       home.sessionVariables = {

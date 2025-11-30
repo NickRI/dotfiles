@@ -52,7 +52,10 @@
   # if you don't want to manage your shell through Home Manager.
 
   programs = {
-    ssh.enable = true;
+    ssh = {
+      enableDefaultConfig = false;
+      enable = true;
+    };
     git.enable = true;
 
     # Let Home Manager install and manage itself.
