@@ -19,7 +19,7 @@
       blur-my-shell
       caffeine
       vitals
-      hibernate-status-button
+      power-off-options
       user-themes
       auto-move-windows
       hide-minimized
@@ -35,7 +35,7 @@
         "blur-my-shell@aunetx"
         "caffeine@patapon.info"
         "Vitals@CoreCoding.com"
-        "hibernate-status@dromi"
+        "power-off-options@axelitama.github.io"
         "user-theme@gnome-shell-extensions.gcampax.github.com"
         "gsconnect@andyholmes.github.io"
         "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
@@ -174,9 +174,8 @@
       update-interval = mkInt32 1500;
     };
 
-    "org/gnome/shell/extensions/hibernate-status-button" = {
-      show-hybrid-sleep = false;
-      show-suspend-then-hibernate = false;
+    "org/gnome/shell/extensions/power-off-options" = {
+      show-hibernate = true;
     };
 
     "org/gnome/shell/extensions/caffeine" = {
