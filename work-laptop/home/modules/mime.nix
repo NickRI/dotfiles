@@ -6,7 +6,10 @@
       enable = true;
       defaultApplications = {
         "image/svg+xml" = [ "com.boxy_svg.BoxySVG.desktop" ];
-        "application/pdf" = [ "com.github.xournalpp.xournalpp.desktop" ];
+        "application/pdf" = [
+          "org.gnome.Papers.desktop"
+          "com.github.xournalpp.xournalpp.desktop"
+        ];
         "application/vnd.sqlite3" = "org.nickvision.money.desktop";
         "x-scheme-handler/mailto" = "thunderbird.desktop";
         "text/html" = "chromium-browser.desktop";
