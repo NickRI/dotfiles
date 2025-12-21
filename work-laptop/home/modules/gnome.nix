@@ -19,7 +19,6 @@
       blur-my-shell
       caffeine
       vitals
-      power-off-options
       user-themes
       auto-move-windows
       hide-minimized
@@ -35,7 +34,6 @@
         "blur-my-shell@aunetx"
         "caffeine@patapon.info"
         "Vitals@CoreCoding.com"
-        "power-off-options@axelitama.github.io"
         "user-theme@gnome-shell-extensions.gcampax.github.com"
         "gsconnect@andyholmes.github.io"
         "auto-move-windows@gnome-shell-extensions.gcampax.github.com"
@@ -172,10 +170,6 @@
     "org/gnome/gnome-system-monitor" = {
       graph-update-interval = mkInt32 1000;
       update-interval = mkInt32 1500;
-    };
-
-    "org/gnome/shell/extensions/power-off-options" = {
-      show-hibernate = true;
     };
 
     "org/gnome/shell/extensions/caffeine" = {
