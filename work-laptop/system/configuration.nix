@@ -42,17 +42,6 @@
     efi.canTouchEfiVariables = true;
   };
 
-  zramSwap = {
-    enable = true;
-    memoryPercent = 20;
-    priority = 10;
-  };
-
-  boot.kernelParams = [
-    "hibernate_compress=lz4"
-    "hibernate_batch_pages=1024"
-  ];
-
   boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   # Enable CUPS to print documents.
@@ -98,9 +87,10 @@
   services.fwupd.enable = true;
   services.fstrim.enable = true;
   services.logind.settings.Login = {
-    HandleLidSwitch = "suspend";
-    HandleLidSwitchDocked = "suspend";
-    HandleLidSwitchExternalPower = "ignore";
+    HandleLidSwitch = "suspend"; # основное действие при закрытии крышки
+    HandleLidSwitchDocked = "suspend"; # когда подключены внешние мониторы (docked)
+    HandleLidSwitchExternalPower = "suspend"; # на зарядке/внешнем питании
+    LidSwitchIgnoreInhibited = "yes";
   };
   services.journald.extraConfig = "
     SystemMaxUse=1G
@@ -115,18 +105,6 @@
       product = "05c0";
     }
   ];
-
-  systemd.services."systemd-suspend-then-hibernate".aliases = [ "systemd-suspend.service" ];
-
-  systemd.sleep.extraConfig = ''
-    AllowSuspendThenHibernate=yes
-    HibernateOnACPower=yes
-    HibernateDelaySec=30m
-
-    # fix systemd-suspend-then-hibernate:
-    HibernateMode=shutdown
-    HibernateState=disk
-  '';
 
   nix = {
     optimise.automatic = true;
