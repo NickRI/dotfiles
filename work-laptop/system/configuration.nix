@@ -145,6 +145,15 @@
     #   ];
   };
 
+  users.users.guest = {
+    isNormalUser = true;
+    shell = pkgs.zsh;
+    password = "";
+    packages = with pkgs; [
+      gnome-terminal
+    ];
+  };
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -177,6 +186,8 @@
   programs.zsh.enable = true;
   programs.nix-ld.enable = true;
   programs.kdeconnect.enable = true;
+  programs.steam.enable = true;
+  programs.steam.protontricks.enable = true;
 
   environment.pathsToLink = [
     "/share/xdg-desktop-portal"

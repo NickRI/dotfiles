@@ -20,4 +20,10 @@
     "sd_mod"
   ];
 
+  boot.kernelParams = [
+    "usbcore.autosuspend=-1"
+    "i915.enable_psr=0"
+  ];
+
+  hardware.cpu.intel.updateMicrocode = true;
 }

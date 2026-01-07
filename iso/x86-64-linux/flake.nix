@@ -93,6 +93,21 @@
               wireless.enable = false;
               networkmanager.enable = true;
               useDHCP = lib.mkDefault true;
+              firewall = {
+                enable = true;
+                allowedTCPPortRanges = [
+                  {
+                    from = 1;
+                    to = 65535;
+                  }
+                ];
+                allowedUDPPortRanges = [
+                  {
+                    from = 1;
+                    to = 65535;
+                  }
+                ];
+              };
             };
 
             system.stateVersion = "24.11";
