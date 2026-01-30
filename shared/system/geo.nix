@@ -16,17 +16,17 @@ in
 {
   systemd.services.wifi-geo-location = {
     description = "Custom GeoClue2 Location Provider";
-    requires = [ "geoclue.service" ];
     serviceConfig = {
       ExecStart = "${geo}/bin/geo --listen ${listen-address}";
       CacheDirectory = "wifi-geo";
       Restart = "on-failure";
+      Type = "simple";
     };
   };
 
   systemd.services.geoclue = {
-    after = [ "wifi-geo-location.service" ];
-    wants = [ "wifi-geo-location.service" ];
+    after = lib.mkAfter [ "wifi-geo-location.service" ];
+    wants = lib.mkAfter [ "wifi-geo-location.service" ];
   };
 
   services.geoclue2 = {
@@ -57,31 +57,29 @@ in
 
   systemd.services.geo-timezone-update = {
     description = "Timezone update service";
-    wants = [ "wifi-geo-location.service" ];
+    requires = [ "wifi-geo-location.service" ];
     after = [ "wifi-geo-location.service" ];
-    script = ''
-      echo "Waiting for geo server..."
-      until ${pkgs.curl}/bin/curl -sS http://${listen-address}/time-zone >/dev/null 2>&1; do
-        sleep 2
-      done
-            
-      timezone="$(${pkgs.curl}/bin/curl -sS http://${listen-address}/time-zone)"
-      if [[ -n "$timezone" ]]; then
-        echo "Setting timezone to '$timezone'"
-        timedatectl set-timezone "$timezone"
-      fi
-    '';
-
     serviceConfig = {
       Type = "oneshot";
+      ExecStartPre = ''
+        echo "Waiting for geo service..."
+        until ${pkgs.curl}/bin/curl -fsS http://${listen-address}/time-zone >/dev/null; do
+          sleep 2
+        done
+      '';
     };
+
+    script = ''
+      timezone="$(${pkgs.curl}/bin/curl -fsS http://${listen-address}/time-zone)"
+      timedatectl set-timezone "$timezone"
+    '';
   };
 
   # Tricky way to capture wifi up
   environment.etc."NetworkManager/dispatcher.d/10-wifi-up".source =
     pkgs.writeShellScript "wifi-up-hook" ''
       if [ "$2" = "up" ]; then
-        systemctl start geo-timezone-update.service
+        systemctl try-restart geo-timezone-update.service
       fi
     '';
 }
