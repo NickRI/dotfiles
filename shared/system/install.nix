@@ -66,7 +66,7 @@ let
 
     echo "Delete master age key"
 
-    logrus sudo rm /mnt$sopsKeyFile
+    logrun sudo rm /mnt$sopsKeyFile
   '';
 in
 {

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"html/template"
 	"net/http"
 )
@@ -125,25 +126,23 @@ const pageTemplate = `<!DOCTYPE html>
       return;
     }
 
-    // Генерируем salt и iv для всех текстов
-    const salt = crypto.getRandomValues(new Uint8Array(16));
-    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const files = {{.FilesJSON}};
 
-    const files = new Map();
-    for (const f of {{.Files}}) {
-      const t = document.getElementById(f).value;
+    const encryptedTexts = [];
+    for (const file of files) {
+      const t = document.getElementById(file).value;
       if (!t) {
         alert("Пожалуйста, заполните все тексты");
         return;
       }
-      files.set(f, t);
-    }
 
-    const encryptedTexts = [];
-    for (const [file, value] of files) {
-      const ct = await encryptWithParams(value, password, salt, iv);
+      // Генерируем уникальные salt и iv для каждого текста
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+
+      const ct = await encryptWithParams(t, password, salt, iv);
       encryptedTexts.push({
-		file: file,
+        file: file,
         text: ct,
         iv: arrayBufferToBase64(iv),
         salt: arrayBufferToBase64(salt)
@@ -169,16 +168,21 @@ const pageTemplate = `<!DOCTYPE html>
 
 func renderTemplate(w http.ResponseWriter, password string, files []string) {
 	tmpl := template.Must(template.New("page").Parse(pageTemplate))
+
+	filesJSON, _ := json.Marshal(files)
+
 	type Data struct {
 		Iterations int
 		Password   string
 		Files      []string
+		FilesJSON  string
 	}
 
 	data := Data{
 		Iterations: iterations,
 		Password:   password,
 		Files:      files,
+		FilesJSON:  string(filesJSON),
 	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	tmpl.Execute(w, data)

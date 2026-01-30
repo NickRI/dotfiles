@@ -67,6 +67,7 @@
             };
 
             environment.systemPackages = with pkgs; [
+              fzf
               wget
               htop
               file

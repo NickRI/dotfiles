@@ -10,6 +10,8 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"syscall"
+	"time"
 )
 
 func runServer(listen string, files []string) error {
@@ -93,16 +95,21 @@ func runServer(listen string, files []string) error {
 
 	signalChan := make(chan os.Signal, 1)
 
-	signal.Notify(signalChan, os.Interrupt, os.Kill)
+	signal.Notify(signalChan, os.Interrupt, syscall.SIGTERM)
 
 	select {
 	case sig := <-signalChan:
 		log.Printf("Приложение остановелно по сигналу: %v\n", sig)
+		cancel()
 	case <-ctx.Done():
 		log.Println("Файлы успешно сохранены")
 	}
 
-	if err := server.Shutdown(ctx); err != nil && !errors.Is(err, context.Canceled) {
+	// Используем новый контекст с таймаутом для graceful shutdown
+	shutdownCtx, shutdownCancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer shutdownCancel()
+
+	if err := server.Shutdown(shutdownCtx); err != nil && !errors.Is(err, context.Canceled) {
 		log.Fatal("Ошибка закрытия сервера:", err)
 	}
 
