@@ -3,6 +3,7 @@
 # and in the NixOS manual (accessible by running `nixos-help`).
 
 {
+  lib,
   grub-themes,
   config,
   pkgs,
@@ -114,7 +115,7 @@
     };
     settings = {
       extra-platforms = config.boot.binfmt.emulatedSystems;
-      substituters = [
+      substituters = lib.mkForce [
         "https://ncps.nas.firefly.red"
       ];
       trusted-public-keys = [
