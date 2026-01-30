@@ -182,6 +182,7 @@
       application-list = [
         "tradingview.desktop:2"
         "ledger-live-desktop.desktop:2"
+        "steam.desktop:3"
       ];
     };
 
