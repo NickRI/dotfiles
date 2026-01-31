@@ -224,6 +224,10 @@
       action-middle-click-titlebar = "lower";
     };
 
+    # Little help:
+    # Alt + F2 → lg → Enter [Windows]
+    # or
+    # find /etc/profiles/per-user/$USER/share/applications -iname "*APP*"
     "org/gnome/desktop/app-folders" = {
       "folder-children" = [
         "Internet"
@@ -260,8 +264,7 @@
         "org.gnome.seahorse.Application.desktop"
         "com.surfshark.Surfshark.desktop"
         "1password.desktop"
-        "com.yubico.authenticator.desktop"
-        "yubikey-personalization-gui.desktop"
+        "com.yubico.yubioath.desktop"
       ];
     };
 
@@ -269,6 +272,7 @@
       "name" = "Система";
       "apps" = [
         "org.gnome.Terminal.desktop"
+        "org.gnome.Console.desktop"
         "io.missioncenter.MissionCenter.desktop"
         "org.gnome.SystemMonitor.desktop"
         "htop.desktop"
@@ -284,6 +288,7 @@
         "vlc.desktop"
         "org.gnome.Snapshot.desktop"
         "org.gnome.Decibels.desktop"
+        "org.gnome.Showtime.desktop"
       ];
     };
 
@@ -321,7 +326,7 @@
         "org.gnome.font-viewer.desktop"
         "io.gitlab.adhami3310.Impression.desktop"
         "org.gnome.FileRoller.desktop"
-        "org.raspberrypi.rpi-imager.desktop"
+        "com.raspberrypi.rpi-imager.desktop"
       ];
     };
 
@@ -342,8 +347,8 @@
       "name" = "Разное";
       "apps" = [
         "cups.desktop"
-        "yelp.desktop"
-        "simple-scan.desktop"
+        "org.gnome.Yelp.desktop"
+        "org.gnome.SimpleScan.desktop"
         "nixos-manual.desktop"
       ];
     };
@@ -353,6 +358,7 @@
       "apps" = [
         "org.gnome.Evince.desktop"
         "org.gnome.Loupe.desktop"
+        "org.gnome.Papers.desktop"
         "com.github.johnfactotum.Foliate.desktop"
         "me.sanchezrodriguez.passes.desktop"
       ];
