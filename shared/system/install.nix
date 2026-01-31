@@ -17,13 +17,14 @@ let
     logrun nmtui connect
 
     if [ ! -f "$HOME/.ssh/id_ed25519" ] || [ ! -f "$HOME/.ssh/nix-secrets" ]; then
-      read -p "Enter wormhole-drop listen address (leave empty for 0.0.0.0:80): " listen
+      read -p "Enter wormhole-drop listen address (leave empty for 0.0.0.0:8080): " listen
       if [ -z "$listen" ]; then
-        listen="0.0.0.0:80"
+        listen="0.0.0.0:8080"
       fi
 
+      logrun mkdir -p $HOME/.ssh
       logrun ${wormhole-drop}/bin/wormhole-drop -listen $listen -file1=$HOME/.ssh/id_ed25519 -file2=$HOME/.ssh/nix-secrets
-      logrun chmod 600 ~/.ssh/id_ed25519 ~/.ssh/nix-secrets
+      logrun chmod 600 $HOME/.ssh/id_ed25519 $HOME/.ssh/nix-secrets
     fi
 
     if [ ! -d $HOME/dotfiles ]; then

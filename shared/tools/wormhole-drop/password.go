@@ -6,8 +6,9 @@ import (
 	"crypto/rand"
 	"crypto/sha256"
 	"fmt"
-	"golang.org/x/crypto/pbkdf2"
 	"math/big"
+
+	"golang.org/x/crypto/pbkdf2"
 )
 
 var animals = []string{
@@ -45,7 +46,7 @@ func generatePassword() string {
 const iterations = 100_000
 
 func deriveKey(password, salt []byte) []byte {
-	return pbkdf2.Key(password, salt, iterations, 32, sha256.New)
+	return pbkdf2.Key(password, salt, iterations, 16, sha256.New)
 }
 
 func decrypt(ciphertext, key, iv []byte) ([]byte, error) {

@@ -25,7 +25,6 @@ func runServer(listen string, files []string) error {
 	})
 
 	mux.HandleFunc("/submit", func(w http.ResponseWriter, r *http.Request) {
-		// Структура запроса: { texts: [ {text: base64, iv: base64, salt: base64}, ... ] }
 		var payload struct {
 			Texts []EncryptedText `json:"texts"`
 		}
@@ -43,34 +42,26 @@ func runServer(listen string, files []string) error {
 		for _, t := range payload.Texts {
 			ct, err := base64.StdEncoding.DecodeString(t.Ciphertext)
 			if err != nil {
-				log.Printf("Неверный base64 ciphertext: %v", err)
 				http.Error(w, "Неверный base64 ciphertext", http.StatusBadRequest)
 				return
 			}
-
 			iv, err := base64.StdEncoding.DecodeString(t.IV)
 			if err != nil {
-				log.Printf("Неверный base64 iv: %v", err)
 				http.Error(w, "Неверный base64 iv", http.StatusBadRequest)
 				return
 			}
-
 			salt, err := base64.StdEncoding.DecodeString(t.Salt)
 			if err != nil {
-				log.Printf("Неверный base64 salt: %v", err)
 				http.Error(w, "Неверный base64 salt", http.StatusBadRequest)
 				return
 			}
-
 			key := deriveKey([]byte(password), salt)
-
 			plaintext, err := decrypt(ct, key, iv)
 			if err != nil {
-				log.Printf("Ошибка дешифровки файла %s: %v", t.File, err)
-				http.Error(w, fmt.Sprintf("Ошибка дешифровки файла %s: %v", t.File, err), http.StatusBadRequest)
+				log.Printf("Ошибка дешифровки %s: %v (len(ct)=%d, len(iv)=%d, len(salt)=%d, len(key)=%d)", t.File, err, len(ct), len(iv), len(salt), len(key))
+				http.Error(w, fmt.Sprintf("Ошибка дешифровки %s", t.File), http.StatusBadRequest)
 				return
 			}
-
 			if err := os.WriteFile(t.File, plaintext, 0644); err != nil {
 				log.Printf("Ошибка записи файла %s: %v", t.File, err)
 				http.Error(w, fmt.Sprintf("Ошибка записи файла %s: %v", t.File, err), http.StatusInternalServerError)
@@ -99,7 +90,7 @@ func runServer(listen string, files []string) error {
 
 	select {
 	case sig := <-signalChan:
-		log.Printf("Приложение остановелно по сигналу: %v\n", sig)
+		log.Printf("Приложение остановлено по сигналу: %v\n", sig)
 		cancel()
 	case <-ctx.Done():
 		log.Println("Файлы успешно сохранены")

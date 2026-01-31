@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"html/template"
 	"net/http"
 )
@@ -73,93 +72,91 @@ const pageTemplate = `<!DOCTYPE html>
 
 <div class="result" id="result"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/asmcrypto.js@2.3.2/asmcrypto.all.es5.min.js"></script>
 <script>
-  function arrayBufferToBase64(buffer) {
-    let binary = "";
-    const bytes = new Uint8Array(buffer);
-    for (let b of bytes) binary += String.fromCharCode(b);
-    return btoa(binary);
+  const ITERATIONS = {{.Iterations}};
+  const KEY_LEN = 16;
+
+  function setResult(msg) {
+    document.getElementById("result").textContent = msg;
   }
 
-  async function encryptWithParams(plaintext, password, salt, iv) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(plaintext);
+  function getLib() {
+    const w = window;
+    if (w.AsmCrypto) return w.AsmCrypto;
+    if (w.asmCrypto) return w.asmCrypto.default || w.asmCrypto;
+    return null;
+  }
 
-    const passKey = await crypto.subtle.importKey(
-      "raw",
-      encoder.encode(password),
-      { name: "PBKDF2" },
-      false,
-      ["deriveKey"]
-    );
+  function bytesToBase64(arr) {
+    let s = "";
+    const b = new Uint8Array(arr);
+    for (let i = 0; i < b.length; i++) s += String.fromCharCode(b[i]);
+    return btoa(s);
+  }
 
-    const key = await crypto.subtle.deriveKey(
-      {
-        name: "PBKDF2",
-        salt: salt,
-        iterations: {{.Iterations}},
-        hash: "SHA-256",
-      },
-      passKey,
-      { name: "AES-GCM", length: 256 },
-      false,
-      ["encrypt"]
-    );
+  function encrypt(plaintext, password) {
+    const lib = getLib();
+    if (!lib) throw new Error("asmcrypto не загружен");
 
-    const ciphertext = await crypto.subtle.encrypt(
-      {
-        name: "AES-GCM",
-        iv: iv,
-      },
-      key,
-      data
-    );
+    const enc = new TextEncoder();
+    const pw = enc.encode(password);
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const data = enc.encode(plaintext);
 
-    return arrayBufferToBase64(ciphertext);
+    const pbkdf2 = lib.Pbkdf2HmacSha256;
+    if (!pbkdf2) throw new Error("Pbkdf2HmacSha256 не найден");
+    const key = typeof pbkdf2.bytes === "function"
+      ? pbkdf2.bytes(pw, salt, ITERATIONS, KEY_LEN)
+      : pbkdf2(pw, salt, ITERATIONS, KEY_LEN);
+    let keyBytes = key instanceof Uint8Array ? key : new Uint8Array(key);
+    const key16 = new Uint8Array(KEY_LEN);
+    key16.set(keyBytes.subarray(0, KEY_LEN));
+
+    const aesGcm = lib.AES_GCM || lib.AesGcm;
+    if (!aesGcm || typeof aesGcm.encrypt !== "function") throw new Error("AES_GCM не найден");
+    const ciphertext = aesGcm.encrypt(data, key16, iv);
+
+    return {
+      text: bytesToBase64(ciphertext),
+      iv: bytesToBase64(iv),
+      salt: bytesToBase64(salt),
+    };
   }
 
   document.getElementById("sendBtn").onclick = async () => {
-    const password = "{{.Password}}";
+    try {
+      const password = {{.Password}};
+      if (!password) {
+        setResult("Ошибка: пароль не задан");
+        return;
+      }
 
-    if (!password) {
-      alert("Пароль не задан");
-      return;
-    }
+    const files = {{.Files}};
 
-    const files = {{.FilesJSON}};
-
-    const encryptedTexts = [];
+    const texts = [];
     for (const file of files) {
-      const t = document.getElementById(file).value;
-      if (!t) {
+      const text = document.getElementById(file).value;
+      if (!text) {
         alert("Пожалуйста, заполните все тексты");
         return;
       }
 
-      // Генерируем уникальные salt и iv для каждого текста
-      const salt = crypto.getRandomValues(new Uint8Array(16));
-      const iv = crypto.getRandomValues(new Uint8Array(12));
-
-      const ct = await encryptWithParams(t, password, salt, iv);
-      encryptedTexts.push({
-        file: file,
-        text: ct,
-        iv: arrayBufferToBase64(iv),
-        salt: arrayBufferToBase64(salt)
-      });
+      const enc = encrypt(text, password);
+	  texts.push({ file: file, text: enc.text, iv: enc.iv, salt: enc.salt });
     }
 
-    try {
       const resp = await fetch("/submit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ texts: encryptedTexts }),
+        body: JSON.stringify({ texts: texts }),
       });
 
-      const result = await resp.text();
-      document.getElementById("result").textContent = result;
+      const text = await resp.text();
+      setResult(resp.ok ? text : "Ошибка " + resp.status + ": " + text);
     } catch (err) {
-      document.getElementById("result").textContent = "Ошибка: " + err.message;
+      setResult("Ошибка: " + (err.message || String(err)));
     }
   };
 </script>
@@ -169,20 +166,16 @@ const pageTemplate = `<!DOCTYPE html>
 func renderTemplate(w http.ResponseWriter, password string, files []string) {
 	tmpl := template.Must(template.New("page").Parse(pageTemplate))
 
-	filesJSON, _ := json.Marshal(files)
-
 	type Data struct {
 		Iterations int
 		Password   string
 		Files      []string
-		FilesJSON  string
 	}
 
 	data := Data{
 		Iterations: iterations,
 		Password:   password,
 		Files:      files,
-		FilesJSON:  string(filesJSON),
 	}
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	tmpl.Execute(w, data)
