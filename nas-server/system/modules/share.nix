@@ -1,6 +1,5 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }:
@@ -55,7 +54,10 @@ in
     "ncps/secretKeyFile".owner = "ncps";
   };
 
-  systemd.services.athens.after = [ "postgresql.service" ];
+  systemd.services.athens = {
+    after = [ "postgresql.service" ];
+    wants = [ "postgresql.service" ];
+  };
 
   services = {
     samba = {
@@ -66,14 +68,18 @@ in
         downloads = {
           path = "/storage/transmission/downloads";
           browseable = "yes";
-          writeable = "no";
+          writable = "no";
           public = "yes";
         };
         uploads = {
           path = "/storage/uploads";
           browseable = "yes";
-          writeable = "yes";
+          writable = "yes";
           public = "yes";
+          "force user" = "nas";
+          "force group" = "users";
+          "create mask" = "0666";
+          "directory mask" = "0777";
         };
       };
     };
@@ -107,7 +113,6 @@ in
     };
 
     ncps = {
-      package = pkgs.unstable.ncps;
       logLevel = "trace";
       server.addr = "localhost:${toString ncps-listen-port}";
       upstream = {
