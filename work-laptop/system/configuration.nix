@@ -81,6 +81,36 @@
     #media-session.enable = true;
   };
 
+  systemd.services = {
+    powerprofile-pre-sleep = {
+      description = "Set power-saver before sleep";
+      wantedBy = [ "sleep.target" ];
+      before = [ "sleep.target" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.power-profiles-daemon}/bin/powerprofilesctl set power-saver";
+      };
+    };
+
+    powerprofile-post-sleep = {
+      description = "Restore balanced after resume";
+      wantedBy = [
+        "suspend.target"
+        "hibernate.target"
+        "hybrid-sleep.target"
+      ];
+      after = [
+        "suspend.target"
+        "hibernate.target"
+        "hybrid-sleep.target"
+      ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced";
+      };
+    };
+  };
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
