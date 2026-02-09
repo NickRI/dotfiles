@@ -83,6 +83,7 @@
 
   services.udev.extraRules = ''
     ACTION=="add|change", SUBSYSTEM=="usb", ATTR{power/wakeup}="disabled"
+    ACTION=="add|change", SUBSYSTEM=="usbc", ATTR{power/wakeup}="disabled"
     ACTION=="add|change", SUBSYSTEM=="pci", DRIVER=="xhci_hcd", ATTR{power/wakeup}="disabled"
     ACTION=="add|change", SUBSYSTEM=="pci", DRIVER=="thunderbolt", ATTR{power/wakeup}="disabled"
   '';
