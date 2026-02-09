@@ -145,11 +145,11 @@ in
           phonetrack
           previewgenerator
           ;
-        #        unsplash = pkgs.fetchNextcloudApp {
-        #          url = "https://github.com/nextcloud/unsplash/archive/refs/tags/v3.1.0.tar.gz";
-        #          hash = "sha256-mB794rONgvhpcg3ND0clcdTcjVaAtWHgnsEyLK30xjA=";
-        #          license = "agpl3Only";
-        #        };
+        unsplash = pkgs.fetchNextcloudApp {
+          url = "https://github.com/nextcloud/unsplash/archive/refs/tags/v3.1.0.tar.gz";
+          hash = "sha256-mB794rONgvhpcg3ND0clcdTcjVaAtWHgnsEyLK30xjA=";
+          license = "agpl3Only";
+        };
         twofactor_totp = pkgs.fetchNextcloudApp {
           url = "https://github.com/nextcloud/twofactor_totp/archive/refs/tags/v30.0.4.tar.gz";
           hash = "sha256-WydCFsIUlHSSTkrwRZ6z33dl952nDauv16Va2wdisMs=";
