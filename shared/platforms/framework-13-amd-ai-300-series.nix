@@ -11,4 +11,12 @@
     "xhci_pci"
     "usbhid"
   ];
+
+  boot.kernelParams = [
+    "pcie_aspm=force"
+    "amd_iommu=fullflush"
+    "acpi.ec_no_wakeup=1"
+    "xhci_hcd.quirks=0x800000"
+    "amdgpu.dcdebugmask=0x10"
+  ];
 }
