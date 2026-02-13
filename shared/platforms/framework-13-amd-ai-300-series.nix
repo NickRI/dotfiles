@@ -1,9 +1,24 @@
-{ modulesPath, nixos-hardware, ... }:
-
+{
+  pkgs,
+  lib,
+  modulesPath,
+  nixos-hardware,
+  ...
+}:
+let
+  debug-tools = import ../tools/debug-tools/amd.nix {
+    inherit pkgs;
+    inherit lib;
+  };
+in
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     nixos-hardware.nixosModules.framework-amd-ai-300-series
+  ];
+
+  environment.systemPackages = [
+    debug-tools
   ];
 
   boot.initrd.availableKernelModules = [

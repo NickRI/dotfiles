@@ -4,11 +4,19 @@
   nixos-hardware,
   ...
 }:
-
+let
+  debug-tools = import ../tools/debug-tools/intell.nix {
+    inherit pkgs;
+  };
+in
 {
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     nixos-hardware.nixosModules.framework-13th-gen-intel
+  ];
+
+  environment.systemPackages = [
+    debug-tools
   ];
 
   boot.initrd.availableKernelModules = [
