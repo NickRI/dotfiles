@@ -1,2 +1,5 @@
 .idea
 nix-secrets
+result
+*efi-vars.fd
+*.qcow2
