@@ -27,6 +27,9 @@ in
     "usbhid"
   ];
 
+  programs.ryzen-monitor-ng.enable = true;
+  hardware.cpu.amd.ryzen-smu.enable = true;
+
   boot.kernelParams = [
     "pcie_aspm=force"
     "amd_iommu=fullflush"

@@ -74,6 +74,7 @@
               gcc
               tree
               openssl
+              btop
             ];
 
             environment.etc.issue.text = ''

@@ -25,7 +25,6 @@
         "com.ktechpit.colorwall"
         "com.dropbox.Client"
         "com.getpostman.Postman"
-        "dev.vencord.Vesktop"
       ];
     };
   };

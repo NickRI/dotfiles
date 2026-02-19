@@ -28,7 +28,7 @@ let
     fi
 
     if [ ! -d $HOME/dotfiles ]; then
-      logrun git clone git@github.com:nickRI/dotfiles
+      logrun GIT_SSH_COMMAND='ssh -o StrictHostKeyChecking=no' git clone git@github.com:nickRI/dotfiles
     fi
 
     if [ ! -d $HOME/dotfiles/nix-secrets ]; then
@@ -61,6 +61,7 @@ let
 
     sopsKeyFile=$(nix eval --raw $HOME/dotfiles#nixosConfigurations.work-laptop.config.sops.age.keyFile)
 
+    logrun sudo mkdir -p $sopsKeyFile
     logrun sudo nix run nixpkgs#ssh-to-age  -- -i $HOME/.ssh/nix-secrets -private-key -o /mnt$sopsKeyFile
 
     logrun sudo nixos-install $nix_options --flake "$HOME/dotfiles#$configuration" --root /mnt --no-root-password

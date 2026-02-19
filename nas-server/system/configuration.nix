@@ -72,7 +72,6 @@
       automatic = true;
     };
     settings = {
-      extra-platforms = config.boot.binfmt.emulatedSystems;
       experimental-features = [
         "nix-command"
         "flakes"
@@ -89,7 +88,6 @@
     extraGroups = [
       "networkmanager"
       "wheel"
-      "docker"
     ]; # Enable ‘sudo’ docker and other for the user.
     hashedPasswordFile = config.sops.secrets."user-password".path;
     shell = pkgs.zsh;
