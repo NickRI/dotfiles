@@ -44,11 +44,63 @@
           home-manager
           ;
       };
+
+      platforms = builtins.listToAttrs (
+        map (fname: {
+          name = nixpkgs.lib.strings.removeSuffix ".nix" fname;
+          value = ./shared/platforms/${fname};
+        }) (builtins.attrNames (builtins.readDir ./shared/platforms))
+      );
+
+      mkHost =
+        {
+          host,
+          context,
+          platform,
+          system ? "x86_64-linux",
+        }:
+
+        import host (
+          context
+          // {
+            hardware = {
+              system = system;
+              platformModule = platforms.${platform};
+            };
+          }
+        );
     in
     {
       nixosConfigurations = {
-        work-laptop = import ./work-laptop baseContext;
-        nas-server = import ./nas-server baseContext;
+        work-laptop-amd = mkHost {
+          host = ./work-laptop;
+          context = baseContext;
+          platform = "framework-13-amd-ai-300-series";
+        };
+
+        work-laptop-intel = mkHost {
+          host = ./work-laptop;
+          context = baseContext;
+          platform = "framework-13-intel-13-gen";
+        };
+
+        nas-server-zimablade = mkHost {
+          host = ./nas-server;
+          context = baseContext;
+          platform = "zimablade-7700";
+        };
+
+        tv-box-intel = mkHost {
+          host = ./tv-box;
+          context = baseContext;
+          platform = "framework-13-intel-13-gen";
+        };
+
+        tv-box-zimablade = mkHost {
+          host = ./tv-box;
+          context = baseContext;
+          platform = "zimablade-7700";
+        };
       };
     };
 }

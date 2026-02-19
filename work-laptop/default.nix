@@ -3,25 +3,22 @@
   nixpkgs,
   nixpkgs-unstable,
   home-manager,
+  hardware,
   ...
 }:
 let
-  system = "x86_64-linux";
   pkgs = import nixpkgs {
-    localSystem = {
-      system = system;
-    };
+    inherit (hardware) system;
     config.allowUnfree = true;
   };
   unstable = import nixpkgs-unstable {
-    localSystem = {
-      system = system;
-    };
+    inherit (hardware) system;
     config.allowUnfree = true;
   };
   overlay-unstable = final: prev: { inherit unstable; };
 in
 nixpkgs.lib.nixosSystem {
+  inherit (hardware) system;
   specialArgs = {
     nixos-hardware = inputs.nixos-hardware;
     grub-themes = inputs.nixos-grub-themes;
@@ -39,7 +36,7 @@ nixpkgs.lib.nixosSystem {
     home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
     inputs.sops-nix.nixosModules.sops
-    ../shared/platforms/framework-13-amd-ai-300-series.nix
+    hardware.platformModule
     ./system/configuration.nix
     {
       home-manager.useGlobalPkgs = true;

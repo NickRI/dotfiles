@@ -2,11 +2,12 @@
   inputs,
   nixpkgs,
   home-manager,
+  hardware,
   ...
 }:
 
 nixpkgs.lib.nixosSystem {
-  system = "x86_64-linux";
+  inherit (hardware) system;
   specialArgs = {
     sops-secrets = inputs.sops-secrets;
   };
@@ -15,7 +16,7 @@ nixpkgs.lib.nixosSystem {
     home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
     inputs.sops-nix.nixosModules.sops
-    ../shared/platforms/zimablade-7700.nix
+    hardware.platformModule
     ./system/configuration.nix
     {
       home-manager.useGlobalPkgs = true;
