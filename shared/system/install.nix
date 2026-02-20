@@ -14,6 +14,8 @@ let
       "$@"
     }
 
+    export GIT_SSH_COMMAND='ssh -o StrictHostKeyChecking=no'
+
     logrun nmtui connect
 
     if [ ! -f "$HOME/.ssh/id_ed25519" ] || [ ! -f "$HOME/.ssh/nix-secrets" ]; then
@@ -28,7 +30,7 @@ let
     fi
 
     if [ ! -d $HOME/dotfiles ]; then
-      logrun GIT_SSH_COMMAND='ssh -o StrictHostKeyChecking=no' git clone git@github.com:nickRI/dotfiles
+      logrun git clone git@github.com:nickRI/dotfiles
     fi
 
     if [ ! -d $HOME/dotfiles/nix-secrets ]; then
@@ -80,6 +82,8 @@ let
       echo "+ $*"
       "$@"
     }
+
+    export GIT_SSH_COMMAND='ssh -o StrictHostKeyChecking=no'
 
     temp=$(mktemp -d)
     working_dir=$(pwd)
