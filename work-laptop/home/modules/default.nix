@@ -7,7 +7,7 @@
     (import ../../../shared/home/sops.nix (
       args
       // {
-        sops-file = "work-laptop-home.yaml";
+        sops-file = "work-laptop.yaml";
       }
     ))
     ./mime.nix # need to include first than gnome to correct override

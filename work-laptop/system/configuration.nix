@@ -24,7 +24,7 @@
     (import ../../shared/system/sops.nix (
       args
       // {
-        sops-file = "work-laptop-system.yaml";
+        sops-file = "work-laptop.yaml";
       }
     ))
     ../../shared/system/install.nix
