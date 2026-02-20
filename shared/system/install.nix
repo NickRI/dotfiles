@@ -4,7 +4,7 @@ let
     inherit pkgs;
   };
 
-  install = pkgs.writeShellScriptBin "install-dotfiles" ''
+  install-dotfiles = pkgs.writeShellScriptBin "install-dotfiles" ''
     #!/usr/bin/env bash
 
     set -e
@@ -37,9 +37,9 @@ let
 
     echo "Rewrite flake secret path"
 
-    logrun nix flake lock $HOME/dotfiles --update-input sops-secrets --override-input sops-secrets path:$HOME/dotfiles/nix-secrets
+    logrun nix flake update --flake $HOME/dotfiles sops-secrets --override-input sops-secrets path:$HOME/dotfiles/nix-secrets
 
-    configuration=$(nix flake show --json $HOME/dotfiles | nix run "nixpkgs#jq" -- -r '.nixosConfigurations | keys[]' | nix run "nixpkgs#fzf" -- --header="Please select your configuration:" --prompt="configuration: ")
+    configuration=$(nix flake show --json $HOME/dotfiles | jq -r '.nixosConfigurations | keys[]' | fzf --header="Please select your configuration:" --prompt="configuration: ")
 
     disko_mode=$(echo "format,mount;destroy,format,mount;destroy;format;mount;unmount" | tr ';' '\n' | fzf --header="Please select your format mode for disko:" --prompt="Format mode: ")
 
@@ -59,7 +59,7 @@ let
     echo "Your key from $HOME/.ssh/nix-secrets: $(ssh-keygen -f $HOME/.ssh/nix-secrets -y | nix run nixpkgs#ssh-to-age)"
     echo "Available sops keys $HOME/.ssh/nix-secrets: $(cat $HOME/dotfiles/nix-secrets/.sops.yaml)"
 
-    sopsKeyFile=$(nix eval --raw $HOME/dotfiles#nixosConfigurations.work-laptop.config.sops.age.keyFile)
+    sopsKeyFile=$(nix eval --raw $HOME/dotfiles#nixosConfigurations.$configuration.config.sops.age.keyFile)
 
     logrun sudo mkdir -p $sopsKeyFile
     logrun sudo nix run nixpkgs#ssh-to-age  -- -i $HOME/.ssh/nix-secrets -private-key -o /mnt$sopsKeyFile
@@ -70,10 +70,78 @@ let
 
     logrun sudo rm /mnt$sopsKeyFile
   '';
+
+  install-remote = pkgs.writeShellScriptBin "install-remote" ''
+    #!/usr/bin/env bash
+
+    set -e
+
+    logrun() {
+      echo "+ $*"
+      "$@"
+    }
+
+    temp=$(mktemp -d)
+    working_dir=$(pwd)
+
+    cleanup() {
+      rm -rf "$temp"
+    }
+    trap cleanup EXIT
+
+    current_configuration=$(nix flake show --json . | jq -r '.nixosConfigurations | keys[]' | fzf --header="Please select current configuration:" --prompt="configuration: ")
+
+    echo "Generate new ssh ed25519_key"
+
+    logrun install -d -m755 "$temp/etc/ssh"
+
+    logrun ssh-keygen -t ed25519 -N "" -f "$temp/etc/ssh/ssh_host_ed25519_key"
+
+    logrun chmod 600 "$temp/etc/ssh/ssh_host_ed25519_key"
+    logrun chmod 644 "$temp/etc/ssh/ssh_host_ed25519_key.pub"
+
+    age_key=$(nix run nixpkgs#ssh-to-age -- -i "$temp/etc/ssh/ssh_host_ed25519_key.pub")
+
+    echo "Download nix-secrets"
+
+    if [ ! -d ./nix-secrets ]; then
+      logrun git clone git@github.com:nickRI/nix-secrets.git $working_dir/nix-secrets
+    fi
+
+    echo "Need to add new public age key"
+
+    selected_rule=$(yq '.creation_rules[].path_regex' $working_dir/nix-secrets/.sops.yaml | fzf --prompt="Select needed secret file: ")
+
+    logrun yq -i "(.creation_rules[] | select(.path_regex == \"$selected_rule\").key_groups[0].age) += [\"$age_key\"]" $working_dir/nix-secrets/.sops.yaml
+
+    master_age_file=$(nix eval --raw .#nixosConfigurations.$current_configuration.config.sops.age.keyFile)
+
+    if [ ! -f $master_age_file ]; then
+      echo "You need to have real generated $master_age_file !"
+      exit 1
+    fi
+
+    export SOPS_AGE_KEY=$(sudo cat $master_age_file)
+
+    logrun sops --config ./nix-secrets/.sops.yaml updatekeys --yes ./nix-secrets/$(echo $selected_rule | sed 's/.$//')
+
+    echo "Rewrite flake secret path"
+    logrun nix flake update --flake $working_dir sops-secrets --override-input sops-secrets path:$working_dir/nix-secrets
+
+    install_configuration=$(nix flake show --json . | jq -r '.nixosConfigurations | keys[]' | fzf --header="Please select your install configuration:" --prompt="install: ")
+
+    logrun nix run github:nix-community/nixos-anywhere -- --extra-files "$temp" --flake ".#$install_configuration" "$@"
+
+    echo "DONE! Don't forget to pack and save $age_key for $selected_rule and updatekeys with nix flake update sops-secrets"
+  '';
 in
 {
   environment.systemPackages = [
-    install
+    pkgs.jq
+    pkgs.yq-go
+    pkgs.fzf
+    install-dotfiles
+    install-remote
   ];
 
 }

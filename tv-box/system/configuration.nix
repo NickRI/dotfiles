@@ -5,7 +5,6 @@
 {
   config,
   pkgs,
-  grub-themes,
   lib,
   ...
 }@args:
@@ -27,13 +26,7 @@
   # Bootloader.
   boot.loader = {
     timeout = 3;
-
-    grub = {
-      enable = true;
-      efiSupport = true;
-      theme = grub-themes.packages.${pkgs.stdenv.hostPlatform.system}.hyperfluent;
-    };
-
+    systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
   };
 
@@ -42,6 +35,19 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = false;
+
+  hardware.bluetooth = {
+    enable = true;
+    settings = {
+      General = {
+        ControllerMode = "dual";
+        Experimental = true;
+      };
+      Policy = {
+        AutoEnable = true;
+      };
+    };
+  };
 
   security.rtkit.enable = true;
   security.sudo.wheelNeedsPassword = false;
