@@ -14,6 +14,8 @@ in
     tree = "eza --tree";
     cat = "bat --color=always";
     reboot = "systemctl reboot";
+    nix-diff = "nix profile diff-closures --profile /nix/var/nix/profiles/system";
+    nix-history = "nix profile history --profile /nix/var/nix/profiles/system";
   };
 
   home.file = {
