@@ -86,6 +86,22 @@
               <webserverssl>false</webserverssl>
             </services>
             <showexitbutton>false</showexitbutton>
+            <powermanagement>
+              <displaysoff>25</displaysoff>
+              <shutdowntime>35</shutdowntime>
+              <shutdownstate>3</shutdownstate>
+              <wakeonaccess>true</wakeonaccess>
+            </powermanagement>
+            <general>
+              <addonupdates>1</addonupdates>
+              <addonnotifications>true</addonnotifications>
+              <addonforeignfilter>true</addonforeignfilter>
+              <addonbrokenfilter>true</addonbrokenfilter>
+            </general>
+            <addons>
+              <unknownsources>true</unknownsources>
+              <updatemode>0</updatemode>
+            </addons>
             <weather>
               <addon>weather.gismeteo</addon>
               <currentlocation>1</currentlocation>
