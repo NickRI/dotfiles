@@ -9,6 +9,19 @@
   ...
 }@args:
 
+let
+  custom-kodi = (
+    with pkgs;
+    (kodi-gbm.withPackages (
+      p: with p; [
+        pvr-iptvsimple
+        youtube
+        (p.callPackage ./modules/lang-ru.nix { })
+        (p.callPackage ./modules/gismeteo.nix { })
+      ]
+    ))
+  );
+in
 {
   imports = [
     # Include the results of the hardware scan.
@@ -52,24 +65,15 @@
   security.rtkit.enable = true;
   security.sudo.wheelNeedsPassword = false;
 
-  # Enable sound with pipewire.
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+  # Enable sound with alsa, simpler for hdmi.
+  services.pulseaudio.enable = false;
+  services.pipewire.enable = false;
+  hardware.alsa.enable = true;
+  hardware.alsa.defaultDevice.playback = "hdmi:CARD=PCH,DEV=0";
 
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
-
-  sops.secrets."user-password".neededForUsers = true;
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  services.udev.extraRules = ''
+    ACTION=="add", SUBSYSTEM=="net", KERNEL=="wlan*", RUN+="${pkgs.iw}/bin/iw phy phy0 wowlan enable magic-packet"
+  '';
 
   services.journald.extraConfig = "
     SystemMaxUse=256M
@@ -96,6 +100,7 @@
     };
   };
 
+  sops.secrets."user-password".neededForUsers = true;
   users.mutableUsers = false;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -127,30 +132,27 @@
     file
     tree
     unixtools.xxd
+    custom-kodi
   ];
 
-  services = {
-    xserver = {
-      enable = true;
-      desktopManager.kodi = {
-        enable = true;
-
-        package = pkgs.kodi.withPackages (
-          p: with p; [
-            pvr-iptvsimple
-            youtube
-            (pkgs.kodiPackages.callPackage ./modules/lang-ru.nix { })
-            (pkgs.kodiPackages.callPackage ./modules/gismeteo.nix { })
-          ]
-        );
+  # auto-login and launch kodi
+  services.getty.autologinUser = "tv";
+  services.greetd = {
+    enable = true;
+    settings = {
+      initial_session = {
+        command = "${custom-kodi}/bin/kodi-standalone";
+        user = "tv";
+      };
+      default_session = {
+        command = "${pkgs.greetd}/bin/agreety --cmd sway";
       };
     };
+  };
 
-    displayManager = {
-      enable = true;
-      defaultSession = "kodi";
-      autoLogin.user = "tv";
-    };
+  programs.sway = {
+    enable = true;
+    xwayland.enable = false;
   };
 
   # Some programs need SUID wrappers, can be configured further or are

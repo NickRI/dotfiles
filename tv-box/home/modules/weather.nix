@@ -2,10 +2,6 @@
 
 {
   programs.kodi = lib.mkIf (config.programs.kodi.enable) {
-    settings = {
-      weather.addon = "weather.gismeteo";
-      weather.currentlocation = "1";
-    };
     addonSettings = {
       "weather.gismeteo"."CurrentLocation" = "true";
       "weather.gismeteo"."Location1" = "Saint Petersburg";
