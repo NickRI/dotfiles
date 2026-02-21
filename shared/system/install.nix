@@ -96,24 +96,23 @@ let
     current_configuration=$(nix flake show --json . | jq -r '.nixosConfigurations | keys[]' | fzf --header="Please select current configuration:" --prompt="current: ")
     install_configuration=$(nix flake show --json . | jq -r '.nixosConfigurations | keys[]' | fzf --header="Please select your install configuration:" --prompt="install: ")
     user_name=$(nix eval ".#nixosConfigurations.$install_configuration.config.users.users" --json | jq -r 'to_entries | map(select(.value.isNormalUser == true)) | .[0].key')
-    user_dir=$(nix eval ".#nixosConfigurations.$install_configuration.config.users.users" --json | jq -r 'to_entries | map(select(.value.isNormalUser == true)) | .[0].value.home')/.ssh
 
-    echo "Generate new ssh ed25519_key"
+    sys_age=$(nix eval --raw ".#nixosConfigurations.tv-box-intel.config.sops.age.keyFile")
+    home_age=$(nix eval --raw ".#nixosConfigurations.tv-box-intel.config.home-manager.users.$user_name.sops.age.keyFile")
 
-    logrun install -d -m755 "$temp/etc/ssh"
-    logrun install -d -m755 "$temp$user_dir"
+    echo "Generate new age keys"
 
-    logrun ssh-keygen -t ed25519 -N "" -f "$temp/etc/ssh/ssh_host_ed25519_key"
-    logrun ssh-keygen -t ed25519 -N "" -f "$temp$user_dir/ssh_host_ed25519_key"
+    mkdir -p "$(dirname $temp$sys_age)"
+    mkdir -p "$(dirname $temp$home_age)"
 
-    logrun chmod 600 "$temp/etc/ssh/ssh_host_ed25519_key"
-    logrun chmod 644 "$temp/etc/ssh/ssh_host_ed25519_key.pub"
+    logrun nix-shell -p age --run "age-keygen -o $temp$sys_age"
+    logrun nix-shell -p age --run "age-keygen -o $temp$home_age"
 
-    logrun chmod 600 "$temp$user_dir/ssh_host_ed25519_key"
-    logrun chmod 644 "$temp$user_dir/ssh_host_ed25519_key.pub"
+    logrun chmod 600 "$temp$sys_age"
+    logrun chmod 600 "$temp$home_age"
 
-    age_key_system=$(nix run nixpkgs#ssh-to-age -- -i "$temp/etc/ssh/ssh_host_ed25519_key.pub")
-    age_key_home=$(nix run nixpkgs#ssh-to-age -- -i "$temp$user_dir/ssh_host_ed25519_key.pub")
+    pub_age_system=$(nix-shell -p age --run "age-keygen -y $temp$sys_age")
+    pub_age_home=$(nix-shell -p age --run "age-keygen -y $temp$home_age")
 
     echo "Download nix-secrets"
 
@@ -125,8 +124,8 @@ let
 
     selected_rule=$(yq '.creation_rules[].path_regex' $working_dir/nix-secrets/.sops.yaml | fzf --prompt="Select needed secret file: ")
 
-    logrun yq -i "(.creation_rules[] | select(.path_regex == \"$selected_rule\").key_groups[0].age) += [\"$age_key_system\"]" $working_dir/nix-secrets/.sops.yaml
-    logrun yq -i "(.creation_rules[] | select(.path_regex == \"$selected_rule\").key_groups[0].age) += [\"$age_key_home\"]" $working_dir/nix-secrets/.sops.yaml
+    logrun yq -i "(.creation_rules[] | select(.path_regex == \"$selected_rule\").key_groups[0].age) += [\"$pub_age_system\"]" $working_dir/nix-secrets/.sops.yaml
+    logrun yq -i "(.creation_rules[] | select(.path_regex == \"$selected_rule\").key_groups[0].age) += [\"$pub_age_home\"]" $working_dir/nix-secrets/.sops.yaml
 
     master_age_file=$(nix eval --raw .#nixosConfigurations.$current_configuration.config.sops.age.keyFile)
 
@@ -144,9 +143,9 @@ let
 
     echo "Start installation"
 
-    logrun nix run github:nix-community/nixos-anywhere -- --chown "$user_dir" 1000:100 --extra-files "$temp" --flake ".#$install_configuration" "$@"
+    logrun nix run github:nix-community/nixos-anywhere -- --chown "$home_age" 1000:100 --extra-files "$temp" --flake ".#$install_configuration" "$@"
 
-    echo "DONE! Don't forget to pack and save sops-secrets in ./nix-secrets/"
+    echo "DONE! Don't forget to pack and save public $pub_age_system & $pub_age_home in ./nix-secrets/"
   '';
 in
 {
