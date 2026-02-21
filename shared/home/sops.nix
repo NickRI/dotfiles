@@ -11,7 +11,7 @@
       defaultSopsFile = "${toString sops-secrets}/${sops-file}";
       defaultSopsFormat = "yaml";
       age = {
-        keyFile = "${config.home.homeDirectory}/.config/sops/age/keys.txt";
+        keyFile = "${config.home.homeDirectory}/.sops/age/keys.txt";
         generateKey = true;
       };
     };
