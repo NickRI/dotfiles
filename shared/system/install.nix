@@ -93,18 +93,27 @@ let
     }
     trap cleanup EXIT
 
-    current_configuration=$(nix flake show --json . | jq -r '.nixosConfigurations | keys[]' | fzf --header="Please select current configuration:" --prompt="configuration: ")
+    current_configuration=$(nix flake show --json . | jq -r '.nixosConfigurations | keys[]' | fzf --header="Please select current configuration:" --prompt="current: ")
+    install_configuration=$(nix flake show --json . | jq -r '.nixosConfigurations | keys[]' | fzf --header="Please select your install configuration:" --prompt="install: ")
+    user_name=$(nix eval ".#nixosConfigurations.$install_configuration.config.users.users" --json | jq -r 'to_entries | map(select(.value.isNormalUser == true)) | .[0].key')
+    user_dir=$(nix eval ".#nixosConfigurations.$install_configuration.config.users.users" --json | jq -r 'to_entries | map(select(.value.isNormalUser == true)) | .[0].value.home')/.ssh
 
     echo "Generate new ssh ed25519_key"
 
     logrun install -d -m755 "$temp/etc/ssh"
+    logrun install -d -m755 "$temp$user_dir"
 
     logrun ssh-keygen -t ed25519 -N "" -f "$temp/etc/ssh/ssh_host_ed25519_key"
+    logrun ssh-keygen -t ed25519 -N "" -f "$temp$user_dir/ssh_host_ed25519_key"
 
     logrun chmod 600 "$temp/etc/ssh/ssh_host_ed25519_key"
     logrun chmod 644 "$temp/etc/ssh/ssh_host_ed25519_key.pub"
 
-    age_key=$(nix run nixpkgs#ssh-to-age -- -i "$temp/etc/ssh/ssh_host_ed25519_key.pub")
+    logrun chmod 600 "$temp$user_dir/ssh_host_ed25519_key"
+    logrun chmod 644 "$temp$user_dir/ssh_host_ed25519_key.pub"
+
+    age_key_system=$(nix run nixpkgs#ssh-to-age -- -i "$temp/etc/ssh/ssh_host_ed25519_key.pub")
+    age_key_home=$(nix run nixpkgs#ssh-to-age -- -i "$temp$user_dir/ssh_host_ed25519_key.pub")
 
     echo "Download nix-secrets"
 
@@ -116,7 +125,8 @@ let
 
     selected_rule=$(yq '.creation_rules[].path_regex' $working_dir/nix-secrets/.sops.yaml | fzf --prompt="Select needed secret file: ")
 
-    logrun yq -i "(.creation_rules[] | select(.path_regex == \"$selected_rule\").key_groups[0].age) += [\"$age_key\"]" $working_dir/nix-secrets/.sops.yaml
+    logrun yq -i "(.creation_rules[] | select(.path_regex == \"$selected_rule\").key_groups[0].age) += [\"$age_key_system\"]" $working_dir/nix-secrets/.sops.yaml
+    logrun yq -i "(.creation_rules[] | select(.path_regex == \"$selected_rule\").key_groups[0].age) += [\"$age_key_home\"]" $working_dir/nix-secrets/.sops.yaml
 
     master_age_file=$(nix eval --raw .#nixosConfigurations.$current_configuration.config.sops.age.keyFile)
 
@@ -132,11 +142,11 @@ let
     echo "Rewrite flake secret path"
     logrun nix flake update --flake $working_dir sops-secrets --override-input sops-secrets path:$working_dir/nix-secrets
 
-    install_configuration=$(nix flake show --json . | jq -r '.nixosConfigurations | keys[]' | fzf --header="Please select your install configuration:" --prompt="install: ")
+    echo "Start installation"
 
-    logrun nix run github:nix-community/nixos-anywhere -- --extra-files "$temp" --flake ".#$install_configuration" "$@"
+    logrun nix run github:nix-community/nixos-anywhere -- --chown "$user_dir" 1000:100 --extra-files "$temp" --flake ".#$install_configuration" "$@"
 
-    echo "DONE! Don't forget to pack and save $age_key for $selected_rule and updatekeys with nix flake update sops-secrets"
+    echo "DONE! Don't forget to pack and save sops-secrets in ./nix-secrets/"
   '';
 in
 {
