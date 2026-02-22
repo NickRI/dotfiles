@@ -52,7 +52,17 @@
     networking.firewall.allowedTCPPorts = [
       80
       443
-      8080
+      2869 # UPnP
+      7000 # Airplay
+      7100 # Airplay 2
+      8080 # HTTP Control kodi
+      9090 # JSON-RPC Control kodi
+    ];
+
+    networking.firewall.allowedUDPPorts = [
+      1900 # SSDP (discovery)
+      5353 # Bonjour / mDNS
+      9777 # EventServer for controller
     ];
 
     #    networking.nameservers = [ "127.0.0.1" ];

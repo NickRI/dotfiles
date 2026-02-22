@@ -3,9 +3,11 @@
 {
   programs.kodi = lib.mkIf (config.programs.kodi.enable) {
     addonSettings = {
-      "weather.gismeteo"."CurrentLocation" = "true";
-      "weather.gismeteo"."Location1" = "Saint Petersburg";
-      "weather.gismeteo"."Location1ID" = "4079";
+      "weather.gismeteo"."CurrentLocation" = "false";
+      "weather.gismeteo"."Location1" = "Callosa de Segura";
+      "weather.gismeteo"."Location1ID" = "49754";
+      "weather.gismeteo"."Location2" = "Saint Petersburg";
+      "weather.gismeteo"."Location2ID" = "4079";
       "weather.gismeteo"."Language" = "0";
       "weather.gismeteo"."Weekend" = "0";
       "weather.gismeteo"."TimeZone" = "0";
