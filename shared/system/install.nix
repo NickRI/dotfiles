@@ -5,8 +5,6 @@ let
   };
 
   install-dotfiles = pkgs.writeShellScriptBin "install-dotfiles" ''
-    #!/usr/bin/env bash
-
     set -e
 
     logrun() {
@@ -74,9 +72,8 @@ let
   '';
 
   install-remote = pkgs.writeShellScriptBin "install-remote" ''
-    #!/usr/bin/env bash
-
-    set -e
+    set -Eeuo pipefail
+    trap 'echo "Error on line $LINENO"' ERR
 
     logrun() {
       echo "+ $*"
@@ -93,59 +90,123 @@ let
     }
     trap cleanup EXIT
 
+    generate_age_key() {
+      local key_path="$1"
+
+      local ageFile
+      ageFile=$(nix eval --raw ".#$key_path") || {
+        return 1
+      }
+
+      mkdir -p "$(dirname "$temp$ageFile")"
+
+      nix-shell -p age --run "age-keygen -o $temp$ageFile >/dev/null 2>&1"
+
+      chmod 600 "$temp$ageFile"
+
+      local pubAge
+      pubAge=$(nix-shell -p age --run "age-keygen -y $temp$ageFile") || {
+        return 1
+      }
+
+      printf "%s %s\n" "$pubAge" "$ageFile"
+    }
+
     current_configuration=$(nix flake show --json . | jq -r '.nixosConfigurations | keys[]' | fzf --header="Please select current configuration:" --prompt="current: ")
-    install_configuration=$(nix flake show --json . | jq -r '.nixosConfigurations | keys[]' | fzf --header="Please select your install configuration:" --prompt="install: ")
+    install_configuration=$(nix flake show --json . | jq -r '.nixosConfigurations | keys[]' | fzf --header="Please select install configuration:" --prompt="install: ")
     user_name=$(nix eval ".#nixosConfigurations.$install_configuration.config.users.users" --json | jq -r 'to_entries | map(select(.value.isNormalUser == true)) | .[0].key')
 
-    sys_age=$(nix eval --raw ".#nixosConfigurations.tv-box-intel.config.sops.age.keyFile")
-    home_age=$(nix eval --raw ".#nixosConfigurations.tv-box-intel.config.home-manager.users.$user_name.sops.age.keyFile")
 
-    echo "Generate new age keys"
+    echo "Try to add new age keys"
+    needsSopsChange=false
 
-    mkdir -p "$(dirname $temp$sys_age)"
-    mkdir -p "$(dirname $temp$home_age)"
-
-    logrun nix-shell -p age --run "age-keygen -o $temp$sys_age"
-    logrun nix-shell -p age --run "age-keygen -o $temp$home_age"
-
-    logrun chmod 600 "$temp$sys_age"
-    logrun chmod 600 "$temp$home_age"
-
-    pub_age_system=$(nix-shell -p age --run "age-keygen -y $temp$sys_age")
-    pub_age_home=$(nix-shell -p age --run "age-keygen -y $temp$home_age")
-
-    echo "Download nix-secrets"
-
-    if [ ! -d ./nix-secrets ]; then
-      logrun git clone git@github.com:nickRI/nix-secrets.git $working_dir/nix-secrets
+    if nix eval ".#nixosConfigurations.$install_configuration.config.sops.age.keyFile" >/dev/null 2>&1; then
+      system_buff=$(mktemp)
+      if generate_age_key "nixosConfigurations.$install_configuration.config.sops.age.keyFile" > $system_buff; then
+        read -r pub_age_system sys_age_file < $system_buff
+        echo "System age set properly [$pub_age_system] $sys_age_file"
+        needsSopsChange=true
+      else
+        echo "System age config exist but generation failed! Exit!"
+        exit 1
+      fi
+    else
+      echo "System sops configuration does not exits!"
     fi
 
-    echo "Need to add new public age key"
-
-    selected_rule=$(yq '.creation_rules[].path_regex' $working_dir/nix-secrets/.sops.yaml | fzf --prompt="Select needed secret file: ")
-
-    logrun yq -i "(.creation_rules[] | select(.path_regex == \"$selected_rule\").key_groups[0].age) += [\"$pub_age_system\"]" $working_dir/nix-secrets/.sops.yaml
-    logrun yq -i "(.creation_rules[] | select(.path_regex == \"$selected_rule\").key_groups[0].age) += [\"$pub_age_home\"]" $working_dir/nix-secrets/.sops.yaml
-
-    master_age_file=$(nix eval --raw .#nixosConfigurations.$current_configuration.config.sops.age.keyFile)
-
-    if [ ! -f $master_age_file ]; then
-      echo "You need to have real generated $master_age_file !"
-      exit 1
+    if nix eval ".#nixosConfigurations.$install_configuration.config.home-manager.users.$user_name.sops.age.keyFile" >/dev/null 2>&1; then
+      home_buff=$(mktemp)
+      if generate_age_key "nixosConfigurations.$install_configuration.config.home-manager.users.$user_name.sops.age.keyFile" > $home_buff; then
+        read -r pub_age_home home_age_file < $home_buff
+        echo "Home-manager age set properly [$pub_age_home] $home_age_file"
+        needsSopsChange=true
+      else
+        echo "Home-manager age config exist but generation failed! Exit!"
+        exit 1
+      fi
+    else
+      echo "Home-manager sops configuration does not exits!"
     fi
 
-    export SOPS_AGE_KEY=$(sudo cat $master_age_file)
+    if [ "$needsSopsChange" = true ]; then
+      echo "Sops keys were changed, need to update nix-secrets"
 
-    logrun sops --config ./nix-secrets/.sops.yaml updatekeys --yes ./nix-secrets/$(echo $selected_rule | sed 's/.$//')
+      master_age_file=$(nix eval --raw .#nixosConfigurations.$current_configuration.config.sops.age.keyFile)
 
-    echo "Rewrite flake secret path"
-    logrun nix flake update --flake $working_dir sops-secrets --override-input sops-secrets path:$working_dir/nix-secrets
+      if [ ! -f $master_age_file ]; then
+        echo "You need to have real generated $master_age_file !"
+        exit 1
+      fi
+
+      echo "Download nix-secrets"
+
+      if [ ! -d ./nix-secrets ]; then
+        logrun git clone git@github.com:nickRI/nix-secrets.git $working_dir/nix-secrets
+      fi
+
+      selected_rule=$(yq '.creation_rules[].path_regex' $working_dir/nix-secrets/.sops.yaml | fzf --prompt="Select needed secret file: ")
+
+      if [ -n "''${pub_age_system:-}" ]; then
+        yq -i \
+          "(.creation_rules[] | select(.path_regex == \"$selected_rule\").key_groups[0].age) += [\"$pub_age_system\"]" \
+          "$working_dir/nix-secrets/.sops.yaml"
+      fi
+
+      if [ -n "''${pub_age_home:-}" ]; then
+        yq -i \
+          "(.creation_rules[] | select(.path_regex == \"$selected_rule\").key_groups[0].age) += [\"$pub_age_home\"]" \
+          "$working_dir/nix-secrets/.sops.yaml"
+      fi
+
+
+      echo "Need to update sops files"
+
+      export SOPS_AGE_KEY=$(sudo cat $master_age_file)
+
+      logrun sops --config ./nix-secrets/.sops.yaml updatekeys --yes ./nix-secrets/$(echo $selected_rule | sed 's/.$//')
+
+      echo "Rewrite flake secret path"
+
+      logrun nix flake update --flake $working_dir sops-secrets --override-input sops-secrets path:$working_dir/nix-secrets
+    else
+        echo "Sops keys wasn't generated, skipped"
+    fi
+
 
     echo "Start installation"
 
-    logrun nix run github:nix-community/nixos-anywhere -- --chown "$home_age" 1000:100 --extra-files "$temp" --flake ".#$install_configuration" "$@"
+    chownIfNeeded=""
+    if [ -n "''${home_age_file:-}" ]; then
+      chownIfNeeded="--chown $home_age_file 1000:100"
+    fi
 
-    echo "DONE! Don't forget to pack and save public $pub_age_system & $pub_age_home in ./nix-secrets/"
+    logrun nix run github:nix-community/nixos-anywhere -- "$chownIfNeeded" --extra-files "$temp" --flake ".#$install_configuration" "$@"
+
+    if [ "$needsSopsChange" = true ]; then
+      echo "DONE! Don't forget to pack and save public ''${pub_age_system:-} & ''${pub_age_home:-} in ./nix-secrets/"
+    else
+      echo "Just done, cleanup"
+    fi
   '';
 in
 {
