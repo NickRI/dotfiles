@@ -16,6 +16,7 @@ let
       p: with p; [
         pvr-iptvsimple
         youtube
+        bluetooth-manager
         (p.callPackage ./modules/lang-ru.nix { })
         (p.callPackage ./modules/gismeteo.nix { })
       ]
