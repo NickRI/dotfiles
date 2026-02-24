@@ -29,10 +29,21 @@
   # Zsh >= 5.1 is required.
   [[ $ZSH_VERSION == (5.<1->*|<6->.*) ]] || return
 
+  function prompt_reboot_required() {
+    local booted profile
+    booted=$(readlink -f /run/booted-system 2>/dev/null)
+    profile=$(readlink -f /nix/var/nix/profiles/system 2>/dev/null)
+
+    if [[ "$booted" != "$profile" ]]; then
+      p10k segment -f red -i '' -t "REBOOT"
+    fi
+  }
+
   # The list of segments shown on the left. Fill it with the most important segments.
   typeset -g POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(
     # =========================[ Line #1 ]=========================
     os_icon                 # os identifier
+    reboot_required         # check if reboot is needed
     dir                     # current directory
     vcs                     # git status
     # =========================[ Line #2 ]=========================
