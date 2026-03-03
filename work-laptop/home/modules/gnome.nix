@@ -298,7 +298,7 @@
         "org.gnome.TextEditor.desktop"
         "obsidian.desktop"
         "com.boxy_svg.BoxySVG.desktop"
-        "pinta.desktop"
+        "com.github.PintaProject.Pinta.desktop"
         "org.inkscape.Inkscape.desktop"
         "gimp.desktop"
         "com.github.xournalpp.xournalpp.desktop"

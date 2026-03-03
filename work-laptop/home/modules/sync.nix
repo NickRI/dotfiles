@@ -7,6 +7,7 @@
 
 let
   upkgs = pkgs.unstable;
+  apiKey = builtins.hashString "sha256" config.home.username;
 in
 {
   sops = lib.mkIf (config.services.syncthing.enable) {
@@ -17,6 +18,12 @@ in
       mode = "0644";
     };
   };
+
+  home.file.".config/syncthingtray.ini".source = (
+    pkgs.replaceVars ../../../shared/files/syncthingtray.ini {
+      api_key = apiKey;
+    }
+  );
 
   home.packages =
     with upkgs;
@@ -43,6 +50,11 @@ in
     cert = config.sops.secrets."syncthing/cert".path;
 
     settings = {
+      gui = {
+        theme = "dark";
+        apikey = apiKey;
+      };
+
       devices = {
         nas = {
           id = "AI5QU3E-3LRXFC3-523PGMF-SX6P6ZU-56HDJFJ-BQFZDI2-DMQAW4P-QFNDQAT";
