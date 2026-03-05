@@ -1,18 +1,25 @@
-{ config, ... }:
+{ config, sops-secrets, ... }:
 
 {
-  sops.secrets = {
-    "openclaws/bot-token" = { };
-    "openclaws/gateway-token" = { };
-    "openclaws/env-keys" = { };
-  };
+  sops.secrets =
+    let
+      openclaw.sopsFile = "${toString sops-secrets}/openclaw.yaml";
+    in
+    {
+      "bots/telegram-token" = openclaw;
+      "gateway-token" = openclaw;
+      "models-keys" = openclaw;
+      "agents/gitea-keys" = openclaw;
+    };
 
   home.file = {
     ".openclaw/openclaw.json".force = true;
   };
 
-  systemd.user.services.openclaw-gateway.Service.EnvironmentFile =
-    config.sops.secrets."openclaws/env-keys".path;
+  systemd.user.services.openclaw-gateway.Service.EnvironmentFile = [
+    config.sops.secrets."models-keys".path
+    config.sops.secrets."agents/gitea-keys".path
+  ];
 
   programs.openclaw = {
     enable = true;
@@ -59,7 +66,7 @@
       };
 
       channels.telegram = {
-        tokenFile = config.sops.secrets."openclaws/bot-token".path;
+        tokenFile = config.sops.secrets."bots/telegram-token".path;
         allowFrom = [ 118569215 ];
       };
     };
