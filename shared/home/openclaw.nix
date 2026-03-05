@@ -17,9 +17,13 @@
     ".ssh/config.d".source = ../files/openclaw/ssh-config.d;
   };
 
-  programs.ssh.extraConfig = ''
-    Include ~/.ssh/config.d/*.conf
-  '';
+  programs.ssh.matchBlocks = {
+    "*" = {
+      extraConfig = ''
+        Include ~/.ssh/config.d/*.conf
+      '';
+    };
+  };
 
   systemd.user.services.openclaw-gateway.Service.EnvironmentFile = [
     config.sops.secrets."models-keys".path
