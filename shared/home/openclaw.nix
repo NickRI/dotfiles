@@ -17,12 +17,12 @@
     ".ssh/config.d".source = ../files/openclaw/ssh-config.d;
   };
 
-  programs.ssh.matchBlocks = {
-    "*" = {
-      extraConfig = ''
-        Include ~/.ssh/config.d/*.conf
-      '';
-    };
+  programs.ssh = {
+    extraConfig = ''
+      Include ~/.ssh/config.d/*.conf
+    '';
+
+    matchBlocks."*" = { };
   };
 
   systemd.user.services.openclaw-gateway.Service.EnvironmentFile = [
