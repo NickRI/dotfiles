@@ -7,6 +7,7 @@
     ./modules/weather.nix
     ./modules/estuary.skin.nix
     ../../shared/home/shell.nix
+    ../../shared/home/openclaw.nix
     (import ../../shared/home/sops.nix (
       args
       // {

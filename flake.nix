@@ -26,6 +26,13 @@
       url = "git+ssh://git@github.com/NickRI/nix-secrets.git?ref=main&shallow=1";
       flake = false;
     };
+    openclaw = {
+      url = "github:openclaw/nix-openclaw";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+      #      inputs.home-manager.inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nix-steipete-tools.inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =

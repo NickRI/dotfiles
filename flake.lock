@@ -20,6 +20,24 @@
         "type": "github"
       }
     },
+    "flake-utils": {
+      "inputs": {
+        "systems": "systems"
+      },
+      "locked": {
+        "lastModified": 1731533236,
+        "narHash": "sha256-l0KFg5HjrsfsO/JpG+r7fRrqm12kzFHyUHqHCVpMMbI=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "11707dc2f618dd54ca8739b309ec4fc024de578b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "flatpaks": {
       "locked": {
         "lastModified": 1768656715,
@@ -54,6 +72,26 @@
         "owner": "nix-community",
         "ref": "release-25.11",
         "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "nix-steipete-tools": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772109967,
+        "narHash": "sha256-0oWZtmVJcI7Mc6nAXf7XM4FHLJv+H1X/8Gh31uJCyJ0=",
+        "owner": "openclaw",
+        "repo": "nix-steipete-tools",
+        "rev": "2b97c49e03657af1574aee5a34f57b38fba90035",
+        "type": "github"
+      },
+      "original": {
+        "owner": "openclaw",
+        "repo": "nix-steipete-tools",
         "type": "github"
       }
     },
@@ -125,6 +163,31 @@
         "type": "github"
       }
     },
+    "openclaw": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "home-manager": [
+          "home-manager"
+        ],
+        "nix-steipete-tools": "nix-steipete-tools",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772667792,
+        "narHash": "sha256-kDPxjVHb7m/+MyvXICFIBp/WXCPvTzVY/luz8826ZOE=",
+        "owner": "openclaw",
+        "repo": "nix-openclaw",
+        "rev": "10e4d733187cc18419eb4db261f17febebe3f2d7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "openclaw",
+        "repo": "nix-openclaw",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "disko": "disko",
@@ -134,6 +197,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
+        "openclaw": "openclaw",
         "sops-nix": "sops-nix",
         "sops-secrets": "sops-secrets"
       }
@@ -161,10 +225,10 @@
     "sops-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1771817086,
-        "narHash": "sha256-gwBUjNjtEAo347tweB0vcWh86LtkdQBpFaAJtHLYilc=",
+        "lastModified": 1772673996,
+        "narHash": "sha256-wHLYORGXYJvHxRv8fa98iSb+ri6GXzxjAYopM5HSN/A=",
         "ref": "main",
-        "rev": "f0bb6fac25c51e3caa50b7aa4e3f6eb66451360b",
+        "rev": "843a034918583c338c5915fb267cff3bb75420ec",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/NickRI/nix-secrets.git"
@@ -174,6 +238,21 @@
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/NickRI/nix-secrets.git"
+      }
+    },
+    "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
       }
     }
   },
