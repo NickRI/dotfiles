@@ -25,10 +25,13 @@
     matchBlocks."*" = { };
   };
 
-  systemd.user.services.openclaw-gateway.Service.EnvironmentFile = [
-    config.sops.secrets."models-keys".path
-    config.sops.secrets."agents/gitea-keys".path
-  ];
+  systemd.user.services.openclaw-gateway = {
+    Service.EnvironmentFile = [
+      config.sops.secrets."models-keys".path
+      config.sops.secrets."agents/gitea-keys".path
+    ];
+    Install.WantedBy = [ "default.target" ];
+  };
 
   programs.openclaw = {
     enable = true;
