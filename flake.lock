@@ -78,6 +78,7 @@
     "nix-steipete-tools": {
       "inputs": {
         "nixpkgs": [
+          "openclaw-agents",
           "nixpkgs"
         ]
       },
@@ -167,25 +168,54 @@
       "inputs": {
         "flake-utils": "flake-utils",
         "home-manager": [
+          "openclaw-agents",
           "home-manager"
         ],
         "nix-steipete-tools": "nix-steipete-tools",
         "nixpkgs": [
+          "openclaw-agents",
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1772667792,
-        "narHash": "sha256-kDPxjVHb7m/+MyvXICFIBp/WXCPvTzVY/luz8826ZOE=",
+        "lastModified": 1772988265,
+        "narHash": "sha256-/avl245oA7lKWO52Zpg9wuiD5Q2K6mB4DhYGdrXybqs=",
         "owner": "openclaw",
         "repo": "nix-openclaw",
-        "rev": "10e4d733187cc18419eb4db261f17febebe3f2d7",
+        "rev": "d68a479958bf4877881ebe4d183011063f9fc679",
         "type": "github"
       },
       "original": {
         "owner": "openclaw",
         "repo": "nix-openclaw",
         "type": "github"
+      }
+    },
+    "openclaw-agents": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "openclaw": "openclaw",
+        "sops-nix": [
+          "sops-nix"
+        ],
+        "sops-secrets": [
+          "sops-secrets"
+        ]
+      },
+      "locked": {
+        "lastModified": 1772989665,
+        "narHash": "sha256-4p39sbXXFTrPJVyHiWE+5NWCJg6rMbZ4qV77q+ZKfGc=",
+        "path": "/home/nikolai/.dotfiles/agents",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/nikolai/.dotfiles/agents",
+        "type": "path"
       }
     },
     "root": {
@@ -197,7 +227,7 @@
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs",
         "nixpkgs-unstable": "nixpkgs-unstable",
-        "openclaw": "openclaw",
+        "openclaw-agents": "openclaw-agents",
         "sops-nix": "sops-nix",
         "sops-secrets": "sops-secrets"
       }
@@ -225,13 +255,10 @@
     "sops-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1772683712,
-        "narHash": "sha256-pqvRtlKa/TIKQ+W235d0FNSCXaYJ4RcppC6qn8oHmZY=",
-        "ref": "main",
-        "rev": "2c0167a2329f9f6047731ed6ffda1412038e6041",
-        "shallow": true,
-        "type": "git",
-        "url": "ssh://git@github.com/NickRI/nix-secrets.git"
+        "lastModified": 1772837256,
+        "narHash": "sha256-XXrpd59FhxSZq8xLiPnyoHAmWzIGC1GoiHy+kvYb27k=",
+        "path": "/home/nikolai/.dotfiles/nix-secrets",
+        "type": "path"
       },
       "original": {
         "ref": "main",

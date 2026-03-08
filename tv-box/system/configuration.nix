@@ -139,7 +139,7 @@ in
   # auto-login and launch kodi
   services.getty.autologinUser = "tv";
   services.greetd = {
-    enable = true;
+    enable = false;
     settings = {
       initial_session = {
         command = "${custom-kodi}/bin/kodi-standalone";

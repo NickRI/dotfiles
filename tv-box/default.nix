@@ -14,16 +14,11 @@ nixpkgs.lib.nixosSystem {
   };
 
   modules = [
-    {
-      nixpkgs.overlays = [
-        inputs.openclaw.overlays.default
-      ];
-    }
-
     home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
     inputs.sops-nix.nixosModules.sops
     hardware.platformModule
+    inputs.openclaw-agents.nixosModules.default
     ./system/configuration.nix
     {
       home-manager.useGlobalPkgs = true;
@@ -33,7 +28,6 @@ nixpkgs.lib.nixosSystem {
       home-manager.sharedModules = [
         inputs.sops-nix.homeManagerModules.sops
         inputs.flatpaks.homeManagerModules.nix-flatpak
-        inputs.openclaw.homeManagerModules.openclaw
       ];
 
       # Optionally, use home-manager.extraSpecialArgs to pass
