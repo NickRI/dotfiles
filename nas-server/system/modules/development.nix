@@ -36,6 +36,7 @@ in
           HTTP_ADDR = "localhost";
           HTTP_PORT = gitea-listen-port;
           DOMAIN = gitea-domain;
+          ROOT_URL = "https://${gitea-domain}/";
         };
 
         metrics = {
