@@ -1,22 +1,5 @@
 { config, lib, ... }:
 
-let
-  upstream = lib.mkOption {
-    type = lib.types.nullOr (
-      lib.types.submodule {
-        options = {
-          name = lib.mkOption {
-            type = lib.types.str;
-            example = "upstream";
-            description = "Name of the upstream";
-          };
-        };
-      }
-    );
-    default = null;
-    description = "Optional upstream configuration";
-  };
-in
 {
 
   options.hosts = {
@@ -29,7 +12,11 @@ in
       type = lib.types.attrsOf (
         lib.types.submodule {
           options = {
-            upstream = upstream;
+            upstream = lib.mkOption {
+              type = lib.types.nullOr lib.types.str;
+              default = null;
+              description = "Optional upstream configuration";
+            };
             domain = lib.mkOption {
               type = lib.types.str;
               example = "www.domain.com";
@@ -42,6 +29,25 @@ in
               type = lib.types.str;
               default = "";
               example = "proxy_connect_timeout 30m;";
+            };
+            skip-root-location = lib.mkOption {
+              type = lib.types.bool;
+              default = false;
+              example = true;
+            };
+            http2-support = lib.mkOption {
+              type = lib.types.bool;
+              default = true;
+              example = false;
+            };
+            locations = lib.mkOption {
+              type = lib.types.attrs;
+              default = { };
+              example = {
+                "/" = {
+                  proxyPass = "something:8080/v2";
+                };
+              };
             };
           };
         }
@@ -82,10 +88,10 @@ in
 
       upstreams = lib.listToAttrs (
         builtins.map (entry: {
-          name = entry.upstream.name;
+          name = entry.upstream;
           value = {
             servers = {
-              "localhost:${toString entry.local-port}" = { };
+              "127.0.0.1:${toString entry.local-port}" = { };
             };
           };
         }) (lib.filter (entry: entry.upstream != null) (builtins.attrValues config.hosts.entries))
@@ -97,16 +103,20 @@ in
           value = {
             forceSSL = true;
             enableACME = true;
+            http2 = entry.http2-support;
 
-            locations."/" = {
-              proxyPass =
-                if entry.upstream != null then
-                  "http://${entry.upstream.name}"
-                else
-                  "http://127.0.0.1:${toString entry.local-port}";
-              proxyWebsockets = true;
-              extraConfig = entry.location-extra-config;
-            };
+            locations = {
+              "/" = lib.mkIf (!entry.skip-root-location) {
+                proxyPass =
+                  if entry.upstream != null then
+                    "http://${entry.upstream}"
+                  else
+                    "http://127.0.0.1:${toString entry.local-port}";
+                proxyWebsockets = true;
+                extraConfig = entry.location-extra-config;
+              };
+            }
+            // (entry.locations or { });
 
             listen = [
               {
