@@ -1,4 +1,5 @@
 {
+  pkgs,
   config,
   lib,
   ...
@@ -8,9 +9,16 @@ let
   athens-listen-port = 6934;
   ncps-listen-port = 8501;
   microbin-listen-port = 8521;
+  registry-listen-port = 5003;
+  registry-domain = "registry.firefly.red";
+  registry-ui-listen-port = 5004;
 in
 
 {
+  imports = [
+    ../../../shared/builts/docker-registry-ui.nix
+  ];
+
   hosts.entries = {
     athens = lib.mkIf (config.services.athens.enable) {
       domain = "athens.nas.firefly.red";
@@ -29,6 +37,22 @@ in
         proxy_send_timeout 1m;
       ";
     };
+    registry = lib.mkIf (config.services.dockerRegistry.enable) {
+      domain = registry-domain;
+      local-port = registry-ui-listen-port;
+      locations = {
+        "/v2/" = {
+          proxyPass = "http://127.0.0.1:${toString registry-listen-port}";
+          extraConfig = ''
+            proxy_pass_header Location;
+            add_header 'Docker-Distribution-Api-Version' 'registry/2.0' always;
+
+            chunked_transfer_encoding on;
+            client_max_body_size 0;
+          '';
+        };
+      };
+    };
   };
 
   homepage.services = {
@@ -37,6 +61,12 @@ in
         description = "A Go module datastore and proxy";
         icon = "https://docs.gomods.io/logo@2x.png";
         href = "https://athens.nas.firefly.red/";
+        siteMonitor = href;
+      };
+      Registry = lib.mkIf (config.services.dockerRegistry.enable) rec {
+        description = "The toolkit to pack, ship, store, and deliver container content";
+        icon = "https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/container-hub.svg";
+        href = "https://${registry-domain}/";
         siteMonitor = href;
       };
     };
@@ -57,6 +87,10 @@ in
   systemd.services.athens = {
     after = [ "postgresql.service" ];
     wants = [ "postgresql.service" ];
+  };
+
+  systemd.services.docker-registry.environment = {
+    OTEL_TRACES_EXPORTER = "none";
   };
 
   services = {
@@ -138,6 +172,39 @@ in
         MICROBIN_ENCRYPTION_SERVER_SIDE = true;
         MICROBIN_ENABLE_READONLY = true;
       };
+    };
+
+    dockerRegistry = {
+      port = registry-listen-port;
+      enableDelete = true;
+      enableGarbageCollect = true;
+      openFirewall = true;
+      extraConfig = {
+        http.relativeurls = true;
+        http.host = "https://${registry-domain}/";
+      };
+      storagePath = "/storage/registry";
+    };
+
+    docker-registry-ui = {
+      enable = config.services.dockerRegistry.enable;
+      path = "${config.services.dockerRegistry.storagePath}/ui";
+      port = registry-ui-listen-port;
+      registries = [
+        {
+          name = "Firefly Registry";
+          api = "https://${registry-domain}";
+          default = true;
+          bulkOperationsEnabled = true;
+          vulnerabilityScan = {
+            enabled = true;
+            scanner = "trivy";
+            scannerUrl = "";
+            autoScanRules = [ ];
+            scanLatestOnly = 1;
+          };
+        }
+      ];
     };
   };
 }

@@ -30,6 +30,7 @@
     athens.enable = true;
     ncps.enable = true;
     microbin.enable = true;
+    dockerRegistry.enable = true;
     kavita.enable = true;
     immich.enable = true;
   };
