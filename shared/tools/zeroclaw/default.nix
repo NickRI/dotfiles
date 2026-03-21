@@ -1,0 +1,201 @@
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+
+let
+  version = "v0.5.4";
+
+  zeroclaw-src = pkgs.fetchFromGitHub {
+    owner = "zeroclaw-labs";
+    repo = "zeroclaw";
+    rev = version;
+    hash = "sha256-RFPTjtAXZbAaigcInwvN7aTrzSn6uNK2P0q1rVD2mTI=";
+  };
+
+  zeroclaw-web = pkgs.buildNpmPackage {
+    pname = "zeroclaw-web";
+    inherit version;
+    src = zeroclaw-src;
+    sourceRoot = "${zeroclaw-src.name}/web";
+
+    npmDepsHash = "sha256-4+raDJ7+w+RpdeZs2PJL10IWzfoT5B3EpOxsLUnlrRc=";
+
+    # buildNpmPackage по умолчанию кладёт результат в $out
+    installPhase = ''
+      runHook preInstall
+      mkdir -p $out/dist
+      cp -r dist/* $out/dist/
+      if [ -f "$out/dist/logo.png" ]; then
+        mkdir -p "$out/dist/_app"
+        cp -f "$out/dist/logo.png" "$out/dist/_app/logo.png"
+      fi
+      runHook postInstall
+    '';
+  };
+
+  zeroclaw-pkg = pkgs.rustPlatform.buildRustPackage rec {
+    pname = "zeroclaw";
+    inherit version;
+
+    src = zeroclaw-src;
+
+    cargoLock = {
+      lockFile = "${src}/Cargo.lock";
+      allowBuiltinFetchGit = true;
+    };
+
+    # Подкладываем собранный фронтенд туда, где рантайм его ожидает: web/dist/.
+    preBuild = ''
+      rm -rf web/dist
+      mkdir -p web/dist
+      cp -r ${zeroclaw-web}/dist/* web/dist/
+    '';
+
+    doCheck = false;
+
+    meta = with lib; {
+      description = "Fast, small, autonomous AI assistant infrastructure (ZeroClaw)";
+      homepage = "https://github.com/zeroclaw-labs/zeroclaw";
+      license = with licenses; [
+        mit
+        asl20
+      ];
+      maintainers = [ ];
+    };
+  };
+
+  cfg = config.services.zeroclaw;
+in
+{
+
+  imports = [
+    ./settings.nix
+    ./workspace.nix
+  ];
+
+  options.services.zeroclaw = {
+    enable = lib.mkEnableOption "ZeroClaw AI assistant (daemon or gateway)";
+
+    user = lib.mkOption {
+      type = lib.types.str;
+      default = "zeroclaw";
+      description = "User to run ZeroClaw under.";
+    };
+
+    package = lib.mkOption {
+      type = lib.types.package;
+      default = zeroclaw-pkg;
+      description = "ZeroClaw package.";
+    };
+
+    runMode = lib.mkOption {
+      type = lib.types.enum [
+        "daemon"
+        "gateway"
+      ];
+      default = "daemon";
+      description = ''
+        daemon: full runtime (gateway + channels + scheduler).
+        gateway: webhook server only (default 127.0.0.1:42617).
+      '';
+    };
+
+    # Файл с переменными окружения (например от sops-nix): ZEROCLAW_API_KEY, API_KEY и т.д.
+    # Zeroclaw читает api_key из ZEROCLAW_API_KEY или API_KEY (см. config schema).
+    secretsEnvFiles = lib.mkOption {
+      type = lib.types.nullOr (lib.types.listOf lib.types.path);
+      default = null;
+      example = lib.literalExpression ''config.sops.secrets."zeroclaw-env".path'';
+      description = ''
+        Путь к файлу с env (KEY=value), подключаемый как EnvironmentFile в systemd.
+        Удобно указать секрет sops-nix, например:
+        sops.secrets."zeroclaw-env" = { };
+        services.zeroclaw.secretsEnvFiles = [config.sops.secrets."zeroclaw-env".path];
+        Содержимое: ZEROCLAW_API_KEY=sk-... (и при необходимости другие ключи).
+      '';
+    };
+
+    logLevel = lib.mkOption {
+      type = lib.types.str;
+      default = "trace";
+      description = "Logging level.";
+    };
+
+    extraPkgs = lib.mkOption {
+      type = lib.types.listOf lib.types.path;
+      default = [
+        pkgs.nix
+        pkgs.git
+        pkgs.nodejs
+        pkgs.cargo
+        pkgs.rustc
+        pkgs.python3
+        pkgs.python313Packages.pip
+        pkgs.docker
+        pkgs.kubectl
+        pkgs.gnumake
+      ];
+      description = "Additional pkgs for paths to zeroclaw service";
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    environment.systemPackages = [ cfg.package ];
+
+    users.users = lib.optionalAttrs (cfg.user == "zeroclaw") {
+      zeroclaw = {
+        isSystemUser = true;
+        group = "zeroclaw";
+        home = cfg.dataDir;
+        createHome = true;
+      };
+    };
+
+    users.groups = lib.optionalAttrs (cfg.user == "zeroclaw") {
+      zeroclaw = { };
+    };
+
+    systemd.services.zeroclaw = {
+      description = "ZeroClaw AI assistant (${cfg.runMode})";
+      after = [ "network-online.target" ];
+      requires = [ "network-online.target" ];
+      wantedBy = [ "multi-user.target" ];
+
+      serviceConfig = {
+        User = cfg.user;
+        Group = lib.mkIf (cfg.user == "zeroclaw") "zeroclaw";
+        WorkingDirectory = cfg.dataDir;
+        Restart = "on-failure";
+        RestartSec = "10s";
+      }
+      // lib.optionalAttrs (cfg.secretsEnvFiles != null) {
+        EnvironmentFile = cfg.secretsEnvFiles;
+      };
+
+      environment = {
+        RUST_LOG = cfg.logLevel;
+        ZEROCLAW_CONFIG_DIR = cfg.dataDir;
+      };
+
+      path = [
+        "/run/wrappers"
+        "/run/current-system/sw"
+      ]
+      ++ cfg.extraPkgs;
+
+      script = ''
+        exec ${cfg.package}/bin/zeroclaw ${cfg.runMode}
+      '';
+
+      restartTriggers = [
+        config.sops.templates."zeroclaw-config".path
+        cfg.dataDir
+        cfg.logLevel
+        cfg.runMode
+      ];
+    };
+  };
+}
