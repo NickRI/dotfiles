@@ -16,7 +16,7 @@ in
 
 {
   imports = [
-    ../../../shared/builts/docker-registry-ui.nix
+    ../../../shared/tools/docker-registry-ui.nix
   ];
 
   hosts.entries = {
@@ -154,7 +154,7 @@ in
         publicKeys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
       };
       cache = {
-        maxSize = "100G";
+        maxSize = "200G";
         lru.schedule = "0 2 * * *";
         dataPath = "/storage/ncps/cache";
         secretKeyPath = config.sops.secrets."ncps/secretKeyFile".path;

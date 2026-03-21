@@ -2,8 +2,8 @@
 
 {
   imports = [
+    ../../../shared/system/acme.nix
     ./database.nix
-    ./acme.nix
     ./monitoring.nix
     ./nextcloud.nix
     ./download.nix
