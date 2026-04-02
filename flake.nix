@@ -26,13 +26,14 @@
       url = "git+ssh://git@github.com/NickRI/nix-secrets.git?ref=main&shallow=1";
       flake = false;
     };
-    openclaw-agents = {
+    agents = {
       url = "path:/home/nikolai/.dotfiles/agents";
       inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs-unstable.follows = "nixpkgs-unstable";
       inputs.home-manager.follows = "home-manager";
       inputs.sops-nix.follows = "sops-nix";
       inputs.sops-secrets.follows = "sops-secrets";
-      inputs.nix-steipete-tools.inputs.nixpkgs.follows = "nixpkgs";
+      #      inputs.nix-steipete-tools.inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
