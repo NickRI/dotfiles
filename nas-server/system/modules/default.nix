@@ -1,4 +1,4 @@
-{ ... }:
+{ config, ... }:
 
 {
   imports = [
@@ -14,9 +14,13 @@
     ./misc.nix
   ];
 
-  config.services = {
+  sops.secrets."cloudflare-env" = { };
+
+  hosts.enable = true;
+  hosts.cloudflareEnvironmentFile = config.sops.secrets."cloudflare-env".path;
+
+  services = {
     postgresql.enable = true;
-    nginx.enable = true;
     grafana.enable = true;
     prometheus.enable = true;
     promtail.enable = true;

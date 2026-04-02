@@ -36,7 +36,7 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = false;
-
+  services.fwupd.enable = true;
   security.rtkit.enable = true;
   security.sudo.wheelNeedsPassword = false;
 

@@ -3,6 +3,10 @@
 {
 
   options.hosts = {
+    enable = lib.mkEnableOption "enable or not";
+    cloudflareEnvironmentFile = lib.mkOption {
+      type = lib.types.path;
+    };
     external-interface = lib.mkOption {
       type = lib.types.str;
       default = "192.168.1.117";
@@ -58,10 +62,7 @@
   };
 
   config = {
-
-    sops.secrets.cloudflare-env.owner = "acme";
-
-    security.acme = lib.mkIf (config.services.nginx.enable) rec {
+    security.acme = lib.mkIf (config.hosts.enable) rec {
       acceptTerms = true;
 
       defaults = {
@@ -69,7 +70,7 @@
         email = "admin@firefly.red";
         dnsProvider = "cloudflare";
         webroot = null;
-        environmentFile = config.sops.secrets.cloudflare-env.path;
+        environmentFile = config.hosts.cloudflareEnvironmentFile;
       };
 
       certs = lib.listToAttrs (
@@ -81,6 +82,7 @@
     };
 
     services.nginx = {
+      enable = config.hosts.enable;
       recommendedProxySettings = true;
       recommendedOptimisation = true;
       recommendedGzipSettings = true;
