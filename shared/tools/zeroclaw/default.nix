@@ -6,22 +6,22 @@
 }:
 
 let
-  version = "v0.5.4";
+  version = "v0.6.8";
 
-  zeroclaw-src = pkgs.fetchFromGitHub {
+  zeroclawSrc = pkgs.fetchFromGitHub {
     owner = "zeroclaw-labs";
     repo = "zeroclaw";
     rev = version;
-    hash = "sha256-RFPTjtAXZbAaigcInwvN7aTrzSn6uNK2P0q1rVD2mTI=";
+    hash = "sha256-SdIfROs3fwiB/7laMwlcV8xBlxMMWRseMKw9Gg620ik=";
   };
 
-  zeroclaw-web = pkgs.buildNpmPackage {
+  zeroclawWeb = pkgs.buildNpmPackage {
     pname = "zeroclaw-web";
     inherit version;
-    src = zeroclaw-src;
-    sourceRoot = "${zeroclaw-src.name}/web";
+    src = zeroclawSrc;
+    sourceRoot = "${zeroclawSrc.name}/web";
 
-    npmDepsHash = "sha256-4+raDJ7+w+RpdeZs2PJL10IWzfoT5B3EpOxsLUnlrRc=";
+    npmDepsHash = "sha256-RMiFoPj4cbUYONURsCp4FrNuy9bR1eRWqgAnACrVXsI=";
 
     # buildNpmPackage по умолчанию кладёт результат в $out
     installPhase = ''
@@ -36,11 +36,11 @@ let
     '';
   };
 
-  zeroclaw-pkg = pkgs.rustPlatform.buildRustPackage rec {
+  zeroclawPkg = pkgs.rustPlatform.buildRustPackage rec {
     pname = "zeroclaw";
     inherit version;
 
-    src = zeroclaw-src;
+    src = zeroclawSrc;
 
     cargoLock = {
       lockFile = "${src}/Cargo.lock";
@@ -51,7 +51,7 @@ let
     preBuild = ''
       rm -rf web/dist
       mkdir -p web/dist
-      cp -r ${zeroclaw-web}/dist/* web/dist/
+      cp -r ${zeroclawWeb}/dist/* web/dist/
     '';
 
     doCheck = false;
@@ -74,6 +74,7 @@ in
   imports = [
     ./settings.nix
     ./workspace.nix
+    ./agent-browser.nix
   ];
 
   options.services.zeroclaw = {
@@ -87,7 +88,7 @@ in
 
     package = lib.mkOption {
       type = lib.types.package;
-      default = zeroclaw-pkg;
+      default = zeroclawPkg;
       description = "ZeroClaw package.";
     };
 
@@ -125,7 +126,7 @@ in
     };
 
     extraPkgs = lib.mkOption {
-      type = lib.types.listOf lib.types.path;
+      type = lib.types.listOf lib.types.package;
       default = [
         pkgs.nix
         pkgs.git
@@ -134,15 +135,32 @@ in
         pkgs.rustc
         pkgs.python3
         pkgs.python313Packages.pip
-        pkgs.docker
-        pkgs.kubectl
         pkgs.gnumake
+        pkgs.jq
       ];
-      description = "Additional pkgs for paths to zeroclaw service";
+      description = ''
+        Packages whose `bin/` dirs are prepended to `PATH` for the `zeroclaw` systemd
+        unit (same set is also added to `users.users.<user>.packages` when user is `zeroclaw`).
+        Definitions are concatenated (defaults + extra modules + your `mkAfter` lists), not replaced.
+      '';
     };
   };
 
   config = lib.mkIf cfg.enable {
+
+    services.zeroclaw.extraPkgs = [
+      # Defaults
+      pkgs.nix
+      pkgs.git
+      pkgs.nodejs
+      pkgs.cargo
+      pkgs.rustc
+      pkgs.python3
+      pkgs.python313Packages.pip
+      pkgs.gnumake
+      pkgs.jq
+    ];
+
     environment.systemPackages = [ cfg.package ];
 
     users.users = lib.optionalAttrs (cfg.user == "zeroclaw") {
@@ -151,6 +169,7 @@ in
         group = "zeroclaw";
         home = cfg.dataDir;
         createHome = true;
+        packages = cfg.extraPkgs;
       };
     };
 

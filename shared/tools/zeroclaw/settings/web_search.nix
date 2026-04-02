@@ -20,7 +20,10 @@
             description = "Maximum results per search (1-10)";
           };
           provider = lib.mkOption {
-            type = lib.types.str;
+            type = lib.types.enum [
+              "duckduckgo"
+              "brave"
+            ];
             default = "duckduckgo";
             description = "Search provider: \"duckduckgo\" (free, no API key) or \"brave\" (requires API key)";
           };

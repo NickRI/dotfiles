@@ -140,6 +140,7 @@ in
             ws = cfg.workspaces.${workspace_key};
           in
           ''
+            rm -rf "${cfg.dataDir}/${workspace_key}/skills"
             mkdir -p "${cfg.dataDir}/${workspace_key}/skills"
             chown ${cfg.user}:${cfg.user} "${cfg.dataDir}/${workspace_key}/skills"
             chmod u+rwX,g+rwX,o-rwx "${cfg.dataDir}/${workspace_key}/skills"

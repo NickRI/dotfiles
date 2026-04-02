@@ -70,6 +70,7 @@ in
   # Enable sound with alsa, simpler for hdmi.
   services.pulseaudio.enable = false;
   services.pipewire.enable = false;
+  services.fwupd.enable = true;
   hardware.alsa.enable = true;
   hardware.alsa.defaultDevice.playback = "hdmi:CARD=PCH,DEV=0";
 
