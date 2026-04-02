@@ -178,6 +178,7 @@
     unixtools.xxd
     xclip
     sops
+    d2
 
     nvd
     nix-tree
