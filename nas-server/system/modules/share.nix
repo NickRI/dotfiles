@@ -1,5 +1,6 @@
 {
   pkgs,
+  nixpkgs-unstable,
   config,
   lib,
   ...
@@ -11,12 +12,19 @@ let
   microbin-listen-port = 8521;
   registry-listen-port = 5003;
   registry-domain = "registry.firefly.red";
+  ncps-domain-name = "ncps.nas.firefly.red";
   registry-ui-listen-port = 5004;
 in
 
 {
+
+  disabledModules = [
+    "services/networking/ncps.nix"
+  ];
+
   imports = [
     ../../../shared/tools/docker-registry-ui.nix
+    "${nixpkgs-unstable}/nixos/modules/services/networking/ncps.nix"
   ];
 
   hosts.entries = {
@@ -147,19 +155,22 @@ in
     };
 
     ncps = {
-      logLevel = "trace";
+      logLevel = "warn";
       server.addr = "localhost:${toString ncps-listen-port}";
-      upstream = {
-        caches = [ "https://cache.nixos.org" ];
-        publicKeys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
-      };
+      package = pkgs.unstable.ncps;
       cache = {
         maxSize = "200G";
         lru.schedule = "0 2 * * *";
-        dataPath = "/storage/ncps/cache";
+        storage.local = "/storage/ncps/cache";
         secretKeyPath = config.sops.secrets."ncps/secretKeyFile".path;
-        hostName = config.networking.hostName;
+        hostName = ncps-domain-name;
         databaseURL = "sqlite:/storage/ncps/db.sqlite";
+        upstream = {
+          responseHeaderTimeout = "5s";
+          dialerTimeout = "10s";
+          urls = [ "https://cache.nixos.org" ];
+          publicKeys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
+        };
       };
     };
 

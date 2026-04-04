@@ -21,6 +21,7 @@
     networking.firewall.allowedTCPPorts = [
       80
       443
+      22000
     ];
 
     #    networking.nameservers = [ "127.0.0.1" ];

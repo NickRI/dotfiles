@@ -1,6 +1,7 @@
 {
   inputs,
   nixpkgs,
+  nixpkgs-unstable,
   home-manager,
   hardware,
   ...
@@ -10,9 +11,19 @@ nixpkgs.lib.nixosSystem {
   inherit (hardware) system;
   specialArgs = {
     sops-secrets = inputs.sops-secrets;
+    nixpkgs-unstable = nixpkgs-unstable;
   };
 
   modules = [
+    {
+      nixpkgs.overlays = [
+        (final: prev: {
+          unstable = import nixpkgs-unstable {
+            inherit (prev) system;
+          };
+        })
+      ];
+    }
     home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
     inputs.sops-nix.nixosModules.sops
