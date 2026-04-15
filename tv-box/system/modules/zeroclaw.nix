@@ -1,6 +1,7 @@
 {
   config,
   sops-secrets,
+  agents,
   lib,
   ...
 }:
@@ -64,10 +65,10 @@ in
       config.sops.secrets."agents/gitea-keys".path
     ];
     logLevel = "info";
-    skillsSource = ../../../shared/agent-files/skills;
+    skillsSource = "${toString agents}/files/skills";
     workspaces = {
       workspace = {
-        source = ../../../shared/agent-files/agents/main;
+        source = "${toString agents}/files/agents/main";
 
         skills = [
           "gitea"
