@@ -45,7 +45,7 @@ in
         proxy_send_timeout 1m;
       ";
     };
-    registry = lib.mkIf (config.services.dockerRegistry.enable) {
+    registry-ui = lib.mkIf (config.services.dockerRegistry.enable) {
       domain = registry-domain;
       local-port = registry-ui-listen-port;
       locations = {
@@ -102,8 +102,30 @@ in
   };
 
   services = {
+    gatus.settings.endpoints = [
+      {
+        name = "samba";
+        url = "tcp://127.0.0.1:445";
+        group = "service";
+        interval = "30s";
+        conditions = [
+          "[CONNECTED] == true"
+          "[RESPONSE_TIME] < 10"
+        ];
+      }
+      {
+        name = "registry";
+        url = "tcp://127.0.0.1:${toString registry-listen-port}";
+        group = "service";
+        interval = "30s";
+        conditions = [
+          "[CONNECTED] == true"
+          "[RESPONSE_TIME] < 10"
+        ];
+      }
+    ];
+
     samba = {
-      enable = config.services.transmission.enable;
       openFirewall = true;
 
       settings = {
@@ -127,7 +149,6 @@ in
     };
 
     athens = {
-      enable = true;
       storage.disk.rootPath = "/storage/athens";
       port = athens-listen-port;
       logLevel = "info";

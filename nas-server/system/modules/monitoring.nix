@@ -11,6 +11,7 @@ let
   loki-listen-port = 3100;
   promtail-listen-port = 9080;
   scrutiny-listen-port = 8089;
+  gatus-listen-port = 8091;
 in
 {
   options.monitoring = {
@@ -63,6 +64,10 @@ in
         domain = "scrutiny.nas.firefly.red";
         local-port = scrutiny-listen-port;
       };
+      gatus = lib.mkIf (config.services.gatus.enable) {
+        domain = "gatus.nas.firefly.red";
+        local-port = gatus-listen-port;
+      };
     };
 
     monitoring.dashboards = lib.mkIf (config.services.grafana.enable) [
@@ -94,6 +99,12 @@ in
         description = "WebUI for smartd S.M.A.R.T monitoring";
         icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/scrutiny.svg";
         href = "https://scrutiny.nas.firefly.red/";
+        siteMonitor = href;
+      };
+      Gatus = lib.mkIf (config.services.scrutiny.enable) rec {
+        description = "Automated developer-oriented status page with alerting and incident support";
+        icon = "https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/gatus.svg";
+        href = "https://gatus.nas.firefly.red/";
         siteMonitor = href;
       };
     };
@@ -321,6 +332,37 @@ in
         settings.web.listen = {
           host = "localhost";
           port = scrutiny-listen-port;
+        };
+      };
+
+      gatus = {
+        settings = {
+          web.port = gatus-listen-port;
+          web.address = "127.0.0.1";
+          endpoints =
+            [ ]
+            ++ (lib.mapAttrsToList (name: value: {
+              name = name;
+              url = "http://127.0.0.1:${toString value.local-port}";
+              interval = "15m";
+              group = "services-local";
+              conditions = [
+                "[CONNECTED] == true"
+                "[STATUS] == 200"
+                "[RESPONSE_TIME] < 150"
+              ];
+            }) config.hosts.entries)
+            ++ (lib.mapAttrsToList (name: value: {
+              name = name;
+              url = "https://${value.domain}";
+              interval = "4h";
+              group = "domains";
+              conditions = [
+                "[CONNECTED] == true"
+                "[RESPONSE_TIME] < 1000"
+                "[CERTIFICATE_EXPIRATION] > 120h"
+              ];
+            }) config.hosts.entries);
         };
       };
     };

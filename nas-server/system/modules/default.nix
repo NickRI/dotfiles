@@ -25,10 +25,12 @@
     prometheus.enable = true;
     promtail.enable = true;
     loki.enable = true;
+    gatus.enable = true;
     scrutiny.enable = true;
     nextcloud.enable = true;
     gitea.enable = true;
     transmission.enable = true;
+    samba.enable = true;
     bitmagnet.enable = false;
     homepage-dashboard.enable = true;
     athens.enable = true;

@@ -82,7 +82,15 @@ in
                   }
                 ];
               }
-
+              {
+                MyNixos = [
+                  {
+                    abbr = "MNIX";
+                    icon = "https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/nixos.svg";
+                    href = "https://mynixos.com/";
+                  }
+                ];
+              }
             ];
           }
           {

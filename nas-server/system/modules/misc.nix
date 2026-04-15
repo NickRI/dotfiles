@@ -70,6 +70,7 @@ in
       mediaLocation = "/storage/immich/media";
       machine-learning.environment = {
         MACHINE_LEARNING_CACHE_FOLDER = lib.mkForce "/storage/immich/cache";
+        MPLCONFIGDIR = lib.mkForce "/storage/immich/matplot";
       };
       secretsFile = config.sops.templates.secretsFile.path;
       database = {
