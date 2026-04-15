@@ -1,19 +1,38 @@
 {
   inputs,
   nixpkgs,
+  nixpkgs-unstable,
   home-manager,
   hardware,
   ...
 }:
-
+let
+  pkgs = import nixpkgs {
+    inherit (hardware) system;
+    config.allowUnfree = true;
+  };
+  unstable = import nixpkgs-unstable {
+    inherit (hardware) system;
+    config.allowUnfree = true;
+  };
+  overlay-unstable = final: prev: { inherit unstable; };
+in
 nixpkgs.lib.nixosSystem {
   inherit (hardware) system;
   specialArgs = {
     nixos-hardware = inputs.nixos-hardware;
     sops-secrets = inputs.sops-secrets;
+    agents = inputs.agents;
   };
 
   modules = [
+    (
+      { ... }:
+      {
+        nixpkgs.pkgs = pkgs;
+        nixpkgs.overlays = [ overlay-unstable ];
+      }
+    )
     home-manager.nixosModules.home-manager
     inputs.disko.nixosModules.disko
     inputs.sops-nix.nixosModules.sops
