@@ -101,6 +101,10 @@ in
     OTEL_TRACES_EXPORTER = "none";
   };
 
+  systemd.tmpfiles.settings.ncps = {
+    "/storage/ncps/tmp".d.age = "1d";
+  };
+
   services = {
     gatus.settings.endpoints = [
       {
@@ -186,6 +190,7 @@ in
         secretKeyPath = config.sops.secrets."ncps/secretKeyFile".path;
         hostName = ncps-domain-name;
         databaseURL = "sqlite:/storage/ncps/db.sqlite";
+        tempPath = "/storage/ncps/tmp";
         upstream = {
           responseHeaderTimeout = "5s";
           dialerTimeout = "10s";
