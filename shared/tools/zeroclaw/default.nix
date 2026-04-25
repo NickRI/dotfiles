@@ -6,13 +6,13 @@
 }:
 
 let
-  version = "v0.6.8";
+  version = "v0.7.3";
 
   zeroclawSrc = pkgs.fetchFromGitHub {
     owner = "zeroclaw-labs";
     repo = "zeroclaw";
     rev = version;
-    hash = "sha256-SdIfROs3fwiB/7laMwlcV8xBlxMMWRseMKw9Gg620ik=";
+    hash = "sha256-Lr30nJ2IRAZzxS8Dc43c5mj3ab2suVbZxLTLx0mBRF0=";
   };
 
   zeroclawWeb = pkgs.buildNpmPackage {
@@ -21,17 +21,14 @@ let
     src = zeroclawSrc;
     sourceRoot = "${zeroclawSrc.name}/web";
 
-    npmDepsHash = "sha256-RMiFoPj4cbUYONURsCp4FrNuy9bR1eRWqgAnACrVXsI=";
+    npmDepsHash = "sha256-0AThpojpIjfjLfhfVlBWsJw4e7ksyi0nX4T60PHB2gc=";
 
-    # buildNpmPackage по умолчанию кладёт результат в $out
     installPhase = ''
       runHook preInstall
-      mkdir -p $out/dist
-      cp -r dist/* $out/dist/
-      if [ -f "$out/dist/logo.png" ]; then
-        mkdir -p "$out/dist/_app"
-        cp -f "$out/dist/logo.png" "$out/dist/_app/logo.png"
-      fi
+      mkdir -p $out/assets
+      cp -r dist/assets/* $out/assets/
+      cp dist/index.html $out/
+      cp dist/logo.png $out/zeroclaw-trans.png || true
       runHook postInstall
     '';
   };
@@ -46,13 +43,6 @@ let
       lockFile = "${src}/Cargo.lock";
       allowBuiltinFetchGit = true;
     };
-
-    # Подкладываем собранный фронтенд туда, где рантайм его ожидает: web/dist/.
-    preBuild = ''
-      rm -rf web/dist
-      mkdir -p web/dist
-      cp -r ${zeroclawWeb}/dist/* web/dist/
-    '';
 
     doCheck = false;
 
@@ -147,6 +137,8 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+
+    services.zeroclaw.settings.gateway.web_dist_dir = "${zeroclawWeb}";
 
     services.zeroclaw.extraPkgs = [
       # Defaults

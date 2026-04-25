@@ -14,6 +14,10 @@
             default = "127.0.0.1";
             description = "Gateway host (default: 127.0.0.1)";
           };
+          web_dist_dir = lib.mkOption {
+            type = lib.types.str;
+            default = "web";
+          };
           idempotency_max_keys = lib.mkOption {
             type = lib.types.int;
             default = 10000;
@@ -111,7 +115,7 @@
         };
       };
       default = {
-        allow_public_bind = false;
+        allow_public_bind = true;
         host = "127.0.0.1";
         idempotency_max_keys = 10000;
         idempotency_ttl_secs = 300;
