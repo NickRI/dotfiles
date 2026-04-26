@@ -235,7 +235,7 @@ in
           bulkOperationsEnabled = true;
           vulnerabilityScan = {
             enabled = true;
-            scanner = "trivy";
+            scanner = "TRIVY_CACHE_DIR=/storage/registry trivy";
             scannerUrl = "";
             autoScanRules = [ ];
             scanLatestOnly = 1;
