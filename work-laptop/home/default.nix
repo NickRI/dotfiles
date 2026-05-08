@@ -147,8 +147,13 @@ in
           email = "nicktt2008@yandex.ru";
           name = "NickRI";
         };
-        url."git@github.com:" = {
-          insteadOf = "https://github.com/";
+        url = {
+          "ssh://git@github.com/" = {
+            insteadOf = "https://github.com/";
+          };
+          "ssh://gitea@gitea.nas.firefly.red/" = {
+            insteadOf = "https://gitea.nas.firefly.red/";
+          };
         };
       };
       signing.key = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAj9J0TmP14mZ7UUEETiaR+h/5kh6h19jwQgkYDPQcZ7";
