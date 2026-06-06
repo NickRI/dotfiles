@@ -175,6 +175,7 @@ in
     ncps = {
       logLevel = "warn";
       server.addr = "localhost:${toString ncps-listen-port}";
+      analytics.reporting.enable = false;
       cache = {
         maxSize = "200G";
         lru.schedule = "0 2 * * *";
