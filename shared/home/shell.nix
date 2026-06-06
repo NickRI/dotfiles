@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   ...
 }:
@@ -107,6 +108,8 @@ in
 
     zsh = {
       enable = true;
+
+      dotDir = "${config.xdg.configHome}/zsh";
       initContent = ''
         # Sources
         source ~/.p10k.zsh
@@ -166,8 +169,8 @@ in
           src = fetchFromGitHub {
             owner = "zsh-users";
             repo = "zsh-completions";
-            rev = "0.35.0";
-            sha256 = "GFHlZjIHUWwyeVoCpszgn4AmLPSSE8UVNfRmisnhkpg=";
+            rev = "0.36.0";
+            sha256 = "sha256-XCSC7DyhfnxzKjtbdsu7/pyw8eoVLPdthEoFZ8rBAyo=";
           };
         }
         {
@@ -194,8 +197,8 @@ in
           src = fetchFromGitHub {
             owner = "Aloxaf";
             repo = "fzf-tab";
-            rev = "v1.2.0";
-            sha256 = "sha256-q26XVS/LcyZPRqDNwKKA9exgBByE0muyuNb0Bbar2lY=";
+            rev = "v1.3.0";
+            sha256 = "sha256-8atbysoOyCBW2OYKmdc91x9V/Mk3eyg3hvzvhJpQ32w=";
           };
         }
       ];

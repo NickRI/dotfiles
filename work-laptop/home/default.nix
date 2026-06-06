@@ -31,7 +31,7 @@ in
     docker-compose
 
     slack
-    wasistlos
+    karere
     zoom-us
 
     #    discord

@@ -38,8 +38,10 @@
 
       programs.ssh = lib.mkIf (config.programs.ssh.enable) {
         enableDefaultConfig = false;
-        matchBlocks."*" = {
-          identityAgent = "~/.1password/agent.sock";
+        settings = {
+          "*" = {
+            identityAgent = "~/.1password/agent.sock";
+          };
         };
       };
 

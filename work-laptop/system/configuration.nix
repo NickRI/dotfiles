@@ -184,7 +184,7 @@
     nix-tree
     nix-du
     nix-index
-    nixfmt-rfc-style
+    nixfmt
     nixd
   ];
 

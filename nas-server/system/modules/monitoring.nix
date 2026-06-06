@@ -9,7 +9,6 @@ let
   grafana-domain = "grafana.nas.firefly.red";
   prometheus-listen-port = 9090;
   loki-listen-port = 3100;
-  promtail-listen-port = 9080;
   scrutiny-listen-port = 8089;
   gatus-listen-port = 8091;
 in
@@ -126,9 +125,28 @@ in
       );
     };
 
+    sops.secrets =
+      let
+        groupCfg = {
+          owner = "grafana";
+          group = "grafana";
+          restartUnits = [ "grafana.service" ];
+        };
+      in
+      {
+        "grafana/username" = groupCfg;
+        "grafana/password" = groupCfg;
+        "grafana/secret_key" = groupCfg;
+      };
+
     services = {
       grafana = {
         settings = {
+          security = {
+            admin_user = "$__file{${config.sops.secrets."grafana/username".path}}";
+            admin_password = "$__file{${config.sops.secrets."grafana/password".path}}";
+            secret_key = "$__file{${config.sops.secrets."grafana/secret_key".path}}";
+          };
           server = {
             http_port = grafana-listen-port;
             # Grafana needs to know on which domain and URL it's running
@@ -313,18 +331,6 @@ in
               };
             };
           };
-        };
-      };
-
-      promtail = {
-        configuration = {
-          server = {
-            http_listen_port = promtail-listen-port;
-            grpc_listen_port = 0;
-          };
-          clients = [
-            { url = "http://localhost:${toString loki-listen-port}/loki/api/v1/push"; }
-          ];
         };
       };
 

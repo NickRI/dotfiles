@@ -2,12 +2,12 @@
   description = "NixOS personal configuration";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:NixOS/nixos-hardware/master";
     flatpaks.url = "github:gmodena/nix-flatpak/main";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     nixos-grub-themes = {
@@ -33,7 +33,6 @@
       inputs.home-manager.follows = "home-manager";
       inputs.sops-nix.follows = "sops-nix";
       inputs.sops-secrets.follows = "sops-secrets";
-      #      inputs.nix-steipete-tools.inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 

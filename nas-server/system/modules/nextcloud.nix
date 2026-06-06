@@ -9,8 +9,6 @@ let
   nextcloud-domain = "nextcloud.nas.firefly.red";
 in
 {
-  users.users.promtail.extraGroups = [ "nextcloud" ];
-
   monitoring.dashboards = lib.mkIf (config.services.nextcloud.enable) [
     {
       filename = "nextcloud_logs_rev1.json";
@@ -71,7 +69,7 @@ in
 
   services = {
     nextcloud = {
-      package = pkgs.nextcloud32;
+      package = pkgs.nextcloud33;
 
       datadir = "/storage/${nextcloud-dir}";
 
@@ -186,25 +184,6 @@ in
           addr = config.hosts.external-interface;
           port = 443;
           ssl = true;
-        }
-      ];
-    };
-
-    promtail = lib.mkIf (config.services.nextcloud.enable) {
-      configuration.scrape_configs = [
-        {
-          job_name = "system";
-          static_configs = [
-            {
-              targets = [ "localhost" ];
-              labels = {
-                instance = nextcloud-domain;
-                env = "${config.networking.hostName}";
-                job = "nextcloud";
-                __path__ = "/storage/${nextcloud-dir}/data/{nextcloud,audit}.log";
-              };
-            }
-          ];
         }
       ];
     };

@@ -1,6 +1,4 @@
 {
-  pkgs,
-  nixpkgs-unstable,
   config,
   lib,
   ...
@@ -18,13 +16,8 @@ in
 
 {
 
-  disabledModules = [
-    "services/networking/ncps.nix"
-  ];
-
   imports = [
     ../../../shared/tools/docker-registry-ui.nix
-    "${nixpkgs-unstable}/nixos/modules/services/networking/ncps.nix"
   ];
 
   hosts.entries = {
@@ -182,7 +175,6 @@ in
     ncps = {
       logLevel = "warn";
       server.addr = "localhost:${toString ncps-listen-port}";
-      package = pkgs.unstable.ncps;
       cache = {
         maxSize = "200G";
         lru.schedule = "0 2 * * *";

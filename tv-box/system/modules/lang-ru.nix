@@ -9,11 +9,11 @@
 buildKodiAddon rec {
   pname = "Russian Language";
   namespace = "resource.language.ru_ru";
-  version = "11.0.95";
+  version = "11.0.101";
 
   src = fetchzip {
     url = "https://mirrors.kodi.tv/addons/${lib.toLower rel}/${namespace}/${namespace}-${version}.zip";
-    sha256 = "sha256-M0XjTmsAXtoPdIWFvS5WFKkOKjqySiKfo08D1VQr780=";
+    sha256 = "sha256-KgohkdcOTMYax9rORt46xj70suEwTeIDW3u8mmc4RWA=";
   };
 
   meta = {

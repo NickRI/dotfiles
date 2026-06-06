@@ -23,7 +23,6 @@
     postgresql.enable = true;
     grafana.enable = true;
     prometheus.enable = true;
-    promtail.enable = true;
     loki.enable = true;
     gatus.enable = true;
     scrutiny.enable = true;
