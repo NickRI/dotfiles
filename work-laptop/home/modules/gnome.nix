@@ -246,7 +246,7 @@
     "org/gnome/desktop/app-folders/folders/Internet" = {
       "name" = "Интернет";
       "apps" = [
-        #        "com.github.xeco23.WasIstLos.desktop"
+        "io.github.tobagin.karere.desktop"
         "Zoom.desktop"
         "AnyDesk.desktop"
         "com.dropbox.Client.desktop"
