@@ -241,7 +241,6 @@ in
 
     tailscale = {
       openFirewall = true;
-      package = pkgs.unstable.tailscale;
       useRoutingFeatures = "both";
       authKeyFile = config.sops.secrets."tailscale-token".path;
       extraSetFlags = [
