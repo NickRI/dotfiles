@@ -38,5 +38,6 @@
     dockerRegistry.enable = true;
     kavita.enable = true;
     immich.enable = true;
+    tailscale.enable = true;
   };
 }

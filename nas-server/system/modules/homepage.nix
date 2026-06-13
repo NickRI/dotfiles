@@ -122,6 +122,15 @@ in
                 ];
               }
               {
+                "Tailscale" = [
+                  {
+                    abbr = "TS";
+                    icon = "https://cdn.jsdelivr.net/gh/selfhst/icons@main/svg/tailscale.svg";
+                    href = "https://login.tailscale.com/admin/machines";
+                  }
+                ];
+              }
+              {
                 HomePage = [
                   {
                     abbr = "HPG";

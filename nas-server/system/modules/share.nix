@@ -1,5 +1,6 @@
 {
   config,
+  pkgs,
   lib,
   ...
 }:
@@ -81,7 +82,8 @@ in
     };
   };
 
-  sops.secrets = lib.mkIf (config.services.ncps.enable) {
+  sops.secrets = {
+    "tailscale-token" = { };
     "ncps/secretKeyFile".owner = "ncps";
   };
 
@@ -177,7 +179,7 @@ in
       server.addr = "localhost:${toString ncps-listen-port}";
       analytics.reporting.enable = false;
       cache = {
-        maxSize = "200G";
+        maxSize = "100G";
         lru.schedule = "0 2 * * *";
         storage.local = "/storage/ncps/cache";
         secretKeyPath = config.sops.secrets."ncps/secretKeyFile".path;
@@ -234,6 +236,16 @@ in
             scanLatestOnly = 1;
           };
         }
+      ];
+    };
+
+    tailscale = {
+      openFirewall = true;
+      package = pkgs.unstable.tailscale;
+      useRoutingFeatures = "both";
+      authKeyFile = config.sops.secrets."tailscale-token".path;
+      extraSetFlags = [
+        "--advertise-routes=192.168.1.0/24"
       ];
     };
   };

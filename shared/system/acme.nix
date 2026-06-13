@@ -9,7 +9,7 @@
     };
     external-interface = lib.mkOption {
       type = lib.types.str;
-      default = "192.168.1.117";
+      default = "0.0.0.0";
       example = "192.168.1.xxx";
     };
     entries = lib.mkOption {
