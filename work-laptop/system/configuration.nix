@@ -19,6 +19,7 @@
     ./modules/yubikey.nix
     ./modules/gnome.nix
     ./modules/1password.nix
+    ./modules/tailscale.nix
     ../../shared/system
     ../../shared/system/geo.nix
     (import ../../shared/system/sops.nix (
