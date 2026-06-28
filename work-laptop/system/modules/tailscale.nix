@@ -26,7 +26,7 @@
   };
 
   home-manager.users.nikolai = {
-    home.packages = with pkgs.gnomeExtensions; [ tailscale-qs-2 ];
+    home.packages = with pkgs.gnomeExtensions; [ tailscale-qs ];
 
     dconf.settings = with lib.hm.gvariant; {
       "org/gnome/shell" = {
