@@ -34,6 +34,8 @@ in
     karere
     zoom-us
 
+    tenacity
+
     #    discord
     #    viber
     telegram-desktop

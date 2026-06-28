@@ -284,6 +284,7 @@
       "name" = "Аудио и видео";
       "apps" = [
         "org.gnome.SoundRecorder.desktop"
+        "tenacity.desktop"
         "org.gnome.Music.desktop"
         "vlc.desktop"
         "org.gnome.Snapshot.desktop"
