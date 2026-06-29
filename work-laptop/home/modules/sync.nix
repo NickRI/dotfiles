@@ -5,10 +5,6 @@
   ...
 }:
 
-let
-  upkgs = pkgs.unstable;
-  apiKey = builtins.hashString "sha256" config.home.username;
-in
 {
   sops = lib.mkIf (config.services.syncthing.enable) {
     secrets."syncthing/key" = {
@@ -19,30 +15,17 @@ in
     };
   };
 
-  home.file.".config/syncthingtray.ini".source = (
-    pkgs.replaceVars ../../../shared/files/syncthingtray.ini {
-      api_key = apiKey;
-    }
-  );
-
   home.packages =
-    with upkgs;
-    lib.mkIf (config.services.syncthing.enable) [
-      syncthingtray
-    ];
+    with pkgs.gnomeExtensions;
+    lib.mkIf (config.services.syncthing.enable) [ syncthing-indicator ];
 
-  autoStart =
-    with upkgs;
-    lib.mkIf (config.services.syncthing.enable) [
-      syncthingtray
-    ];
-
-  # Overridden to hide
-  xdg.desktopEntries.syncthing-ui = {
-    name = "Syncthing UI";
-    noDisplay = true;
-    type = "Application";
-  };
+  dconf.settings =
+    with lib.hm.gvariant;
+    lib.mkIf (config.services.syncthing.enable) {
+      "org/gnome/shell" = {
+        enabled-extensions = [ "syncthing@gnome.2nv2u.com" ];
+      };
+    };
 
   services.syncthing = {
     enable = true;
@@ -52,7 +35,6 @@ in
     settings = {
       gui = {
         theme = "dark";
-        apikey = apiKey;
       };
 
       devices = {
