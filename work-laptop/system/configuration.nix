@@ -124,6 +124,7 @@
       extra-platforms = config.boot.binfmt.emulatedSystems;
       substituters = lib.mkForce [
         "https://ncps.nas.firefly.red"
+        "https://cache.nixos.org"
       ];
       trusted-public-keys = [
         "nas-server:CHFTyOLXZW0CjAs+4DnXPG3xYne4xhNCIxPRPZ8geG4="
