@@ -4,6 +4,7 @@
   hardware.graphics = {
     enable = true;
     extraPackages = with pkgs; [
+      rocmPackages.clr
       rocmPackages.clr.icd
     ];
   };
@@ -20,7 +21,7 @@
       openFirewall = true;
       package = pkgs.unstable.ollama-rocm;
       environmentVariables = {
-        HSA_OVERRIDE_GFX_VERSION = "11.0.0";
+        OLLAMA_IGPU_ENABLE = "1";
         HSA_ENABLE_SDMA = "0";
         OLLAMA_DEBUG = "1";
       };
@@ -29,9 +30,8 @@
         "video"
         "render"
       ];
-
-      rocmOverrideGfx = "11.0.0";
     };
+
     open-webui = {
       enable = false;
       environment = {
