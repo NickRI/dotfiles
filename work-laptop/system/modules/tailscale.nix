@@ -18,9 +18,6 @@
 
     extraUpFlags = [
       "--accept-routes=true"
-    ];
-
-    extraSetFlags = [
       "--operator=${config.users.users.nikolai.name}"
     ];
   };
