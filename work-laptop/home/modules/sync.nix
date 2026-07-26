@@ -19,6 +19,13 @@
     with pkgs.gnomeExtensions;
     lib.mkIf (config.services.syncthing.enable) [ syncthing-indicator ];
 
+  # Overridden to hide
+  xdg.desktopEntries.syncthing-ui = {
+    name = "Syncthing UI";
+    noDisplay = true;
+    type = "Application";
+  };
+
   dconf.settings =
     with lib.hm.gvariant;
     lib.mkIf (config.services.syncthing.enable) {
