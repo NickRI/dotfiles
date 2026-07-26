@@ -21,7 +21,6 @@ nixpkgs.lib.nixosSystem {
   inherit (hardware) system;
   specialArgs = {
     nixos-hardware = inputs.nixos-hardware;
-    grub-themes = inputs.nixos-grub-themes;
     sops-secrets = inputs.sops-secrets;
   };
 

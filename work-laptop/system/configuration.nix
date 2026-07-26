@@ -4,7 +4,6 @@
 
 {
   lib,
-  grub-themes,
   config,
   pkgs,
   ...
@@ -34,13 +33,7 @@
   # Bootloader.
   boot.loader = {
     timeout = 3;
-
-    grub = {
-      enable = true;
-      efiSupport = true;
-      theme = grub-themes.packages.${pkgs.stdenv.hostPlatform.system}.hyperfluent;
-    };
-
+    systemd-boot.enable = true;
     efi.canTouchEfiVariables = true;
   };
 
@@ -52,13 +45,12 @@
   hardware.ledger.enable = true;
   hardware.bluetooth = {
     enable = true;
+    powerOnBoot = true;
     settings = {
       General = {
-        ControllerMode = "dual";
+        ControllerMode = "bredr";
         Experimental = true;
-      };
-      Policy = {
-        AutoEnable = true;
+        Enable = "Source,Sink,Media,Socket";
       };
     };
   };
@@ -77,9 +69,18 @@
     # If you want to use JACK applications, uncomment this
     #jack.enable = true;
 
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+    wireplumber = {
+      enable = true;
+
+      extraConfig = {
+        "60-airpods-fixes" = {
+          "wireplumber.settings" = {
+            "bluetooth.dummy-avrcp-player" = true;
+            "bluetooth.roles" = [ "a2dp_sink" ];
+          };
+        };
+      };
+    };
   };
 
   services.udev.extraRules = ''

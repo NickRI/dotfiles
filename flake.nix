@@ -10,10 +10,6 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    nixos-grub-themes = {
-      url = "github:jeslie0/nixos-grub-themes";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
     disko = {
       url = "github:nix-community/disko";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
