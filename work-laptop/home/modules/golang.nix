@@ -36,6 +36,8 @@ in
       goose
       go-task
       gollama
+      gogup
+      gopls
     ];
 
     programs.chromium = lib.mkIf (config.programs.chromium.enable) {

@@ -19,6 +19,7 @@ in
 
   environment.systemPackages = [
     debug-tools
+    pkgs.llama-cpp-rocm
   ];
 
   boot.initrd.availableKernelModules = [
@@ -27,10 +28,5 @@ in
     "usbhid"
   ];
 
-  boot.kernelParams = [
-    "pcie_aspm=force"
-    "amd_iommu=fullflush"
-    "xhci_hcd.quirks=0x800000"
-    "amdgpu.dcdebugmask=0x10"
-  ];
+  boot.kernelPackages = pkgs.linuxKernel.packages.linux_7_1;
 }

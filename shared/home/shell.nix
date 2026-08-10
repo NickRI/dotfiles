@@ -19,6 +19,16 @@ in
     nix-history = "nix profile history --profile /nix/var/nix/profiles/system";
   };
 
+  home.packages = with pkgs; [
+    uv
+    (python3.withPackages (
+      ps: with ps; [
+        pip
+        requests
+      ]
+    ))
+  ];
+
   home.file = {
     ".p10k.zsh".source = ../files/.p10k.zsh;
   };

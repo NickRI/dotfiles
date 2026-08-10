@@ -2,13 +2,13 @@
 
 pkgs.python3Packages.buildPythonApplication rec {
   pname = "amd-debug-tools";
-  version = "0.2.13";
+  version = "0.2.20";
   format = "pyproject";
 
   src = pkgs.fetchgit {
     url = "https://git.kernel.org/pub/scm/linux/kernel/git/superm1/amd-debug-tools.git";
     rev = version;
-    hash = "sha256-748K4Ee9HVYWQ7/DVz7F2nZNjau5v4OGvgHwJZ4vYpM=";
+    hash = "sha256-JDacCakZC+4N4IDAODWLSuensAtFArl052I4weK/zJQ=";
   };
 
   build-system = with pkgs.python3Packages; [

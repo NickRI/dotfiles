@@ -43,9 +43,10 @@ in
     kubectl
 
     ledger-live-desktop
-
-    anydesk
     qemu
+
+    chatgpt-cli
+    librepods
 
     vlc
     transmission_4
@@ -94,6 +95,7 @@ in
     thunderbird
     telegram-desktop
     todoist-electron
+    librepods
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
