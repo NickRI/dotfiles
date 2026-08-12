@@ -91,11 +91,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783740085,
-        "narHash": "sha256-qajyHfZY29G2oEQk+uHxmsJcRoBUBXP9maTpFlwP/dI=",
+        "lastModified": 1786924861,
+        "narHash": "sha256-hftabkb+73OcGzvwFAjCiQorAhprs9TnU1+FkGO5CIw=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "3cd22efe6471dc7365c822bd9ad73a21e55f38fb",
+        "rev": "09ae1b85a6db412d841d60f924b23f881f0d0a38",
         "type": "github"
       },
       "original": {
@@ -126,36 +126,16 @@
         "type": "github"
       }
     },
-    "nixos-grub-themes": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs-unstable"
-        ]
-      },
-      "locked": {
-        "lastModified": 1781846278,
-        "narHash": "sha256-FKKfJZnw32Kz5pHmjflb1piJ1dgRjtimQOBiWeAn4DE=",
-        "owner": "jeslie0",
-        "repo": "nixos-grub-themes",
-        "rev": "da7497bdcfbfd55a6279559e2d9af812f511073b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "jeslie0",
-        "repo": "nixos-grub-themes",
-        "type": "github"
-      }
-    },
     "nixos-hardware": {
       "inputs": {
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1783792734,
-        "narHash": "sha256-50rvY9GdFvpYDcMLcD/4cWSi0hVxArT5wsGlVsHy8eY=",
+        "lastModified": 1786867632,
+        "narHash": "sha256-ez+ubZlA1RtdjCB18a6zJ9M4u8qoPDy08EcnsW5M3Xw=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "8efb4337e857949f4cfac86d12ef1066f417f31f",
+        "rev": "ff17823245ab9ff7bcae6acf950bd89cba82c38c",
         "type": "github"
       },
       "original": {
@@ -180,11 +160,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1783776592,
-        "narHash": "sha256-UgCQzxeWI75XM8G+hPrPh+MKzEPjG3SpAj7dtqSbksA=",
+        "lastModified": 1786862985,
+        "narHash": "sha256-FBJRXmbGXiSUDvYEbfLYRkckayyZ6SK1UEqhCrIZ2Cs=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "e7a3ca8092b61ff85b6a45bf863ea2b2d6a661b3",
+        "rev": "e5bdc4a41d4c072fe1e3787eaa0320a384741d44",
         "type": "github"
       },
       "original": {
@@ -196,11 +176,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1783703440,
-        "narHash": "sha256-O3/YajjWo001VUIgD8BwaRdSNLUFe7nZ1qV5TwhRBcw=",
+        "lastModified": 1786943417,
+        "narHash": "sha256-b4qgjdFtlz5TAZ1Hi7DFJeqX3sjaDUnrwr9OO+O1rM0=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "8f0500b9660505dc3cb647775fe9a978a74b5283",
+        "rev": "0dd31db7e6dbf9ce05697c4545f6fe01accec994",
         "type": "github"
       },
       "original": {
@@ -243,7 +223,6 @@
         "disko": "disko",
         "flatpaks": "flatpaks",
         "home-manager": "home-manager",
-        "nixos-grub-themes": "nixos-grub-themes",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-unstable": "nixpkgs-unstable",
@@ -258,11 +237,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1783174389,
-        "narHash": "sha256-aCWC8ngycU7OdJrU2+Je3qf+1a2ykuBvpPhZT/9tXMc=",
+        "lastModified": 1786629091,
+        "narHash": "sha256-gkig4nPi1CWc4Z50GBsjE4ygSE7hMpl/TwID2an2Cck=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "f1406619a3884cd5c47992a70b8b35c9c0fcb4c9",
+        "rev": "a8627b21b9107c5711c96b84f32a9a4b3d45295f",
         "type": "github"
       },
       "original": {
@@ -274,10 +253,10 @@
     "sops-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1782571445,
-        "narHash": "sha256-Kloyxi8cMCZsr3ow01/TyyQ0/iZKU5ndIj9vRa1wbak=",
+        "lastModified": 1787090968,
+        "narHash": "sha256-H6vzRsiUaSzhMp21+bXjVkp7oQ91znXUOvZZAhGKAEU=",
         "ref": "main",
-        "rev": "55747e74677e72a6bf2ea377bf4b82e517074ed7",
+        "rev": "0183aca5b515fb4f4265e09280a89ba9d6148843",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/NickRI/nix-secrets.git"
