@@ -89,6 +89,11 @@ in
 
     jq.enable = true;
 
+    superfile = {
+      enable = true;
+      package = pkgs.unstable.superfile;
+    };
+
     gh = {
       enable = true;
       settings = {

@@ -124,8 +124,8 @@
     settings = {
       extra-platforms = config.boot.binfmt.emulatedSystems;
       substituters = lib.mkForce [
-        "https://ncps.nas.firefly.red"
         "https://cache.nixos.org"
+        "https://ncps.nas.firefly.red"
       ];
       trusted-public-keys = [
         "nas-server:CHFTyOLXZW0CjAs+4DnXPG3xYne4xhNCIxPRPZ8geG4="
@@ -189,6 +189,7 @@
     nix-index
     nixfmt
     nixd
+    nix-output-monitor
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

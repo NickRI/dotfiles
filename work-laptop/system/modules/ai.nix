@@ -1,14 +1,6 @@
 { pkgs, config, ... }:
 
 {
-  hardware.graphics = {
-    enable = true;
-    extraPackages = with pkgs; [
-      rocmPackages.clr
-      rocmPackages.clr.icd
-    ];
-  };
-
   networking.firewall.trustedInterfaces = [
     "docker0"
     "ascend-br"

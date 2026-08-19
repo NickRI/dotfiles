@@ -12,9 +12,6 @@ in
     programs.go = {
       enable = true;
       package = upkgs.go;
-      env.GOPRIVATE = [
-        "github.com/wert-io"
-      ];
     };
 
     home.sessionPath = [ "$HOME/go/bin" ];

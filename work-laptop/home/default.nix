@@ -155,6 +155,9 @@ in
           "ssh://git@github.com/" = {
             insteadOf = "https://github.com/";
           };
+          "ssh://git@gitlab.com/" = {
+            insteadOf = "https://gitlab.com/";
+          };
           "ssh://gitea@gitea.nas.firefly.red/" = {
             insteadOf = "https://gitea.nas.firefly.red/";
           };
