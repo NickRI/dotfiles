@@ -29,6 +29,7 @@
     nextcloud.enable = true;
     gitea.enable = true;
     transmission.enable = true;
+    hfdownloader.enable = true;
     samba.enable = true;
     bitmagnet.enable = false;
     homepage-dashboard.enable = true;

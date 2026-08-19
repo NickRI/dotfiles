@@ -8,22 +8,23 @@
 let
   python = pkgs.python3.withPackages (
     ps: with ps; [
-      flask
+      fastapi
       requests
       uvicorn
       asgiref
+      jinja2
     ]
   );
 
   docker-registry-ui-pkg = pkgs.stdenv.mkDerivation rec {
     pname = "docker-registry-ui";
-    version = "main";
+    version = "v2.1.0";
 
     src = pkgs.fetchFromGitHub {
       owner = "VibhuviOiO";
       repo = "docker-registry-ui";
       rev = "${version}";
-      hash = "sha256-at+M9DIJYkhPK2KoeyVHul3y4FuChqjzyS2+retKc4c=";
+      hash = "sha256-f4uUMvZoMbmm66vH9lsnew1KI4JrRjA3skBa2hlp/7c=";
     };
 
     nativeBuildInputs = [ pkgs.makeWrapper ];
@@ -33,6 +34,15 @@ let
       runHook preInstall
       share=$out/share/docker-registry-ui
       mkdir -p $share $out/bin
+      ${python}/bin/python - <<'PY'
+      from pathlib import Path
+      p = Path("app/routes.py")
+      text = p.read_text()
+      old = 'return templates.TemplateResponse(\n        "index.html",'
+      new = 'return templates.TemplateResponse(\n        request,\n        "index.html",'
+      p.write_text(text.replace(old, new))
+      PY
+
       cp -r app templates static asgi.py $share/
       makeWrapper ${python}/bin/uvicorn $out/bin/docker-registry-ui \
         --argv0 "docker-registry-ui" \
@@ -115,6 +125,10 @@ in
         mkdir -p ${cfg.path}
         chown ${cfg.user}:${cfg.user} ${cfg.path}
         ln -sf ${cfg.configFile} ${cfg.path}/ui-config.json
+        # Upstream code uses `StaticFiles(directory="static")` relative to
+        # `systemd` WorkingDirectory, so we must provide `static/` there.
+        ln -sfn ${docker-registry-ui-pkg}/share/docker-registry-ui/static ${cfg.path}/static
+        ln -sfn ${docker-registry-ui-pkg}/share/docker-registry-ui/templates ${cfg.path}/templates
       '';
     };
 

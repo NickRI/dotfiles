@@ -7,8 +7,13 @@
 let
   transmission-listen-port = 5055;
   bitmagnet-listen-port = 3333;
+  hfdownloader-listen-port = 8090;
 in
 {
+  imports = [
+    ../../../shared/tools/hfdownloader.nix
+  ];
+
   hosts.entries = {
     transmission = lib.mkIf (config.services.transmission.enable) {
       domain = "transmission.nas.firefly.red";
@@ -17,6 +22,10 @@ in
     bitmagnet = lib.mkIf (config.services.bitmagnet.enable) {
       domain = "bitmagnet.nas.firefly.red";
       local-port = bitmagnet-listen-port;
+    };
+    hfdownloader = lib.mkIf (config.services.hfdownloader.enable) {
+      domain = "hf.nas.firefly.red";
+      local-port = hfdownloader-listen-port;
     };
   };
 
@@ -33,12 +42,30 @@ in
       href = "https://bitmagnet.nas.firefly.red/";
       siteMonitor = href;
     };
+    HuggingFace = lib.mkIf (config.services.hfdownloader.enable) rec {
+      description = "Fast, resumable downloader for Hugging Face models and datasets";
+      icon = "https://huggingface.co/front/assets/huggingface_logo-noborder.svg";
+      href = "https://hf.nas.firefly.red/";
+      siteMonitor = href;
+    };
   };
 
   sops = {
     secrets = {
       "transmission/username" = { };
       "transmission/password" = { };
+      "hfdownloader/username" = lib.mkIf config.services.hfdownloader.enable {
+        owner = config.services.hfdownloader.user;
+        restartUnits = [ "hfdownloader.service" ];
+      };
+      "hfdownloader/password" = lib.mkIf config.services.hfdownloader.enable {
+        owner = config.services.hfdownloader.user;
+        restartUnits = [ "hfdownloader.service" ];
+      };
+      "hfdownloader/token" = lib.mkIf config.services.hfdownloader.enable {
+        owner = config.services.hfdownloader.user;
+        restartUnits = [ "hfdownloader.service" ];
+      };
     };
 
     templates."transmission.json" = {
@@ -83,6 +110,14 @@ in
       };
 
       useLocalPostgresDB = false;
+    };
+
+    hfdownloader = {
+      port = hfdownloader-listen-port;
+      cacheDir = "/storage/huggingface";
+      tokenFile = config.sops.secrets."hfdownloader/token".path;
+      authUserFile = config.sops.secrets."hfdownloader/username".path;
+      authPassFile = config.sops.secrets."hfdownloader/password".path;
     };
 
     postgresql = {
