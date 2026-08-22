@@ -69,7 +69,7 @@ in
 
   services = {
     nextcloud = {
-      package = pkgs.nextcloud33;
+      package = pkgs.nextcloud34;
 
       datadir = "/storage/${nextcloud-dir}";
 

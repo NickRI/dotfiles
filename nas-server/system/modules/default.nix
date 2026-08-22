@@ -12,6 +12,7 @@
     ./sync.nix
     ./homepage.nix
     ./misc.nix
+    ./security.nix
   ];
 
   sops.secrets."cloudflare-env" = { };
@@ -40,5 +41,6 @@
     kavita.enable = true;
     immich.enable = true;
     tailscale.enable = true;
+    vaultwarden.enable = true;
   };
 }
