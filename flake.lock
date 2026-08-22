@@ -105,6 +105,26 @@
         "type": "github"
       }
     },
+    "mantica": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1789004623,
+        "narHash": "sha256-OI5cDId5dmu3uZ/cS9+Cg7sGpEUs8RxxCoByPOAbqIE=",
+        "owner": "NickRI",
+        "repo": "mantica",
+        "rev": "5429cd0b2b4ec6e173d980737487e675ccf9593f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NickRI",
+        "repo": "mantica",
+        "type": "github"
+      }
+    },
     "nix-steipete-tools": {
       "inputs": {
         "nixpkgs": [
@@ -223,6 +243,7 @@
         "disko": "disko",
         "flatpaks": "flatpaks",
         "home-manager": "home-manager",
+        "mantica": "mantica",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-unstable": "nixpkgs-unstable",
@@ -253,10 +274,10 @@
     "sops-secrets": {
       "flake": false,
       "locked": {
-        "lastModified": 1787090968,
-        "narHash": "sha256-H6vzRsiUaSzhMp21+bXjVkp7oQ91znXUOvZZAhGKAEU=",
+        "lastModified": 1788830758,
+        "narHash": "sha256-1D7WHSONlp+pOGx37hbuf0/ZEbsooP9yvPW1SlxxJEg=",
         "ref": "main",
-        "rev": "0183aca5b515fb4f4265e09280a89ba9d6148843",
+        "rev": "f0fe481a6e1a4ce201b2d79239cf65edaf52bae6",
         "shallow": true,
         "type": "git",
         "url": "ssh://git@github.com/NickRI/nix-secrets.git"
