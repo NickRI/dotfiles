@@ -123,7 +123,10 @@ in
           devices = [ "work-laptop" ];
           versioning = {
             type = "simple";
-            params.keep = "10";
+            params = {
+              keep = "10";
+              cleanoutDays = "180";
+            };
           };
         };
         nikolai-images = {
@@ -142,7 +145,10 @@ in
           devices = [ "work-laptop" ];
           versioning = {
             type = "simple";
-            params.keep = "10";
+            params = {
+              keep = "10";
+              cleanoutDays = "180";
+            };
           };
         };
         nikolai-documents = {
@@ -158,7 +164,10 @@ in
           devices = [ "work-laptop" ];
           versioning = {
             type = "simple";
-            params.keep = "10";
+            params = {
+              keep = "10";
+              cleanoutDays = "180";
+            };
           };
         };
         nikolai-dropbox = {
@@ -167,7 +176,10 @@ in
           pullerMaxPendingKiB = 65536;
           versioning = {
             type = "simple";
-            params.keep = "10";
+            params = {
+              keep = "10";
+              cleanoutDays = "180";
+            };
           };
         };
         nikolai-go-code = {
@@ -176,7 +188,10 @@ in
           pullerMaxPendingKiB = 65536;
           versioning = {
             type = "simple";
-            params.keep = "10";
+            params = {
+              keep = "10";
+              cleanoutDays = "180";
+            };
           };
         };
       };
