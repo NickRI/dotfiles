@@ -40,6 +40,7 @@
     dockerRegistry.enable = true;
     kavita.enable = true;
     immich.enable = true;
+    zimi.enable = true;
     tailscale.enable = true;
     vaultwarden.enable = true;
   };

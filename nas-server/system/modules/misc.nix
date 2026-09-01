@@ -7,8 +7,13 @@
 let
   kavita-listen-port = 8283;
   immich-listen-port = 2283;
+  zimi-listen-port = 8899;
 in
 {
+  imports = [
+    ../../../shared/tools/zimi.nix
+  ];
+
   hosts.entries = {
     kavita = lib.mkIf (config.services.kavita.enable) {
       domain = "kavita.nas.firefly.red";
@@ -20,6 +25,10 @@ in
       location-extra-config = "
         client_max_body_size 0;
       ";
+    };
+    zimi = lib.mkIf (config.services.zimi.enable) {
+      domain = "zimi.nas.firefly.red";
+      local-port = zimi-listen-port;
     };
   };
 
@@ -36,6 +45,12 @@ in
       href = "https://immich.nas.firefly.red/";
       siteMonitor = href;
     };
+    Zimi = lib.mkIf (config.services.zimi.enable) rec {
+      description = "Offline internet for ZIM files — searchable library with auto-updates";
+      icon = "https://cdn.jsdelivr.net/gh/selfhst/icons/svg/kiwix.svg";
+      href = "https://zimi.nas.firefly.red/";
+      siteMonitor = href;
+    };
   };
 
   sops = {
@@ -43,6 +58,10 @@ in
 
     secrets = {
       "immich/db-password".owner = lib.mkIf (config.services.immich.enable) config.services.immich.user;
+      "zimi/manage-password" = lib.mkIf (config.services.zimi.enable) {
+        owner = config.services.zimi.user;
+        restartUnits = [ "zimi.service" ];
+      };
     };
 
     templates.secretsFile = {
@@ -81,6 +100,17 @@ in
         host = "localhost";
         port = 5432;
       };
+    };
+
+    zimi = {
+      port = zimi-listen-port;
+      zimDir = "/storage/zimi/zims";
+      dataDir = "/storage/zimi/config";
+      managePasswordFile = config.sops.secrets."zimi/manage-password".path;
+      publicAccess = "private";
+      bitTorrent.enable = false;
+      maxConcurrentDownloads = 6;
+      autoUpdate = true;
     };
 
     postgresql = {
