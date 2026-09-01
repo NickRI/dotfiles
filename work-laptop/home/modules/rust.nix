@@ -13,6 +13,6 @@ in
       rustup
     ];
 
-    home.sessionPath = [ "$HOME/.cargo/bin" ];
+    home.sessionPath = [ "${config.home.homeDirectory}/.cargo/bin" ];
   };
 }

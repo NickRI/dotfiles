@@ -17,7 +17,7 @@
 
   home.packages =
     with pkgs.gnomeExtensions;
-    lib.mkIf (config.services.syncthing.enable) [ syncthing-indicator ];
+    lib.mkIf (config.services.syncthing.enable) [ syncthing-toggle ];
 
   # Overridden to hide
   xdg.desktopEntries.syncthing-ui = {
@@ -30,7 +30,7 @@
     with lib.hm.gvariant;
     lib.mkIf (config.services.syncthing.enable) {
       "org/gnome/shell" = {
-        enabled-extensions = [ "syncthing@gnome.2nv2u.com" ];
+        enabled-extensions = [ "syncthing-toggle@rehhouari.github.com" ];
       };
     };
 
