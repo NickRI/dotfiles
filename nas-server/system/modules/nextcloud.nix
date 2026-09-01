@@ -48,24 +48,21 @@ in
     };
   };
 
+  users.users.nextcloud.extraGroups = lib.mkIf (
+    config.services.nextcloud.enable && config.services.syncthing.enable
+  ) [ "${config.services.syncthing.group}" ];
+
   systemd = {
     services.nextcloud-generate-preview = {
-      serviceConfig = {
-        ExecStart = "${pkgs.writeScript "nextcloud-generate-preview.sh" ''
-          #!/bin/sh
-          /run/current-system/sw/bin/nextcloud-occ preview:pre-generate -vvv
-        ''}";
-        User = "nextcloud";
-        Group = "nextcloud";
-      };
+      path = [
+        pkgs.ffmpeg
+        pkgs.ghostscript
+      ];
+      serviceConfig.ExecStart = "${config.services.nextcloud.occ}/bin/nextcloud-occ preview:pre-generate -vvv";
       description = "nextcloud generate preview";
       startAt = "hourly";
     };
   };
-
-  environment.systemPackages = with pkgs; [
-    ghostscript # needed for generate preview for pdfs
-  ];
 
   services = {
     nextcloud = {
@@ -86,6 +83,7 @@ in
         trashbin_retention_obligation = "disabled";
         default_phone_region = "ES";
         maintenance_window_start = 5;
+        files_external_allow_create_new_local = true;
 
         mail_sendmailmode = "smtp";
         mail_from_address = "no-reply";
