@@ -57,7 +57,10 @@
           devices = [ "nas" ];
           versioning = {
             type = "simple";
-            params.keep = "10";
+            params = {
+              keep = "10";
+              cleanoutDays = "30";
+            };
           };
         };
         nikolai-music = {
@@ -65,7 +68,10 @@
           devices = [ "nas" ];
           versioning = {
             type = "simple";
-            params.keep = "10";
+            params = {
+              keep = "10";
+              cleanoutDays = "30";
+            };
           };
         };
         nikolai-images = {
@@ -73,7 +79,10 @@
           devices = [ "nas" ];
           versioning = {
             type = "simple";
-            params.keep = "10";
+            params = {
+              keep = "10";
+              cleanoutDays = "30";
+            };
           };
         };
         nikolai-videos = {
@@ -81,7 +90,10 @@
           devices = [ "nas" ];
           versioning = {
             type = "simple";
-            params.keep = "10";
+            params = {
+              keep = "10";
+              cleanoutDays = "30";
+            };
           };
         };
         nikolai-documents = {
@@ -89,7 +101,10 @@
           devices = [ "nas" ];
           versioning = {
             type = "simple";
-            params.keep = "10";
+            params = {
+              keep = "10";
+              cleanoutDays = "30";
+            };
           };
         };
         nikolai-desktop = {
@@ -97,7 +112,10 @@
           devices = [ "nas" ];
           versioning = {
             type = "simple";
-            params.keep = "10";
+            params = {
+              keep = "10";
+              cleanoutDays = "30";
+            };
           };
         };
         nikolai-dropbox = {
@@ -106,7 +124,10 @@
           pullerMaxPendingKiB = 65536;
           versioning = {
             type = "simple";
-            params.keep = "10";
+            params = {
+              keep = "10";
+              cleanoutDays = "30";
+            };
           };
         };
         nikolai-go-code = {
@@ -115,7 +136,10 @@
           pullerMaxPendingKiB = 65536;
           versioning = {
             type = "simple";
-            params.keep = "10";
+            params = {
+              keep = "10";
+              cleanoutDays = "30";
+            };
           };
         };
       };
