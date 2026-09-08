@@ -13,6 +13,7 @@
     ./homepage.nix
     ./misc.nix
     ./security.nix
+    ./maps.nix
   ];
 
   sops.secrets."cloudflare-env" = { };
@@ -43,5 +44,6 @@
     zimi.enable = true;
     tailscale.enable = true;
     vaultwarden.enable = true;
+    mantica.enable = true;
   };
 }

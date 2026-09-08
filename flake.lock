@@ -132,11 +132,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789004623,
-        "narHash": "sha256-OI5cDId5dmu3uZ/cS9+Cg7sGpEUs8RxxCoByPOAbqIE=",
+        "lastModified": 1788834938,
+        "narHash": "sha256-yDLj80VAYbDC3YGn++Etugh6z/YrjWYtO7KuMTK131A=",
         "owner": "NickRI",
         "repo": "mantica",
-        "rev": "5429cd0b2b4ec6e173d980737487e675ccf9593f",
+        "rev": "ffa797a93622e4d5245406f4b00880a0e2d309ad",
         "type": "github"
       },
       "original": {

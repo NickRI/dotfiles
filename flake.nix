@@ -34,6 +34,10 @@
       url = "github:NickRI/ancaeus";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    mantica = {
+      url = "github:NickRI/mantica";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
