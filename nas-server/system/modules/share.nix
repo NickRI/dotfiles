@@ -175,12 +175,12 @@ in
     };
 
     ncps = {
-      logLevel = "warn";
+      logLevel = "info";
       server.addr = "localhost:${toString ncps-listen-port}";
       analytics.reporting.enable = false;
       cache = {
-        maxSize = "100G";
-        lru.schedule = "0 2 * * *";
+        maxSize = "60G";
+        lru.schedule = "0 4 * * *";
         storage.local = "/storage/ncps/cache";
         secretKeyPath = config.sops.secrets."ncps/secretKeyFile".path;
         hostName = ncps-domain-name;
