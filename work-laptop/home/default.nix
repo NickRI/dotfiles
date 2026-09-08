@@ -1,6 +1,7 @@
 {
   lib,
   pkgs,
+  osConfig,
   ...
 }:
 let
@@ -177,7 +178,10 @@ in
         { id = "egjidjbpglichdcondbcbdnbeeppgdph"; } # TrustWallet
         { id = "gphhapmejobijbbhgpjhcjognlahblep"; } # GnomeExtenstion
         { id = "meimoidfecamngeoanhnpdjjdcefoldn"; } # Fireflies
-      ];
+      ]
+      ++ lib.optional (
+        osConfig.services.ancaeus.chromiumExtension != null
+      ) osConfig.services.ancaeus.chromiumExtension;
     };
 
     # Let Home Manager install and manage itself.

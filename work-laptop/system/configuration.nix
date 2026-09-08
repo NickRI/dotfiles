@@ -20,7 +20,6 @@
     ./modules/1password.nix
     ./modules/tailscale.nix
     ../../shared/system
-    ../../shared/system/geo.nix
     (import ../../shared/system/sops.nix (
       args
       // {
@@ -95,6 +94,10 @@
   services.flatpak.enable = true;
   services.fwupd.enable = true;
   services.fstrim.enable = true;
+  services.ancaeus = {
+    enable = true;
+    provider = "apple";
+  };
   services.logind.settings.Login = {
     HandleLidSwitch = "suspend"; # основное действие при закрытии крышки
     HandleLidSwitchDocked = "suspend"; # когда подключены внешние мониторы (docked)

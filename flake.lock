@@ -30,6 +30,26 @@
         "type": "path"
       }
     },
+    "ancaeus": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1788822900,
+        "narHash": "sha256-aXs7B9fTqjaKIN8G7qr/b23qK26XVxAuJap6szGrQD0=",
+        "owner": "NickRI",
+        "repo": "ancaeus",
+        "rev": "af84549791d7ba7c838a41452b6cc75d2ded0121",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NickRI",
+        "repo": "ancaeus",
+        "type": "github"
+      }
+    },
     "disko": {
       "inputs": {
         "nixpkgs": [
@@ -240,6 +260,7 @@
     "root": {
       "inputs": {
         "agents": "agents",
+        "ancaeus": "ancaeus",
         "disko": "disko",
         "flatpaks": "flatpaks",
         "home-manager": "home-manager",

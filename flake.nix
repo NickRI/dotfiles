@@ -30,6 +30,10 @@
       inputs.sops-nix.follows = "sops-nix";
       inputs.sops-secrets.follows = "sops-secrets";
     };
+    ancaeus = {
+      url = "github:NickRI/ancaeus";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
