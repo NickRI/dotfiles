@@ -57,6 +57,8 @@ in
     secrets.kavita-token.owner = lib.mkIf (config.services.kavita.enable) config.services.kavita.user;
 
     secrets = {
+      "smtp/login" = { };
+      "smtp/password" = { };
       "immich/db-password".owner = lib.mkIf (config.services.immich.enable) config.services.immich.user;
       "zimi/manage-password" = lib.mkIf (config.services.zimi.enable) {
         owner = config.services.zimi.user;
@@ -73,6 +75,46 @@ in
     };
   };
 
+  # Kavita stores SMTP in SQLite (ServerSetting), not appsettings.json.
+  # https://wiki.kavitareader.com/guides/admin-settings/email/
+  systemd.services.kavita = lib.mkIf (config.services.kavita.enable) {
+    path = [ pkgs.sqlite ];
+    serviceConfig.LoadCredential = lib.mkForce [
+      "token:${config.services.kavita.tokenKeyFile}"
+      "smtp-login:${config.sops.secrets."smtp/login".path}"
+      "smtp-password:${config.sops.secrets."smtp/password".path}"
+    ];
+    preStart = lib.mkAfter ''
+      templates="${config.services.kavita.package.backend}/lib/kavita-backend/EmailTemplates"
+      dest="${config.services.kavita.dataDir}/EmailTemplates"
+      [ -d "$templates" ]
+      if [ -d "$dest" ] && [ ! -L "$dest" ]; then
+        rmdir "$dest"
+      fi
+      ln -sfn "$templates" "$dest"
+
+      db="${config.services.kavita.dataDir}/config/kavita.db"
+      [ -f "$db" ] || exit 0
+
+      table=$(sqlite3 "$db" "SELECT name FROM sqlite_master WHERE type = 'table' AND name IN ('ServerSetting', 'ServerSettings')")
+      set_setting() {
+        key="$1"
+        expr="$2"
+        updated=$(sqlite3 "$db" "UPDATE $table SET Value = $expr WHERE Key = $key; SELECT changes();")
+        [ "$updated" = 1 ]
+      }
+
+      set_setting 20 "'https://${config.hosts.entries.kavita.domain}'"
+      set_setting 28 "'no-reply@firefly.red'"
+      set_setting 29 "'Kavita'"
+      set_setting 30 "rtrim(readfile('$CREDENTIALS_DIRECTORY/smtp-login'), char(10, 13))"
+      set_setting 31 "rtrim(readfile('$CREDENTIALS_DIRECTORY/smtp-password'), char(10, 13))"
+      set_setting 32 "'smtp.mailersend.net'"
+      set_setting 33 "'587'"
+      set_setting 34 "'true'"
+    '';
+  };
+
   services = {
     kavita = {
       settings = {
@@ -85,6 +127,7 @@ in
 
     immich = {
       port = immich-listen-port;
+      package = pkgs.unstable.immich;
       host = "127.0.0.1";
       mediaLocation = "/storage/immich/media";
       machine-learning.environment = {

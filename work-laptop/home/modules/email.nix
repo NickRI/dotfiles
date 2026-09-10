@@ -66,12 +66,6 @@ in
         realName = "ITWorks";
         flavor = "gmail.com";
       };
-      "${accounts.work}" = {
-        thunderbird = thunderbird-setup;
-        address = accounts.work;
-        realName = "Nick";
-        flavor = "gmail.com";
-      };
     };
   };
 }
