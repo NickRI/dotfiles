@@ -335,6 +335,8 @@ in
         Restart = "on-failure";
         RestartSec = "5s";
         WorkingDirectory = cfg.dataDir;
+        # systemd DefaultLimitNOFILE is 1024:524288; one value sets both soft and hard
+        LimitNOFILE = 16384;
       };
 
       script = ''

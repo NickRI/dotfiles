@@ -54,6 +54,7 @@ in
 
   systemd = {
     services.nextcloud-generate-preview = {
+      enable = false;
       path = [
         pkgs.ffmpeg
         pkgs.ghostscript

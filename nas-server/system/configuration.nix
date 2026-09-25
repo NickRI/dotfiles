@@ -37,21 +37,15 @@
   # Enable CUPS to print documents.
   services.printing.enable = false;
   services.fwupd.enable = true;
-  security.rtkit.enable = true;
+  security.rtkit.enable = false;
   security.sudo.wheelNeedsPassword = false;
 
-  # Enable sound with pipewire.
   services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
+    enable = false;
+    alsa.enable = false;
+    alsa.support32Bit = false;
+    pulse.enable = false;
+    jack.enable = false;
   };
 
   sops.secrets."user-password".neededForUsers = true;

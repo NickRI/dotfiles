@@ -21,6 +21,7 @@ in
 
   home.packages = with pkgs; [
     uv
+    ripgrep
     (python3.withPackages (
       ps: with ps; [
         pip

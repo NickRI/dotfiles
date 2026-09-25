@@ -32,7 +32,6 @@ in
       lazygit
       goose
       go-task
-      gollama
       gogup
       gopls
     ];

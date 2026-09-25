@@ -263,7 +263,7 @@
       "apps" = [
         "org.gnome.seahorse.Application.desktop"
         "com.surfshark.Surfshark.desktop"
-        "1password.desktop"
+        "bitwarden.desktop"
         "com.yubico.yubioath.desktop"
       ];
     };

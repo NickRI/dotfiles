@@ -354,7 +354,7 @@ in
               group = "services-local";
               conditions = [
                 "[CONNECTED] == true"
-                "[STATUS] == 200"
+                "[STATUS] == any(200, 401)"
                 "[RESPONSE_TIME] < 150"
               ];
             }) config.hosts.entries)
@@ -366,6 +366,7 @@ in
               conditions = [
                 "[CONNECTED] == true"
                 "[RESPONSE_TIME] < 1000"
+                "[STATUS] == any(200, 401)"
                 "[CERTIFICATE_EXPIRATION] > 120h"
               ];
             }) config.hosts.entries);

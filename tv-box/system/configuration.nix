@@ -28,7 +28,7 @@ in
     # Include the results of the hardware scan.
     ./networking.nix
     ./disk-config.nix
-    ./modules/zeroclaw.nix
+    #    ./modules/zeroclaw.nix
     ../../shared/system/i18n.nix
     (import ../../shared/system/sops.nix (
       args
@@ -73,10 +73,6 @@ in
   services.fwupd.enable = true;
   hardware.alsa.enable = true;
   hardware.alsa.defaultDevice.playback = "hdmi:CARD=PCH,DEV=0";
-
-  services.udev.extraRules = ''
-    ACTION=="add", SUBSYSTEM=="net", KERNEL=="wlan*", RUN+="${pkgs.iw}/bin/iw phy phy0 wowlan enable magic-packet"
-  '';
 
   services.journald.extraConfig = "
     SystemMaxUse=5G
@@ -141,7 +137,7 @@ in
   # auto-login and launch kodi
   services.getty.autologinUser = "tv";
   services.greetd = {
-    enable = false;
+    enable = true;
     settings = {
       initial_session = {
         command = "${custom-kodi}/bin/kodi-standalone";

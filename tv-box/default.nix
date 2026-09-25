@@ -37,7 +37,7 @@ nixpkgs.lib.nixosSystem {
     inputs.disko.nixosModules.disko
     inputs.sops-nix.nixosModules.sops
     hardware.platformModule
-    inputs.agents.nixosModules.default
+    #    inputs.agents.nixosModules.default
     ./system/configuration.nix
     {
       home-manager.useGlobalPkgs = true;

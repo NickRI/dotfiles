@@ -92,11 +92,11 @@ in
   ];
 
   autoStart = with upkgs; [
-    slack
     thunderbird
     telegram-desktop
     todoist-electron
     librepods
+    bitwarden-desktop
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -116,11 +116,6 @@ in
   home.sessionVariables = {
     # EDITOR = "emacs";
     NIXOS_OZONE_WL = "1";
-  };
-
-  home.shellAliases = {
-    "sops-master" =
-      "SOPS_AGE_KEY=$(op item get hscy7ap6gqdv3dqoe55oqbgrui --reveal --fields private_key | nix run nixpkgs#ssh-to-age -- -private-key) sops";
   };
 
   xdg = {

@@ -36,7 +36,7 @@ in
 
   services.mantica = {
     port = mantica-listen-port;
-    tilesDir = "/storage/mantica/tilesets";
+    workDir = "/storage/mantica";
     authUserFile = config.sops.secrets."mantica/username".path;
     authPassFile = config.sops.secrets."mantica/password".path;
     # After `sops nix-secrets/nas.yaml` add:

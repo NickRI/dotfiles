@@ -19,16 +19,16 @@
           "[RESPONSE_TIME] < 10"
         ];
       }
-      {
-        name = "neo4j";
-        url = "tcp://127.0.0.1:7474";
-        group = "databases";
-        interval = "30s";
-        conditions = [
-          "[CONNECTED] == true"
-          "[RESPONSE_TIME] < 10"
-        ];
-      }
+      #      {
+      #        name = "neo4j";
+      #        url = "tcp://127.0.0.1:7474";
+      #        group = "databases";
+      #        interval = "30s";
+      #        conditions = [
+      #          "[CONNECTED] == true"
+      #          "[RESPONSE_TIME] < 10"
+      #        ];
+      #      }
       {
         name = "redis";
         url = "tcp://127.0.0.1:${toString config.services.redis.servers.master.port}";
@@ -76,7 +76,7 @@
     };
 
     neo4j = {
-      enable = true;
+      enable = false;
       bolt.tlsLevel = "DISABLED";
       https.enable = false;
       defaultListenAddress = "0.0.0.0";

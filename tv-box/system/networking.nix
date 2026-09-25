@@ -23,24 +23,28 @@
     # networking.proxy.default = "http://user:password@proxy:port/";
     # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
+    #  services.udev.extraRules = ''
+    #    ACTION=="add", SUBSYSTEM=="net", KERNEL=="wlan*", RUN+="${pkgs.iw}/bin/iw phy phy0 wowlan enable magic-packet"
+    #  '';
+
     # Enable networking
     networking.networkmanager = {
       enable = true;
-      ensureProfiles = {
-        environmentFiles = [ config.sops.templates."wireless.env".path ];
-        profiles = {
-          home-wifi = {
-            connection.id = "home-wifi";
-            connection.type = "wifi";
-            wifi.ssid = "$HOME_WIFI_SSID";
-            wifi-security = {
-              auth-alg = "open";
-              key-mgmt = "wpa-psk";
-              psk = "$HOME_WIFI_PASSWORD";
-            };
-          };
-        };
-      };
+      #      ensureProfiles = {
+      #        environmentFiles = [ config.sops.templates."wireless.env".path ];
+      #        profiles = {
+      #          home-wifi = {
+      #            connection.id = "home-wifi";
+      #            connection.type = "wifi";
+      #            wifi.ssid = "$HOME_WIFI_SSID";
+      #            wifi-security = {
+      #              auth-alg = "open";
+      #              key-mgmt = "wpa-psk";
+      #              psk = "$HOME_WIFI_PASSWORD";
+      #            };
+      #          };
+      #        };
+      #      };
     };
 
     # Open ports in the firewall.

@@ -17,7 +17,7 @@
     ./modules/ai.nix
     ./modules/yubikey.nix
     ./modules/gnome.nix
-    ./modules/1password.nix
+    ./modules/bitwarden.nix
     ./modules/tailscale.nix
     ../../shared/system
     (import ../../shared/system/sops.nix (

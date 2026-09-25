@@ -24,6 +24,8 @@
       22000
     ];
 
+    boot.kernel.sysctl."net.ipv4.tcp_mtu_probing" = 1;
+
     #    networking.nameservers = [ "127.0.0.1" ];
 
     # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
