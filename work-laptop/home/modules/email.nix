@@ -31,7 +31,7 @@ in
         };
         "minimizeonclose@rsjtdrjgfuzkfg.com" = {
           installation_mode = "normal_installed";
-          install_url = "https://github.com/NickRI/thunderbird-minimizeonclose/releases/download/v0.0.4/minimizeonclose.xpi";
+          install_url = "https://github.com/NickRI/thunderbird-minimizeonclose/releases/download/v0.0.6/minimizeonclose.xpi";
         };
       };
     };
