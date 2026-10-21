@@ -8,7 +8,6 @@
     flatpaks.url = "github:gmodena/nix-flatpak/main";
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     disko = {
       url = "github:nix-community/disko";
