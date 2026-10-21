@@ -80,46 +80,6 @@ let
         };
       };
     };
-
-    openrouter = {
-      name = "OpenRouter Free";
-      package = "@opencode/ai/providers/openai-compatible";
-      settings.baseURL = "https://openrouter.ai/api/v1";
-      models = {
-        "Gemma-4-26B-Explore" = {
-          modelID = "google/gemma-4-26b-a4b-it:free";
-          name = "Gemma 4 26B A4B — Explore";
-          limit = {
-            context = 262144;
-            output = 32768;
-          };
-        };
-        "Nemotron-3.5-Lightning-Scout" = {
-          modelID = "nvidia/nemotron-3.5-lightning:free";
-          name = "Nemotron 3.5 Lightning — Scout";
-          limit = {
-            context = 262144;
-            output = 65536;
-          };
-        };
-        "Nemotron-3-Super-General" = {
-          modelID = "nvidia/nemotron-3-super-120b-a12b:free";
-          name = "Nemotron 3 Super — General";
-          limit = {
-            context = 262144;
-            output = 65536;
-          };
-        };
-        "Gemma-4-31B-Review" = {
-          modelID = "google/gemma-4-31b-it:free";
-          name = "Gemma 4 31B — Review";
-          limit = {
-            context = 262144;
-            output = 32768;
-          };
-        };
-      };
-    };
   };
 
   settings = {
