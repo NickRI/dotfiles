@@ -139,47 +139,94 @@ let
   };
 in
 {
-  home-manager.users.nikolai = { ... }: {
-    imports = [ ../../../shared/home/ai.nix ];
+  home-manager.users.nikolai =
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
+    {
+      imports = [ ../../../shared/home/ai.nix ];
 
-    home.packages = with pkgs.unstable; [
-      nodejs
-      code-cursor
-      cursor-cli
-    ];
+      home.packages = with pkgs.unstable; [
+        nodejs
+        code-cursor
+        cursor-cli
+      ];
 
-    programs.opencode = {
-      enable = true;
-      enableMcpIntegration = true;
+      # Local stdio servers: they see the client's working directory, not the NAS,
+      # and thunderbird needs a running Thunderbird on the session bus.
+      programs.mcp.servers = {
+        git = {
+          command = lib.getExe pkgs.unstable.mcp-server-git;
+          enabled = true;
+        };
 
-      tui = {
-        theme = "onedarkpro";
-        enableChat = true;
-        enableTerminal = true;
-        enableFileExplorer = true;
+        filesystem = {
+          command = lib.getExe pkgs.unstable.mcp-server-filesystem;
+          args = [ (toString config.home.homeDirectory) ];
+          enabled = true;
+        };
+
+        memory = {
+          command = lib.getExe pkgs.unstable.mcp-server-memory;
+          env.MEMORY_FILE_PATH = "${config.xdg.dataHome}/mcp-memory/memory.jsonl";
+          enabled = true;
+        };
+
+        thunderbird = {
+          command = lib.getExe pkgs.unstable.thunderbird-cli-mcp;
+          enabled = true;
+        };
+
+        grafana = {
+          command = lib.getExe pkgs.unstable.mcp-grafana;
+          # Keep the tool surface small: write tools are not needed for reading
+          # dashboards, metrics and logs.
+          args = [ "--disable-write" ];
+          env = {
+            GRAFANA_URL = "https://grafana.nas.firefly.red";
+          }
+          // lib.optionalAttrs (config.sops.secrets ? "mcp/grafana-token") {
+            GRAFANA_SERVICE_ACCOUNT_TOKEN.file = config.sops.secrets."mcp/grafana-token".path;
+          };
+          enabled = true;
+        };
       };
 
-      web = {
+      programs.opencode = {
         enable = true;
-        extraArgs = [
-          "--hostname"
-          "0.0.0.0"
-          "--port"
-          "1716"
-          "--print-logs"
-          "--log-level"
-          "debug"
-        ];
-      };
+        enableMcpIntegration = true;
 
-      settings = settings;
-      agents = {
-        architect = ../../../shared/files/agents/architect.md;
-        developer = ../../../shared/files/agents/developer.md;
-        reviewer = ../../../shared/files/agents/reviewer.md;
+        tui = {
+          theme = "onedarkpro";
+          enableChat = true;
+          enableTerminal = true;
+          enableFileExplorer = true;
+        };
+
+        web = {
+          enable = true;
+          extraArgs = [
+            "--hostname"
+            "0.0.0.0"
+            "--port"
+            "1716"
+            "--print-logs"
+            "--log-level"
+            "debug"
+          ];
+        };
+
+        settings = settings;
+        agents = {
+          architect = ../../../shared/files/agents/architect.md;
+          developer = ../../../shared/files/agents/developer.md;
+          reviewer = ../../../shared/files/agents/reviewer.md;
+        };
       };
     };
-  };
 
   systemd.services.llama-swap = {
     path = [
