@@ -150,47 +150,6 @@ in
           command = lib.getExe pkgs.unstable.thunderbird-cli-mcp;
           enabled = true;
         };
-
-        # OpenCode V2 does not run LSP servers itself: the `lsp` block is
-        # accepted but never executed. mcp-language-server exposes one
-        # language server per process over MCP. The working directory of a
-        # local MCP server is the project workspace, so `--workspace .`
-        # resolves to the project root.
-        gopls = {
-          command = lib.getExe pkgs.unstable.mcp-language-server;
-          args = [
-            "--workspace"
-            "."
-            "--lsp"
-            (lib.getExe pkgs.unstable.gopls)
-          ];
-          timeout.startup = 60000;
-          enabled = true;
-        };
-
-        nixd = {
-          command = lib.getExe pkgs.unstable.mcp-language-server;
-          args = [
-            "--workspace"
-            "."
-            "--lsp"
-            (lib.getExe pkgs.unstable.nixd)
-          ];
-          timeout.startup = 60000;
-          enabled = true;
-        };
-
-        rust = {
-          command = lib.getExe pkgs.unstable.mcp-language-server;
-          args = [
-            "--workspace"
-            "."
-            "--lsp"
-            (lib.getExe pkgs.unstable.rust-analyzer)
-          ];
-          timeout.startup = 120000;
-          enabled = true;
-        };
       };
 
       programs.opencode = {
