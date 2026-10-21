@@ -1,27 +1,25 @@
 ---
 description: Performs code review, spec review, test review, and security review without making changes.
 mode: subagent
-reasoningEffort: medium
-temperature: 0.1
-permission:
-  read: allow
-  glob: allow
-  grep: allow
-  list: allow
-  lsp: allow
-  edit: deny
-  bash:
-    "*": ask
-    "git status*": allow
-    "git diff*": allow
-    "git log*": allow
-    "rg *": allow
-    "grep *": allow
-  task: deny
-  external_directory: ask
-  webfetch: ask
-  websearch: ask
-  skill: ask
+model: llama-swap/Qwen3.8-Flash-Next#medium
+permissions:
+  - { action: "read", resource: "*", effect: "allow" }
+  - { action: "glob", resource: "*", effect: "allow" }
+  - { action: "grep", resource: "*", effect: "allow" }
+  - { action: "edit", resource: "*", effect: "deny" }
+  - { action: "shell", resource: "*", effect: "ask" }
+  - { action: "shell", resource: "git status *", effect: "allow" }
+  - { action: "shell", resource: "git diff *", effect: "allow" }
+  - { action: "shell", resource: "git log *", effect: "allow" }
+  - { action: "shell", resource: "rg *", effect: "allow" }
+  - { action: "shell", resource: "grep *", effect: "allow" }
+  - { action: "subagent", resource: "*", effect: "deny" }
+  - { action: "external_directory", resource: "*", effect: "ask" }
+  - { action: "webfetch", resource: "*", effect: "ask" }
+  - { action: "websearch", resource: "*", effect: "ask" }
+  - { action: "skill", resource: "*", effect: "ask" }
+  - { action: "*_edit_file", resource: "*", effect: "deny" }
+  - { action: "*_rename_symbol", resource: "*", effect: "deny" }
 ---
 
 You are the Reviewer subagent.

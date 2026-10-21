@@ -1,27 +1,25 @@
 ---
 description: Implements exactly one scoped coding task or fix round using test-driven development.
 mode: subagent
-reasoningEffort: medium
-temperature: 0.2
-permission:
-  read: allow
-  glob: allow
-  grep: allow
-  list: allow
-  lsp: allow
-  edit: allow
-  bash:
-    "*": ask
-    "git status*": allow
-    "git diff*": allow
-    "git log*": allow
-    "rg *": allow
-    "grep *": allow
-  task: deny
-  external_directory: ask
-  webfetch: ask
-  websearch: deny
-  skill: ask
+model: llama-swap/Qwen3.8-Coder-Flash-Next#medium
+permissions:
+  - { action: "read", resource: "*", effect: "allow" }
+  - { action: "glob", resource: "*", effect: "allow" }
+  - { action: "grep", resource: "*", effect: "allow" }
+  - { action: "edit", resource: "*", effect: "allow" }
+  - { action: "shell", resource: "*", effect: "ask" }
+  - { action: "shell", resource: "git status *", effect: "allow" }
+  - { action: "shell", resource: "git diff *", effect: "allow" }
+  - { action: "shell", resource: "git log *", effect: "allow" }
+  - { action: "shell", resource: "rg *", effect: "allow" }
+  - { action: "shell", resource: "grep *", effect: "allow" }
+  - { action: "subagent", resource: "*", effect: "deny" }
+  - { action: "external_directory", resource: "*", effect: "ask" }
+  - { action: "webfetch", resource: "*", effect: "ask" }
+  - { action: "websearch", resource: "*", effect: "deny" }
+  - { action: "skill", resource: "*", effect: "ask" }
+  - { action: "*_edit_file", resource: "*", effect: "allow" }
+  - { action: "*_rename_symbol", resource: "*", effect: "ask" }
 ---
 
 You are the Developer subagent.
