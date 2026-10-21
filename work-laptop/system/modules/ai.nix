@@ -197,6 +197,11 @@ in
         enable = true;
 
         settings = settings // {
+          # Unload idle locations (and the MCP servers they own) after ten
+          # minutes. Running sessions, pending questions and background jobs
+          # keep their location alive. V2 has no per-server MCP TTL.
+          experimental.location_idle_timeout = "10 minutes";
+
           mcp = {
             timeout.startup = 45000;
             servers = lib.mapAttrs toV2Server config.programs.mcp.servers;
