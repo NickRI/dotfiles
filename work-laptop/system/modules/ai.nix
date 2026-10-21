@@ -151,10 +151,11 @@ in
           enabled = true;
         };
 
-        # OpenCode V2 does not run LSP servers itself. mcp-language-server
-        # exposes one language server per process over MCP. The working
-        # directory of a local MCP server is the project workspace, so
-        # `--workspace .` resolves to the project root.
+        # OpenCode V2 does not run LSP servers itself: the `lsp` block is
+        # accepted but never executed. mcp-language-server exposes one
+        # language server per process over MCP. The working directory of a
+        # local MCP server is the project workspace, so `--workspace .`
+        # resolves to the project root.
         gopls = {
           command = lib.getExe pkgs.unstable.mcp-language-server;
           args = [
@@ -188,34 +189,6 @@ in
             (lib.getExe pkgs.unstable.rust-analyzer)
           ];
           timeout.startup = 120000;
-          enabled = true;
-        };
-
-        pyright = {
-          command = lib.getExe pkgs.unstable.mcp-language-server;
-          args = [
-            "--workspace"
-            "."
-            "--lsp"
-            (lib.getExe' pkgs.unstable.pyright "pyright-langserver")
-            "--"
-            "--stdio"
-          ];
-          timeout.startup = 60000;
-          enabled = true;
-        };
-
-        bash = {
-          command = lib.getExe pkgs.unstable.mcp-language-server;
-          args = [
-            "--workspace"
-            "."
-            "--lsp"
-            (lib.getExe' pkgs.unstable.bash-language-server "bash-language-server")
-            "--"
-            "start"
-          ];
-          timeout.startup = 60000;
           enabled = true;
         };
       };
