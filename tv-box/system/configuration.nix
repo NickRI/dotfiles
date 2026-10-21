@@ -28,7 +28,6 @@ in
     # Include the results of the hardware scan.
     ./networking.nix
     ./disk-config.nix
-    #    ./modules/zeroclaw.nix
     ../../shared/system/i18n.nix
     (import ../../shared/system/sops.nix (
       args
