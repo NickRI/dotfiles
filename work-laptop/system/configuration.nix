@@ -98,6 +98,13 @@
     enable = true;
     provider = "apple";
   };
+  # The service is ordered after network-online.target but does not depend
+  # on it; add the dependency so the timezone update runs once the network is
+  # actually up (upstream ancaeus flake fix pending).
+  systemd.services.ancaeus-timezone-update = {
+    after = [ "network-online.target" ];
+    requires = [ "network-online.target" ];
+  };
   services.logind.settings.Login = {
     HandleLidSwitch = "suspend"; # основное действие при закрытии крышки
     HandleLidSwitchDocked = "suspend"; # когда подключены внешние мониторы (docked)
