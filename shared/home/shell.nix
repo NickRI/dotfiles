@@ -26,6 +26,9 @@ in
       ps: with ps; [
         pip
         requests
+        numpy
+        pandas
+        scipy
       ]
     ))
   ];
