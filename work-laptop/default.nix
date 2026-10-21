@@ -16,6 +16,16 @@ let
     config.allowUnfree = true;
   };
   overlay-unstable = final: prev: { inherit unstable; };
+  overlay-opencode = final: _: {
+    opencode = (
+      inputs.opencode.packages.${final.stdenv.hostPlatform.system}.opencode.override {
+        node_modules = final.callPackage (inputs.opencode.outPath + "/nix/node_modules.nix") {
+          rev = inputs.opencode.shortRev or "unknown";
+          hash = "sha256-BGIeB3pTxfR0DM5H/Bs0RXw4tO/Jdjum93tOAPcH91I=";
+        };
+      }
+    );
+  };
 in
 nixpkgs.lib.nixosSystem {
   inherit (hardware) system;
@@ -29,7 +39,10 @@ nixpkgs.lib.nixosSystem {
       { ... }:
       {
         nixpkgs.pkgs = pkgs;
-        nixpkgs.overlays = [ overlay-unstable ];
+        nixpkgs.overlays = [
+          overlay-unstable
+          overlay-opencode
+        ];
       }
     )
     home-manager.nixosModules.home-manager

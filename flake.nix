@@ -30,6 +30,10 @@
       url = "github:NickRI/mantica";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    opencode = {
+      url = "github:anomalyco/opencode/v2.1.2";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs =
