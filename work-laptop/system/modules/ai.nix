@@ -140,6 +140,8 @@ let
 in
 {
   home-manager.users.nikolai = { ... }: {
+    imports = [ ../../../shared/home/ai.nix ];
+
     home.packages = with pkgs.unstable; [
       nodejs
       code-cursor
@@ -148,6 +150,7 @@ in
 
     programs.opencode = {
       enable = true;
+      enableMcpIntegration = true;
 
       tui = {
         theme = "onedarkpro";
