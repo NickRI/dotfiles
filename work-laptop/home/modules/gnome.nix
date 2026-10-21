@@ -65,7 +65,7 @@
 
     "org/gnome/mutter" = {
       edge-tiling = true;
-      overlay-key = "Super_R";
+      overlay-key = "Super";
       experimental-features = [ "scale-monitor-framebuffer" ];
     };
 
@@ -121,6 +121,10 @@
     };
 
     "org/gnome/settings-daemon/plugins/media-keys" = {
+      play = [ "<AudioPlay>" ];
+      next = [ "<AudioNext>" ];
+      previous = [ "<AudioPrev>" ];
+
       custom-keybindings = [
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/"
         "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/"
