@@ -2,61 +2,94 @@
 
 let
   settings = {
-    lsp = true;
+    lsp = {
+      gopls = {
+        command = [ (lib.getExe pkgs.unstable.gopls) ];
+        extensions = [ ".go" ];
+      };
+      nixd = {
+        command = [ (lib.getExe pkgs.unstable.nixd) ];
+        extensions = [ ".nix" ];
+      };
+      rust = {
+        command = [ (lib.getExe pkgs.unstable.rust-analyzer) ];
+        extensions = [ ".rs" ];
+      };
+      pyright = {
+        command = [
+          (lib.getExe' pkgs.unstable.pyright "pyright-langserver")
+          "--stdio"
+        ];
+        extensions = [
+          ".py"
+          ".pyi"
+        ];
+      };
+      bash = {
+        command = [
+          (lib.getExe' pkgs.unstable.bash-language-server "bash-language-server")
+          "start"
+        ];
+        extensions = [
+          ".sh"
+          ".bash"
+          ".zsh"
+          ".ksh"
+        ];
+      };
+    };
     provider = {
-      llamacpp = {
-        name = "llama-server (local)";
+      llama-swap = {
+        name = "llama-swap (local)";
         npm = "@ai-sdk/openai-compatible";
         options = {
           baseURL = "http://127.0.0.1:8080/v1";
         };
         models = {
-          Qwen3-Coder-30B-A3B = {
-            id = "unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:Q4_K_M";
-            name = "Qwen3-Coder 30B A3B";
+          "Qwen3.8-Coder-Flash-Next" = {
+            id = "qwen3.8-flash-next-coder-iq1_m";
+            name = "Qwen3.8 Flash Next Coder";
+            options.reasoningEffort = "medium";
             limit = {
-              context = 131072;
+              context = 262144;
               output = 65536;
             };
-          };
-          Qwen3-30B-A3B-Thinking = {
-            id = "unsloth/Qwen3-30B-A3B-Thinking-2507-GGUF:Q4_K_M";
-            name = "Qwen3 30B A3B (Thinking)";
-            limit = {
-              context = 131072;
-              output = 65536;
+            variants = {
+              low = {
+                reasoningEffort = "low";
+              };
+              medium = {
+                reasoningEffort = "medium";
+              };
+              high = {
+                reasoningEffort = "high";
+              };
+              xhigh = {
+                reasoningEffort = "xhigh";
+              };
             };
           };
-          Qwen3-6-35B-A3B-MTP = {
-            id = "unsloth/Qwen3.6-35B-A3B-MTP-GGUF:Q4_K_M";
-            name = "Qwen3.6 35B A3B (MTP)";
+          "Qwen3.8-Flash-Next" = {
+            id = "qwen3.8-flash-next-iq2_xs";
+            name = "Qwen3.8 Flash Next";
+            options.reasoningEffort = "medium";
             limit = {
-              context = 131072;
+              context = 262144;
               output = 65536;
             };
-          };
-          Nemotron-Cascade-2-30B-A3B-i1 = {
-            id = "mradermacher/Nemotron-Cascade-2-30B-A3B-i1-GGUF";
-            name = "Nemotron Cascade 2 30B A3B (i1)";
-            limit = {
-              context = 131072;
-              output = 65536;
-            };
-          };
-          "Qwen3.5-Coder-9B" = {
-            id = "mradermacher/Qwen3.5-9B-Coder-GGUF:Q4_K_M";
-            name = "Qwen3.5-Coder 9B";
-            limit = {
-              context = 131072;
-              output = 65536;
-            };
-          };
-          "Jev-Style-Qwen3.5-2B-Decision" = {
-            id = "chaoliangUNSW/Jev-Style-Qwen3.5-2B-Decision-GGUF:Q4_K_M";
-            name = "Qwen3.5 Jev Decision";
-            limit = {
-              context = 131072;
-              output = 65536;
+            variants = {
+              low = {
+                reasoningEffort = "low";
+              };
+              medium = {
+                reasoningEffort = "medium";
+              };
+              high = {
+                reasoningEffort = "high";
+              };
+              xhigh = {
+                reasoningEffort = "xhigh";
+              };
             };
           };
         };
@@ -103,100 +136,16 @@ let
         };
       };
     };
-    agent = {
-      build = {
-        description = "Main - purpose gent with full access to the local files and tools.";
-        mode = "primary";
-        model = "llamacpp/Qwen3-Coder-30B-A3B";
-        color = "primary";
-        permission = {
-          task = {
-            "*" = "ask";
-            explore = "allow";
-            scout = "allow";
-            general = "allow";
-            architect = "allow";
-            developer = "allow";
-            reviewer = "allow";
-          };
-        };
-        tools = {
-          write = true;
-          edit = true;
-          bash = true;
-        };
-      };
-      plan = {
-        description = "Analyze the codebase and create implementation plans without making changes.";
-        mode = "primary";
-        model = "llamacpp/Qwen3-Coder-30B-A3B";
-        color = "warning";
-        permission = {
-          read = "allow";
-          glob = "allow";
-          grep = "allow";
-          list = "allow";
-          edit = "deny";
-          bash = "deny";
-          task = {
-            explore = "allow";
-            scout = "ask";
-            architect = "ask";
-            developer = "ask";
-            reviewer = "ask";
-            general = "deny";
-          };
-        };
-      };
-      explore = {
-        description = "Fast read-only agent for exploring the codebase, finding files, symbols and relevant implementations.";
-        mode = "subagent";
-        model = "openrouter/Gemma-4-26B-Explore";
-        temperature = 0.1;
-        steps = 6;
-        tools = {
-          write = false;
-          edit = false;
-          bash = false;
-        };
-      };
-      scout = {
-        description = "Read-only agent for researching external documentation, dependencies and upstream source code.";
-        mode = "subagent";
-        model = "openrouter/Nemotron-3.5-Lightning-Scout";
-        temperature = 0.1;
-        steps = 8;
-        tools = {
-          write = false;
-          edit = false;
-        };
-      };
-      general = {
-        description = "General-purpose subagent for complex multi-step technical research and analysis.";
-        mode = "subagent";
-        model = "openrouter/Nemotron-3-Super-General";
-        temperature = 0.2;
-        steps = 12;
-        tools = {
-          write = false;
-          edit = false;
-          bash = false;
-        };
-      };
-      architect = {
-        model = "llamacpp/Qwen3.5-Coder-9B";
-      };
-      developer = {
-        model = "llamacpp/Qwen3-Coder-30B-A3B";
-      };
-      reviewer = {
-        model = "llamacpp/Qwen3.5-Coder-9B";
-      };
-    };
   };
 in
 {
   home-manager.users.nikolai = { ... }: {
+    home.packages = with pkgs.unstable; [
+      nodejs
+      code-cursor
+      cursor-cli
+    ];
+
     programs.opencode = {
       enable = true;
 
@@ -205,6 +154,19 @@ in
         enableChat = true;
         enableTerminal = true;
         enableFileExplorer = true;
+      };
+
+      web = {
+        enable = true;
+        extraArgs = [
+          "--hostname"
+          "0.0.0.0"
+          "--port"
+          "1716"
+          "--print-logs"
+          "--log-level"
+          "debug"
+        ];
       };
 
       settings = settings;
@@ -225,6 +187,9 @@ in
       StateDirectory = null;
       CacheDirectory = null;
       DynamicUser = lib.mkForce false;
+      User = "llama-swap";
+      Group = "llama-swap";
+      ReadWritePaths = [ "/var/lib/llama-swap" ];
       SupplementaryGroups = [
         "render"
         "video"
@@ -261,45 +226,21 @@ in
   services = {
     llama-swap = {
       enable = true;
-      settings =
-        let
-          llama-cpp = pkgs.llama-cpp-rocm;
-          llama-server = lib.getExe' llama-cpp "llama-server";
-        in
-        {
-          healthCheckTimeout = 60;
-          models = {
-            "unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:Q4_K_M" = {
-              cmd = "${llama-server} --port \${PORT} -hf unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:Q4_K_M -lv 4 --no-warmup --offline --parallel 2 -fa on --jinja --no-mmap --fit off -c 131072 --no-webui";
-            };
-            "unsloth/Qwen3.6-35B-A3B-MTP-GGUF:Q4_K_M" = {
-              cmd = "${llama-server} --port \${PORT} -hf unsloth/Qwen3.6-35B-A3B-MTP-GGUF:Q4_K_M -lv 4 --no-warmup --offline --parallel 2 -fa on --jinja --no-mmap --fit off -c 131072 --no-webui";
-            };
-            "unsloth/Qwen3-30B-A3B-Thinking-2507-GGUF:Q4_K_M" = {
-              cmd = "${llama-server} --port \${PORT} -hf unsloth/Qwen3-30B-A3B-Thinking-2507-GGUF:Q4_K_M -lv 4 --no-warmup --offline --parallel 2 -fa on --jinja --no-mmap --fit off -c 131072 --no-webui";
-            };
-            "mradermacher/Nemotron-Cascade-2-30B-A3B-i1-GGUF:Q4_K_M" = {
-              cmd = "${llama-server} --port \${PORT} -hf mradermacher/Nemotron-Cascade-2-30B-A3B-i1-GGUF:Q4_K_M -lv 4 --no-warmup --offline --parallel 1 -fa on --jinja --no-mmap --fit off -c 131072 --no-webui";
-            };
-            "mradermacher/Qwen3.5-9B-Coder-GGUF:Q4_K_M" = {
-              cmd = "${llama-server} --port \${PORT} -hf mradermacher/Qwen3.5-9B-Coder-GGUF:Q4_K_M -lv 4 --no-warmup --offline --parallel 1 -fa on --jinja --no-mmap --fit off -c 131072 --no-webui";
-            };
-            "chaoliangUNSW/Jev-Style-Qwen3.5-2B-Decision-GGUF:Q4_K_M" = {
-              cmd = "${llama-server} --port \${PORT} -hf chaoliangUNSW/Jev-Style-Qwen3.5-2B-Decision-GGUF:Q4_K_M -lv 4 --no-warmup --offline --parallel 1 -fa on --jinja --no-mmap --fit off -c 131072 --no-webui";
-            };
+      settings = {
+        healthCheckTimeout = 300;
+        models = {
+          "qwen3.8-flash-next-coder-iq1_m" = {
+            cmd = "${pkgs.bash}/bin/sh -c 'cd /var/lib/llama-swap/strata && exec /var/lib/llama-swap/strata/.venv/bin/python serve/server.py --engine strata --config /var/lib/llama-swap/strata/strata-coder-iq1_m.json --port \${PORT}'";
+            checkEndpoint = "/health";
+            ttl = 1800;
           };
-          groups = {
-            main = {
-              swap = false;
-              exclusive = false;
-              persistent = true;
-              members = [
-                "unsloth/Qwen3-Coder-30B-A3B-Instruct-GGUF:Q4_K_M"
-                "mradermacher/Qwen3.5-9B-Coder-GGUF:Q4_K_M"
-              ];
-            };
+          "qwen3.8-flash-next-iq2_xs" = {
+            cmd = "${pkgs.bash}/bin/sh -c 'cd /var/lib/llama-swap/strata && exec /var/lib/llama-swap/strata/.venv/bin/python serve/server.py --engine strata --config /var/lib/llama-swap/strata/strata-iq2_xs.json --port \${PORT}'";
+            checkEndpoint = "/health";
+            ttl = 1800;
           };
         };
+      };
     };
     ollama = {
       enable = true;
