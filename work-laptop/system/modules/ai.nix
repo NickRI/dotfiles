@@ -239,6 +239,7 @@ in
         web = {
           enable = true;
           extraArgs = [
+            "--service"
             "--hostname"
             "0.0.0.0"
             "--port"
