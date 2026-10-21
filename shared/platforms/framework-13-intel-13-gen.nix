@@ -5,7 +5,7 @@
   ...
 }:
 let
-  debug-tools = import ../tools/debug-tools/intell.nix {
+  debug-tools = import ../tools/debug-tools/intel.nix {
     inherit pkgs;
   };
 in
