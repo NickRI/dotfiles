@@ -16,8 +16,8 @@
 
       github = {
         command = lib.getExe pkgs.unstable.github-mcp-server;
-        env.GITHUB_PERSONAL_ACCESS_TOKEN = lib.mkIf (config.sops.secrets ? "mcp/github-token") {
-          file = config.sops.secrets."mcp/github-token".path;
+        env = lib.optionalAttrs (config.sops.secrets ? "mcp/github-token") {
+          GITHUB_PERSONAL_ACCESS_TOKEN.file = config.sops.secrets."mcp/github-token".path;
         };
         enabled = true;
       };
@@ -30,8 +30,8 @@
           "-H"
           "https://gitea.nas.firefly.red"
         ];
-        env.GITEA_ACCESS_TOKEN = lib.mkIf (config.sops.secrets ? "mcp/gitea-token") {
-          file = config.sops.secrets."mcp/gitea-token".path;
+        env = lib.optionalAttrs (config.sops.secrets ? "mcp/gitea-token") {
+          GITEA_ACCESS_TOKEN.file = config.sops.secrets."mcp/gitea-token".path;
         };
         enabled = true;
       };
