@@ -35,6 +35,37 @@
         };
         enabled = true;
       };
+
+      git = {
+        command = lib.getExe pkgs.unstable.mcp-server-git;
+        enabled = true;
+      };
+
+      filesystem = {
+        command = lib.getExe pkgs.unstable.mcp-server-filesystem;
+        args = [ (toString config.home.homeDirectory) ];
+        enabled = true;
+      };
+
+      memory = {
+        command = lib.getExe pkgs.unstable.mcp-server-memory;
+        env.MEMORY_FILE_PATH = "${config.xdg.dataHome}/mcp-memory/memory.jsonl";
+        enabled = true;
+      };
+
+      grafana = {
+        command = lib.getExe pkgs.unstable.mcp-grafana;
+        # Keep the tool surface small: write tools are not needed for reading
+        # dashboards, metrics and logs.
+        args = [ "--disable-write" ];
+        env = {
+          GRAFANA_URL = "https://grafana.nas.firefly.red";
+        }
+        // lib.optionalAttrs (config.sops.secrets ? "mcp/grafana-token") {
+          GRAFANA_SERVICE_ACCOUNT_TOKEN.file = config.sops.secrets."mcp/grafana-token".path;
+        };
+        enabled = true;
+      };
     };
   };
 }
