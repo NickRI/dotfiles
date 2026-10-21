@@ -315,12 +315,12 @@ in
           "qwen3.8-flash-next-coder-iq1_m" = {
             cmd = "${pkgs.bash}/bin/sh -c 'cd /var/lib/llama-swap/strata && exec /var/lib/llama-swap/strata/.venv/bin/python serve/server.py --engine strata --config /var/lib/llama-swap/strata/strata-coder-iq1_m.json --port \${PORT}'";
             checkEndpoint = "/health";
-            ttl = 1800;
+            ttl = 600;
           };
           "qwen3.8-flash-next-iq2_xs" = {
             cmd = "${pkgs.bash}/bin/sh -c 'cd /var/lib/llama-swap/strata && exec /var/lib/llama-swap/strata/.venv/bin/python serve/server.py --engine strata --config /var/lib/llama-swap/strata/strata-iq2_xs.json --port \${PORT}'";
             checkEndpoint = "/health";
-            ttl = 1800;
+            ttl = 600;
           };
         };
       };
