@@ -1,142 +1,170 @@
-{ pkgs, lib, ... }@args:
+{ pkgs, lib, ... }:
 
 let
-  settings = {
-    lsp = {
-      gopls = {
-        command = [ (lib.getExe pkgs.unstable.gopls) ];
-        extensions = [ ".go" ];
+  # Native OpenCode V2 provider config. Only local models are configured:
+  # OpenCode discovers the Ollama models on its own.
+  providers = {
+    llama-swap = {
+      name = "llama-swap (local)";
+      package = "@opencode/ai/providers/openai-compatible";
+      settings = {
+        baseURL = "http://127.0.0.1:8080/v1";
+        # Models are unloaded after ten minutes, so a cold start can take a
+        # while. The default header timeout is five minutes.
+        headerTimeout = 600000;
       };
-      nixd = {
-        command = [ (lib.getExe pkgs.unstable.nixd) ];
-        extensions = [ ".nix" ];
-      };
-      rust = {
-        command = [ (lib.getExe pkgs.unstable.rust-analyzer) ];
-        extensions = [ ".rs" ];
-      };
-      pyright = {
-        command = [
-          (lib.getExe' pkgs.unstable.pyright "pyright-langserver")
-          "--stdio"
-        ];
-        extensions = [
-          ".py"
-          ".pyi"
-        ];
-      };
-      bash = {
-        command = [
-          (lib.getExe' pkgs.unstable.bash-language-server "bash-language-server")
-          "start"
-        ];
-        extensions = [
-          ".sh"
-          ".bash"
-          ".zsh"
-          ".ksh"
-        ];
+      models = {
+        "Qwen3.8-Coder-Flash-Next" = {
+          modelID = "qwen3.8-flash-next-coder-iq1_m";
+          name = "Qwen3.8 Flash Next Coder";
+          capabilities = {
+            tools = true;
+            input = [ "text" ];
+            output = [ "text" ];
+          };
+          limit = {
+            context = 262144;
+            output = 65536;
+          };
+          settings.reasoningEffort = "medium";
+          variants = [
+            {
+              id = "low";
+              settings.reasoningEffort = "low";
+            }
+            {
+              id = "medium";
+              settings.reasoningEffort = "medium";
+            }
+            {
+              id = "high";
+              settings.reasoningEffort = "high";
+            }
+            {
+              id = "xhigh";
+              settings.reasoningEffort = "xhigh";
+            }
+          ];
+        };
+        "Qwen3.8-Flash-Next" = {
+          modelID = "qwen3.8-flash-next-iq2_xs";
+          name = "Qwen3.8 Flash Next";
+          capabilities = {
+            tools = true;
+            input = [ "text" ];
+            output = [ "text" ];
+          };
+          limit = {
+            context = 262144;
+            output = 65536;
+          };
+          settings.reasoningEffort = "medium";
+          variants = [
+            {
+              id = "low";
+              settings.reasoningEffort = "low";
+            }
+            {
+              id = "medium";
+              settings.reasoningEffort = "medium";
+            }
+            {
+              id = "high";
+              settings.reasoningEffort = "high";
+            }
+            {
+              id = "xhigh";
+              settings.reasoningEffort = "xhigh";
+            }
+          ];
+        };
       };
     };
-    provider = {
-      llama-swap = {
-        name = "llama-swap (local)";
-        npm = "@ai-sdk/openai-compatible";
-        options = {
-          baseURL = "http://127.0.0.1:8080/v1";
-        };
-        models = {
-          "Qwen3.8-Coder-Flash-Next" = {
-            id = "qwen3.8-flash-next-coder-iq1_m";
-            name = "Qwen3.8 Flash Next Coder";
-            options.reasoningEffort = "medium";
-            limit = {
-              context = 262144;
-              output = 65536;
-            };
-            variants = {
-              low = {
-                reasoningEffort = "low";
-              };
-              medium = {
-                reasoningEffort = "medium";
-              };
-              high = {
-                reasoningEffort = "high";
-              };
-              xhigh = {
-                reasoningEffort = "xhigh";
-              };
-            };
-          };
-          "Qwen3.8-Flash-Next" = {
-            id = "qwen3.8-flash-next-iq2_xs";
-            name = "Qwen3.8 Flash Next";
-            options.reasoningEffort = "medium";
-            limit = {
-              context = 262144;
-              output = 65536;
-            };
-            variants = {
-              low = {
-                reasoningEffort = "low";
-              };
-              medium = {
-                reasoningEffort = "medium";
-              };
-              high = {
-                reasoningEffort = "high";
-              };
-              xhigh = {
-                reasoningEffort = "xhigh";
-              };
-            };
+
+    openrouter = {
+      name = "OpenRouter Free";
+      package = "@opencode/ai/providers/openai-compatible";
+      settings.baseURL = "https://openrouter.ai/api/v1";
+      models = {
+        "Gemma-4-26B-Explore" = {
+          modelID = "google/gemma-4-26b-a4b-it:free";
+          name = "Gemma 4 26B A4B — Explore";
+          limit = {
+            context = 262144;
+            output = 32768;
           };
         };
-      };
-      openrouter = {
-        name = "OpenRouter Free";
-        npm = "@ai-sdk/openai-compatible";
-        options = {
-          baseURL = "https://openrouter.ai/api/v1";
+        "Nemotron-3.5-Lightning-Scout" = {
+          modelID = "nvidia/nemotron-3.5-lightning:free";
+          name = "Nemotron 3.5 Lightning — Scout";
+          limit = {
+            context = 262144;
+            output = 65536;
+          };
         };
-        models = {
-          Gemma-4-26B-Explore = {
-            id = "google/gemma-4-26b-a4b-it:free";
-            name = "Gemma 4 26B A4B — Explore";
-            limit = {
-              context = 262144;
-              output = 32768;
-            };
+        "Nemotron-3-Super-General" = {
+          modelID = "nvidia/nemotron-3-super-120b-a12b:free";
+          name = "Nemotron 3 Super — General";
+          limit = {
+            context = 262144;
+            output = 65536;
           };
-          "Nemotron-3.5-Lightning-Scout" = {
-            id = "nvidia/nemotron-3.5-lightning:free";
-            name = "Nemotron 3.5 Lightning — Scout";
-            limit = {
-              context = 262144;
-              output = 65536;
-            };
-          };
-          Nemotron-3-Super-General = {
-            id = "nvidia/nemotron-3-super-120b-a12b:free";
-            name = "Nemotron 3 Super — General";
-            limit = {
-              context = 262144;
-              output = 65536;
-            };
-          };
-          Gemma-4-31B-Review = {
-            id = "google/gemma-4-31b-it:free";
-            name = "Gemma 4 31B — Review";
-            limit = {
-              context = 262144;
-              output = 32768;
-            };
+        };
+        "Gemma-4-31B-Review" = {
+          modelID = "google/gemma-4-31b-it:free";
+          name = "Gemma 4 31B — Review";
+          limit = {
+            context = 262144;
+            output = 32768;
           };
         };
       };
     };
   };
+
+  settings = {
+    # V2 keeps the provider and model but not a variant in the root default.
+    model = "llama-swap/Qwen3.8-Flash-Next";
+
+    # V2 allows access outside the project by default; keep the V1 behaviour.
+    permissions = [
+      {
+        action = "external_directory";
+        resource = "*";
+        effect = "ask";
+      }
+    ];
+
+    providers = providers;
+  };
+
+  # Render a programs.mcp server in the native V2 shape instead of the flat
+  # V1 shape that Home Manager's OpenCode integration produces.
+  toV2Server =
+    _: server:
+    let
+      isRemote = server ? url && server.url != null;
+      environment = lib.mapAttrs (
+        _: value: if builtins.isAttrs value && value ? file then "{file:${value.file}}" else value
+      ) (server.env or { });
+    in
+    {
+      type = if isRemote then "remote" else "local";
+    }
+    // (
+      if isRemote then
+        {
+          inherit (server) url;
+        }
+        // lib.optionalAttrs ((server.headers or { }) != { }) { inherit (server) headers; }
+      else
+        {
+          command = [ server.command ] ++ (server.args or [ ]);
+        }
+        // lib.optionalAttrs (environment != { }) { inherit environment; }
+    )
+    // lib.optionalAttrs ((server.timeout or null) != null) { inherit (server) timeout; }
+    // lib.optionalAttrs (!(server.enabled or true)) { disabled = true; };
 in
 {
   home-manager.users.nikolai =
@@ -234,13 +262,18 @@ in
 
       programs.opencode = {
         enable = true;
-        enableMcpIntegration = true;
 
-        tui = {
-          theme = "onedarkpro";
-          enableChat = true;
-          enableTerminal = true;
-          enableFileExplorer = true;
+        settings = settings // {
+          mcp = {
+            timeout.startup = 45000;
+            servers = lib.mapAttrs toV2Server config.programs.mcp.servers;
+          };
+        };
+
+        agents = {
+          architect = ../../../shared/files/agents/architect.md;
+          developer = ../../../shared/files/agents/developer.md;
+          reviewer = ../../../shared/files/agents/reviewer.md;
         };
 
         web = {
@@ -255,12 +288,15 @@ in
             "debug"
           ];
         };
+      };
 
-        settings = settings;
-        agents = {
-          architect = ../../../shared/files/agents/architect.md;
-          developer = ../../../shared/files/agents/developer.md;
-          reviewer = ../../../shared/files/agents/reviewer.md;
+      # OpenCode V2 reads terminal settings from a single global cli.json
+      # instead of tui.json, and Home Manager has no option for it.
+      xdg.configFile."opencode/cli.json".source = (pkgs.formats.json { }).generate "cli.json" {
+        "$schema" = "https://opencode.ai/v2/cli.json";
+        theme = {
+          name = "onedarkpro";
+          mode = "system";
         };
       };
     };
