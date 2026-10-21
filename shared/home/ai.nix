@@ -6,6 +6,10 @@
 }:
 
 {
+  # The memory server does not create the parent directory of its file, so the
+  # directory has to exist before the first write.
+  home.file.".local/share/mcp-memory/.keep".text = "";
+
   programs.mcp = {
     enable = true;
     servers = {
