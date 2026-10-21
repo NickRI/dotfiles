@@ -19,7 +19,7 @@ nixpkgs.lib.nixosSystem {
       nixpkgs.overlays = [
         (final: prev: {
           unstable = import nixpkgs-unstable {
-            system = prev.stdenv.hostPlatform.system;
+            stdenv.hostPlatform = prev.stdenv.hostPlatform;
           };
         })
       ];
