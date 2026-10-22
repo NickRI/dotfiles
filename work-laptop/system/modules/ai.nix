@@ -179,6 +179,21 @@ in
         };
       };
 
+      # `--service` reads the password only from service-prod.json, so render
+      # that file from sops instead of using an env file.
+      sops.secrets."opencode-password" = { };
+
+      sops.templates."opencode-service-prod.json" = {
+        content = builtins.toJSON {
+          password = config.sops.placeholder."opencode-password";
+        };
+        # sops-nix symlinks the rendered file here, replacing whatever is there.
+        path = "${config.xdg.configHome}/opencode/service-prod.json";
+      };
+
+      # sops-nix renders the file during activation; do not race it on boot.
+      systemd.user.services.opencode-web.Unit.After = [ "sops-nix.service" ];
+
       # OpenCode V2 reads terminal settings from a single global cli.json
       # instead of tui.json, and Home Manager has no option for it.
       xdg.configFile."opencode/cli.json".source = (pkgs.formats.json { }).generate "cli.json" {
