@@ -143,15 +143,6 @@ in
         cursor-cli
       ];
 
-      # Thunderbird cannot run elsewhere: it needs a running Thunderbird
-      # instance on the user's session bus.
-      programs.mcp.servers = {
-        thunderbird = {
-          command = lib.getExe pkgs.unstable.thunderbird-cli-mcp;
-          enabled = true;
-        };
-      };
-
       programs.opencode = {
         enable = true;
 
