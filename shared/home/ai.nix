@@ -45,12 +45,6 @@
         enabled = true;
       };
 
-      filesystem = {
-        command = lib.getExe pkgs.unstable.mcp-server-filesystem;
-        args = [ (toString config.home.homeDirectory) ];
-        enabled = true;
-      };
-
       memory = {
         command = lib.getExe pkgs.unstable.mcp-server-memory;
         env.MEMORY_FILE_PATH = "${config.xdg.dataHome}/mcp-memory/memory.jsonl";
