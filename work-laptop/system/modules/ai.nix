@@ -225,7 +225,7 @@ in
         healthCheckTimeout = 300;
         models = {
           "qwen3.8-flash-next-iq2_xs" = {
-            cmd = "${pkgs.bash}/bin/sh -c 'cd /var/lib/llama-swap/strata && exec /var/lib/llama-swap/strata/.venv/bin/python serve/server.py --engine strata --config /var/lib/llama-swap/strata/strata-iq2_xs.json --port \${PORT}'";
+            cmd = "${pkgs.bash}/bin/sh -c 'cd /var/lib/llama-swap/strata && exec /nix/store/1wb9hp3m1zy3z53gxacb8zzkcx69faly-strata-runtime-0.1.48.1/bin/strata-serve --engine strata --config strata-iq2_xs.json --port \${PORT}'";
             checkEndpoint = "/health";
             ttl = 600;
           };
