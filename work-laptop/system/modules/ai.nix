@@ -111,6 +111,24 @@ in
         cursor-cli
       ];
 
+      # Chrome DevTools MCP is not packaged in nixpkgs, so it runs from npm.
+      # Pin the version: a floating `@latest` would change the tool surface
+      # under a running agent. NixOS ships Chromium instead of Chrome, so the
+      # binary has to be passed explicitly. The first start also downloads the
+      # package, hence the longer startup timeout.
+      programs.mcp.servers.chrome-devtools = {
+        command = "${pkgs.unstable.nodejs}/bin/npx";
+        args = [
+          "-y"
+          "chrome-devtools-mcp@1.13.0"
+          "--executablePath=${pkgs.unstable.chromium}/bin/chromium"
+          # Google collects tool usage statistics unless told otherwise.
+          "--no-usage-statistics"
+        ];
+        timeout.startup = 120000;
+        enabled = true;
+      };
+
       programs.opencode = {
         enable = true;
 
